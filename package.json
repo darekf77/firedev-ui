@@ -1,7 +1,10 @@
 {
   "name": "firedev-ui",
-  "version": "0.0.2",
+  "version": "13.0.1",
   "dependencies": {
+    "tnp-helpers": "~13.1.14"
+  },
+  "devDependencies": {
     "@angular-devkit/build-angular": "~13.3.9",
     "@angular-devkit/core": "~13.3.9",
     "@angular/cdk": "~13.3.9",
@@ -215,7 +218,6 @@
     "tnp-config": "~13.1.54",
     "tnp-core": "~13.1.58",
     "tnp-db": "~13.1.7",
-    "tnp-helpers": "~13.1.14",
     "tnp-models": "~13.1.9",
     "tnp-ui": "~13.1.27",
     "ts-debug": "1.3.0",
@@ -233,6 +235,5 @@
     "watch": "1.0.2",
     "zone.js": "~0.11.4"
   },
-  "devDependencies": {},
   "lastBuildTagHash": "ff5367032bb30a553b2205fa0a3fcaa1e7af3167"
 }
