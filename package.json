@@ -233,5 +233,6 @@
     "watch": "1.0.2",
     "zone.js": "~0.11.4"
   },
-  "devDependencies": {}
+  "devDependencies": {},
+  "lastBuildTagHash": "02b48920b5b4ae39c6a01e45247e5acce1afac98"
 }
