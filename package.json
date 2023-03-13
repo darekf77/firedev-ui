@@ -1,8 +1,8 @@
 {
   "name": "firedev-ui",
-  "version": "13.0.1",
+  "version": "13.1.1",
   "dependencies": {
-    "tnp-helpers": "~13.1.14"
+    "tnp-helpers": "~13.1.17"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~13.3.9",
@@ -119,7 +119,8 @@
     "firedev-crud-deamon": "~13.1.27",
     "firedev-ports": "~13.1.31",
     "firedev-storage": "~13.1.23",
-    "firedev-typeorm": "~13.1.11",
+    "firedev-typeorm": "~13.1.12",
+    "firedev-ui": "~13.0.1",
     "fkill": "6.1.0",
     "font-awesome": "4.7.0",
     "fs-extra": "8.1.0",
@@ -134,7 +135,7 @@
     "inquirer": "7.3.3",
     "inquirer-autocomplete-prompt": "1.3.0",
     "is-elevated": "3.0.0",
-    "isomorphic-region-loader": "~13.1.24",
+    "isomorphic-region-loader": "~13.1.25",
     "istanbul-instrumenter-loader": "2.0.0",
     "jasmine-core": "4.0.0",
     "jscodeshift": "0.6.3",
@@ -165,7 +166,7 @@
     "mkdirp": "0.5.1",
     "mocha": "5.2.0",
     "moment": "2.22.2",
-    "morphi": "~13.1.32",
+    "morphi": "~13.1.35",
     "ng-packagr": "13.0.0",
     "ng-talkback": "~13.1.19",
     "ng2-logger": "~13.1.9",
@@ -214,10 +215,10 @@
     "sudo-block": "3.0.0",
     "systeminformation": "3.45.7",
     "task.js": "0.1.5",
-    "tnp-cli": "~13.1.41",
-    "tnp-config": "~13.1.54",
-    "tnp-core": "~13.1.58",
-    "tnp-db": "~13.1.7",
+    "tnp-cli": "~13.1.44",
+    "tnp-config": "~13.1.55",
+    "tnp-core": "~13.1.61",
+    "tnp-db": "~13.1.8",
     "tnp-models": "~13.1.9",
     "tnp-ui": "~13.1.27",
     "ts-debug": "1.3.0",
