@@ -121,7 +121,7 @@
     "firedev-ports": "~13.1.33",
     "firedev-storage": "~13.1.25",
     "firedev-typeorm": "~13.1.14",
-    "firedev-ui": "~13.1.3",
+    "firedev-ui": "~13.1.4",
     "fkill": "6.1.0",
     "font-awesome": "4.7.0",
     "fs-extra": "8.1.0",
@@ -237,5 +237,5 @@
     "watch": "1.0.2",
     "zone.js": "~0.11.4"
   },
-  "lastBuildTagHash": "c20916060e4bac8f5e0f705a52beb56620a3c5de"
+  "lastBuildTagHash": "544f4a03765853fcec4b72f0cd68a53450839f97"
 }
