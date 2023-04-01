@@ -55,7 +55,7 @@
     "package.json_tnp.json": true
   },
   "workbench.colorCustomizations": {
-    "activityBar.background": "#0084ff",
+    "activityBar.background": "#95c157",
     "activityBar.foreground": "#000000"
   },
   "editor.rulers": [
