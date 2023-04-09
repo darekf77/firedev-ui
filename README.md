@@ -1,9 +1,11 @@
 # firedev-ui
 
 - Part of [firedev.io](https://github.com/darekf77/
-- Helpers/Components/Modules for firedev's
+- open-source helpers/components/modules/directives/services/layouts/popups for any firedev app
 - Purpose:
   + all opensource UI from firedev here
+  + I am putting everything here before creating new/seprated project
+  
 
 
 ## Usage
