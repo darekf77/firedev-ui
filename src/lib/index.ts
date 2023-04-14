@@ -1,6 +1,7 @@
 //#region @browser
-export * from './websql-control-panel/websql-control-panel.component';
-export * from './websql-control-panel/websql-control-panel.module';
-export * from './material.module';
+export * from './firedev-websql-control-panel/firedev-websql-control-panel.component';
+export * from './firedev-websql-control-panel/firedev-websql-control-panel.module';
+export * from './firedev-full-material.module';
+export * from './firedev-github-fork-me-corner/firedev-github-fork-me-corner.module';
+export * from './firedev-github-fork-me-corner/firedev-github-fork-me-corner.component';
 //#endregion
-export * from './my-standalone-lib';
