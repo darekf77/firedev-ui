@@ -1,3 +1,4 @@
+//#region @browser
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { FiredevWebsqlControlPanelDialogComponent } from './dialog/firedev-websql-control-panel-dialog.component';
@@ -29,3 +30,4 @@ export class FiredevWebsqlControlPanelComponent implements OnInit {
   }
 
 }
+//#endregion

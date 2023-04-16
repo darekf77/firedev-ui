@@ -1,3 +1,4 @@
+//#region @browser
 import { A11yModule } from '@angular/cdk/a11y';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { ScrollingModule } from '@angular/cdk/scrolling';
@@ -87,3 +88,4 @@ import { MatTreeModule } from '@angular/material/tree';
   ]
 })
 export class FiredevFullMaterialModule { }
+//#endregion

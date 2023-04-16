@@ -1,3 +1,4 @@
+//#region @browser
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FiredevWebsqlControlPanelComponent } from './firedev-websql-control-panel.component';
@@ -25,3 +26,4 @@ import { FiredevFullMaterialModule } from '../firedev-full-material.module';
   ]
 })
 export class FiredevWebsqlControlPanelModule { }
+//#endregion
