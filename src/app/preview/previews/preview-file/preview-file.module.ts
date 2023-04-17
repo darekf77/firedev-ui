@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { PreviewFileComponent } from './preview-file.component';
 import { FiredevFileModule } from '../../../../lib/firedev-file';
+import { FiredevFullMaterialModule } from '../../../../lib';
 
 const routes: Routes = [
   {
@@ -21,6 +22,7 @@ const routes: Routes = [
   imports: [
     CommonModule,
     FiredevFileModule,
+    FiredevFullMaterialModule,
     RouterModule.forChild(routes),
   ],
   declarations: [PreviewFileComponent],

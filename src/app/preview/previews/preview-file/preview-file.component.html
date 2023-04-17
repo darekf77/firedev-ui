@@ -1,9 +1,38 @@
 <p>
   preview-file works!
 </p>
+<div class="card">
 
-<img src="src/assets/cutsmall.jpg" height="100" >
-<img src="src/assets/smiley.png" height="100" >
-<img src="http://localhost:4199/BaseCRUD/BASE_CONTROLLER/FiredevFileController/getImage_text" height="200" >
-<firedev-file src="src/assets/cutsmall.jpg" ></firedev-file>
-<!-- <firedev-file src="src/assets/cutsmall.jpg" ></firedev-file> -->
+
+  <img src="src/assets/cutsmall.jpg"
+       height="100">
+  <img src="src/assets/smiley.png"
+       height="100">
+  <img src="http://localhost:4199/BaseCRUD/BASE_CONTROLLER/FiredevFileController/getImage_text"
+       height="200">
+  <firedev-file src="src/assets/cutsmall.jpg"></firedev-file>
+  <!-- <firedev-file src="src/assets/cutsmall.jpg" ></firedev-file> -->
+  <img [src]="loadedImage"
+       height="100px" />
+
+  <img [src]="loadedHammny"
+       height="50px" />
+
+  <hr>
+
+  <input style="display: none;"
+         id="input-file-id-{{generalHash}}"
+         multiple
+         (change)="upload($event)"
+         type="file" />
+  <label for="input-file-id-{{generalHash}}"
+         class="mat-raised-button mat-button-base mat-primary">Upload</label>
+
+  <span *ngIf="images.length === 0"> - no images read to upload - </span>
+  <img [src]="image"
+       alt="your image"
+       width="100px"
+       *ngFor="let image of images" />
+
+  <button mat-stroked-button
+          color="accent">Accent</button>
