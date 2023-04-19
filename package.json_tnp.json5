@@ -9,7 +9,9 @@
     "includeOnly": [
       'tnp-helpers'
     ],
-    "dependencies": {}
+    "dependencies": {
+      '@types/node': '16.18.21',
+    }
   },
   "linkedProjects": [],
   "smartContainerBuildTarget": "",

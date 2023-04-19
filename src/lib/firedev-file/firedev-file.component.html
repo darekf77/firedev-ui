@@ -1,1 +1,3 @@
-firedev file! {{src}}
+<img [src]="file.src"
+     height="100"
+     *ngIf="(type === 'image') && (mode === 'view')">

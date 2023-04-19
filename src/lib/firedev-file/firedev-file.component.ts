@@ -4,7 +4,9 @@ import { Firedev } from 'firedev';
 import { FiredevFileService } from './firedev-file.service';
 import { Log } from 'ng2-logger';
 import { crossPlatformPath, Helpers, path, _ } from 'tnp-core';
-import { FiredevMode } from '../firedev.models';
+import { FiredevDisplayMode } from '../firedev.models';
+import { FiredevFile } from './firedev-file';
+import { FiredevFileTypeArr, IFiredevFileType } from './firedev-file.models';
 
 const log = Log.create('firedev file')
 
@@ -17,19 +19,20 @@ const log = Log.create('firedev file')
 export class FiredevFileComponent implements OnInit {
   @Input() @HostBinding('style.maxHeight.px') @Input() height: number;
   @Input() @HostBinding('style.maxHeight.px') @Input() width: number;
-  @Input() mode: FiredevMode = 'admin-add';
+  @Input() mode: FiredevDisplayMode = 'view';
+  readonly type: IFiredevFileType;
+  public file: FiredevFile;
+  @Input() src: string;
   generalHash = (new Date()).getTime();
-  get type(): Firedev.Files.MimeType {
+
+  get ext(): Firedev.Files.MimeType {
     return path.extname(this.src) as any;
   }
 
-  get mime() {
-    return Firedev.Files.MimeTypesObj[this.type];
-  }
 
-  @Input() src: string;
-  name: string;
-  currentFile: string;
+  get contentType(): Firedev.Http.ContentType {
+    return Firedev.Files.MimeTypesObj[this.ext] as Firedev.Http.ContentType;
+  }
 
   constructor(
     protected service: FiredevFileService
@@ -37,21 +40,30 @@ export class FiredevFileComponent implements OnInit {
 
   }
 
-  ngOnInit() {
-    console.log({
-      type: this.type,
-      mime: this.mime,
-    })
-    if (!this.mime || !this.type) {
+  async ngOnInit() {
+    if (!this.contentType || !this.ext) {
       throw new Error(`[firedev-ui][firedev-file] Can't handle src="${this.src}" in this component`)
     }
 
-    if(this.src) {
-      this.mode = 'user-view';
+    if (!this.file) {
+      this.file = new FiredevFile();
+      this.file.src = this.src;
+      this.file.type = this.contentType;
+      if (this.service.is(this.ext, 'image')) {
+        this.file.blob = await FiredevFile.ctrl.getBlobFrom(`${window.location.origin}${this.src}`);
+        this.file.file = new File([this.file.blob], path.basename(this.src));
+      }
     }
 
-    // // @ts-ignore
-    // this.mime = Firedev.Files.MimeTypesObj[this.type];
+    for (let index = 0; index < FiredevFileTypeArr.length; index++) {
+      const element = FiredevFileTypeArr[index];
+      if (this.service.is(this.ext, element)) {
+        // @ts-ignore
+        this.type = element;
+        break;
+      }
+    }
+
   }
 
 }

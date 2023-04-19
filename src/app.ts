@@ -1,7 +1,7 @@
 //#region @notForNpm
 //#region imports
 import { Firedev } from 'firedev';
-const host = 'http://localhost:4199';
+const host = 'http://localhost:4198';
 import { FiredevFile, FiredevFileController } from './lib/firedev-file';
 //#region @browser
 import { NgModule, NgZone, ViewEncapsulation } from '@angular/core';
@@ -81,6 +81,8 @@ async function start() {
     //#endregion
   });
   //#region @backend
+  console.log('process.cwd()', process.cwd())
+
   if (Firedev.isNode) {
     context.node.app.get('/hello', (req, res) => {
       res.send('Hello firedev-ui')

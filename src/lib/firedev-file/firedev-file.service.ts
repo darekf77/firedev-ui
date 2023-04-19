@@ -1,46 +1,32 @@
 //#region @browser
 import { Injectable } from '@angular/core';
 import { Firedev } from 'firedev';
+import { IFiredevFileType } from './firedev-file.models';
 
 @Injectable()
 export class FiredevFileService {
   constructor() { }
 
-  isImage(extensionOrMimeType: string) {
-    return isSomething([
-      ".bmp",
-      ".gif",
-      ".ico",
-      ".jpeg",
-      ".jpg",
-      ".png",
-      ".svg",
-      ".tif",
-      ".tiff",
-    ], extensionOrMimeType);
+  is(extensionOrMimeType: string, isWhat: IFiredevFileType) {
+    if (isWhat === 'css') {
+      // @ts-ignore
+      isWhat = 'text/css'
+    }
+    if (isWhat === 'js') {
+      // @ts-ignore
+      isWhat = 'text/javascript'
+    }
+    if (isWhat === 'html') {
+      // @ts-ignore
+      isWhat = 'text/html';
+    }
+    const isExt = extensionOrMimeType.startsWith('.');
+    if (isExt) {
+      return Firedev.Files.MimeTypesObj[extensionOrMimeType].startsWith(`${isWhat}`);
+    }
+    return extensionOrMimeType.startsWith(`${isWhat}`);
   }
 
-  isMusic(extensionOrMimeType: string) {
-    return isSomething([
-      '.aac',
-      '.oga',
-      '.opus',
-      '.wav',
-      '.weba',
-      '.mp3',
-    ], extensionOrMimeType);
-  }
-
-}
-
-function isSomething(arr = [], extensionOrMimeType: string) {
-  const isImage = arr.includes(extensionOrMimeType);
-  if (isImage) {
-    return true;
-  }
-  const mime = Firedev.Files.MimeTypesObj[extensionOrMimeType];
-  arr = arr.map(ext => Firedev.Files.MimeTypesObj[ext]);
-  return arr.includes(mime);
 }
 
 //#endregion

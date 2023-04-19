@@ -1,11 +1,31 @@
 import { Firedev } from 'firedev';
+import axios, { AxiosResponse } from 'axios';
+import { Repository } from 'firedev-typeorm'; // must be
 import { FiredevFile } from './firedev-file';
+import { crossPlatformPath, Helpers, path, _ } from 'tnp-core';
+//#region @backend
+import * as FormData from 'form-data';
+import { FiredevUploadedFile } from '../firedev.models';
+const pathDest = path.join(process.cwd(), 'src/assets/private/uploaded');
+//#endregion
+//#region @backend
+import { Blob } from 'node:buffer';
+//#endregion
+
+export const FiredevFileControllerEntity = Symbol();
 
 @Firedev.Controller({
   className: 'FiredevFileController',
   entity: FiredevFile
 })
-export class FiredevFileController extends Firedev.Base.Controller<any> {
+export class FiredevFileController extends Firedev.Base.Controller<FiredevFile> {
+  [FiredevFileControllerEntity] = FiredevFile;
+
+  //#region @websql
+  private async getRepo() {
+    return await this.connection.getRepository<FiredevFile>(this[FiredevFileControllerEntity]);
+  }
+  //#endregion
 
   @Firedev.Http.GET()
   hello(): Firedev.Response<string> {
@@ -32,7 +52,70 @@ export class FiredevFileController extends Firedev.Base.Controller<any> {
     //#endregion
   }
 
+  async getBlobFrom(url): Promise<Blob> {
+    const response = await axios({
+      url,
+      method: 'get',
+      responseType: 'blob'
+    });
 
+    return response.data;
+  }
+
+  /**
+   * in angular:
+   * const formData = new FormData();
+   * formData.append('myfile1.png',files[0])
+   * formData.append('myfile2.png',files[1])
+   *
+   * files -> from evemt from input with type="file"
+   *
+   * @param formData
+   * @returns
+   */
+  @Firedev.Http.POST({ overrideContentType: 'multipart/form-data' as any })
+  __upload(@Firedev.Http.Param.Body() formData: FormData): Firedev.Response<FiredevFile> {
+    //#region @websqlFunc
+    return async (req, res) => {
+      //#region @backendFunc
+      if (!req.files || Object.keys(req.files).length === 0) {
+        res.status(400).send('No files were uploaded.');
+        return;
+      }
+
+      const files = _.values(req.files);
+      if (!Helpers.exists(path.dirname(pathDest))) {
+        Helpers.mkdirp(path.dirname(pathDest))
+      }
+
+      const repo = await this.getRepo();
+
+      const file = _.first(files) as FiredevUploadedFile;
+      const uploadPath = crossPlatformPath([pathDest, file.md5 + '_' + file.name]);
+      await repo.save(FiredevFile.from({
+        type: file.mimetype,
+        id: file.md5,
+        blob: file.data as any,
+        src: uploadPath,
+      }));
+
+      await new Promise((resolve, reject) => {
+        file.mv(uploadPath, (err) => {
+          if (err) {
+            throw err;
+          } else {
+            resolve(void 0)
+          }
+        });
+      });
+      console.log("Files uploaded: ", req['files']);
+      const fileInstance = await repo.findOneOrFail({ where: { id: file.md5 } });
+      delete fileInstance.blob;
+      return fileInstance;
+      //#endregion
+    }
+    //#endregion
+  }
 
   @Firedev.Http.GET(`/${Firedev.symbols.CRUD_TABLE_MODELS}`) // @ts-ignore
   getAll(@Firedev.Http.Param.Query('limit') limit = Infinity): Firedev.Response<FiredevFile[]> {
