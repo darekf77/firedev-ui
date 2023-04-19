@@ -78,11 +78,13 @@ export class FiredevFileController extends Firedev.Base.Controller<FiredevFile> 
     //#region @websqlFunc
     return async (req, res) => {
       //#region @backendFunc
+      // @ts-ignore
       if (!req.files || Object.keys(req.files).length === 0) {
         res.status(400).send('No files were uploaded.');
         return;
       }
 
+      // @ts-ignore
       const files = _.values(req.files);
       if (!Helpers.exists(path.dirname(pathDest))) {
         Helpers.mkdirp(path.dirname(pathDest))

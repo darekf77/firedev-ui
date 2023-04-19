@@ -1,6 +1,6 @@
 {
   "name": "firedev-ui",
-  "version": "13.1.7",
+  "version": "13.1.8",
   "dependencies": {
     "tnp-helpers": "~13.1.25"
   },
