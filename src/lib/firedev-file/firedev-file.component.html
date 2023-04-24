@@ -1,3 +1,13 @@
 <img [src]="file.src"
      height="100"
-     *ngIf="(type === 'image') && (mode === 'view')">
+     *ngIf="viewAs === 'img-tag'">
+
+<!-- <script [src]="file.src"
+        *ngIf="as === 'script-tag'"></script>
+
+<link rel="stylesheet"
+      href="{{file.src}}"
+      *ngIf="as === 'css-tag'"> -->
+
+
+<ng-content></ng-content>

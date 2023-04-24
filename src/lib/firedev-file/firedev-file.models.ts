@@ -21,3 +21,15 @@ export const FiredevFileTypeArr = [
   'js',
   'css',
 ] as IFiredevFileType[];
+
+export type FiredevFileDefaultAs = 'script-tag'
+  | 'css-tag'
+  | 'textarea'
+  | 'wysig-editor'
+  | 'video-tag'
+  | 'audio-tag'
+  | 'text-string'
+  | 'img-tag'
+  | 'html-rendered'
+  | 'json-editor'
+  ;

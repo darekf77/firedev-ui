@@ -1,7 +1,8 @@
 //#region @browser
 import { Injectable } from '@angular/core';
 import { Firedev } from 'firedev';
-import { IFiredevFileType } from './firedev-file.models';
+import type { FiredevFileComponent } from './firedev-file.component';
+import { FiredevFileDefaultAs, IFiredevFileType } from './firedev-file.models';
 
 @Injectable()
 export class FiredevFileService {
@@ -27,6 +28,59 @@ export class FiredevFileService {
     return extensionOrMimeType.startsWith(`${isWhat}`);
   }
 
+  viewAs(context: FiredevFileComponent): FiredevFileDefaultAs {
+    if (context.type === 'js') {
+      return 'script-tag';
+    }
+    if (context.type === 'css') {
+      return 'css-tag';
+    }
+    if (context.type === 'audio') {
+      return 'audio-tag';
+    }
+    if (context.type === 'image') {
+      return 'img-tag';
+    }
+    if (context.type === 'html') {
+      return 'html-rendered';
+    }
+    if (context.type === 'json') {
+      return 'json-editor';
+    }
+  }
+
+  loadScript(src: string, context: FiredevFileComponent) {
+    return new Promise((resolve, reject) => {
+      //resolve if already loaded
+      if (context.scripts[src]) {
+        resolve({ script: src, status: 'Already Loaded' });
+      }
+      else {
+        //load script
+        let script = document.createElement('script') as any;
+        script.type = 'text/javascript';
+        script.src = src;
+
+        if (script.readyState) {  //IE
+          script.onreadystatechange = () => {
+            if (script.readyState === "loaded" || script.readyState === "complete") {
+              script.onreadystatechange = null;
+              context.scripts[src] = true;
+              resolve({ script: src, status: 'Loaded' });
+            }
+          };
+        } else {  //Others
+          script.onload = () => {
+            context.scripts[src] = true;
+            resolve({ script: src, status: 'Loaded' });
+          };
+        }
+
+        script.onerror = (error: any) => resolve({ script: src, status: 'Loaded' });
+        document.getElementsByTagName('head')[0].appendChild(script);
+      }
+    });
+  }
 }
 
 //#endregion

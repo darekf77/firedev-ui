@@ -1,10 +1,11 @@
 //#region @browser
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { firstValueFrom, Subscription } from 'rxjs';
 import { FiredevFile } from '../../../../lib';
 import { Cachee } from './cache';
 import * as localForge from 'localforage';
+
 
 const stor = localForge.createInstance({
   driver: localForge.INDEXEDDB,
@@ -17,6 +18,8 @@ const stor = localForge.createInstance({
   styleUrls: ['./preview-file.component.scss']
 })
 export class PreviewFileComponent implements OnInit {
+  @ViewChild('imageToFaceDetect') imageToFaceDetect: ElementRef;
+
   handlers: Subscription[] = [];
   loadedImage: any;
   fromcache: any;
@@ -26,7 +29,9 @@ export class PreviewFileComponent implements OnInit {
 
   constructor(
     private domSanitizer: DomSanitizer
-  ) { }
+  ) {
+
+  }
 
   async ngOnInit() {
     const existedFiles = await stor.getItem('files');
@@ -97,6 +102,22 @@ export class PreviewFileComponent implements OnInit {
     this.handlers.forEach(h => h.unsubscribe());
   }
 
+  ngAfterViewInit(): void {
+    const elem = (this.imageToFaceDetect.nativeElement as HTMLElement);
+
+    defer(($) => {
+      console.log({
+        elem
+      })
+      $(elem).faceDetection({
+        complete: function (faces) {
+          console.log({faces});
+        }
+      });
+      console.log("Hello World!");
+    });
+  }
+
   async processFiles(files?: FileList) {
     this.files = [];
 
@@ -153,3 +174,10 @@ function blobToBase64(blob) {
 //#endregion
 
 
+function defer(method: ($: any) => any) {
+  if (window['$']) {
+    method(window['$']);
+  } else {
+    setTimeout(function () { defer(method) }, 50);
+  }
+}

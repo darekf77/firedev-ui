@@ -6,7 +6,7 @@ import { Log } from 'ng2-logger';
 import { crossPlatformPath, Helpers, path, _ } from 'tnp-core';
 import { FiredevDisplayMode } from '../firedev.models';
 import { FiredevFile } from './firedev-file';
-import { FiredevFileTypeArr, IFiredevFileType } from './firedev-file.models';
+import { FiredevFileDefaultAs, FiredevFileTypeArr, IFiredevFileType } from './firedev-file.models';
 
 const log = Log.create('firedev file')
 
@@ -20,10 +20,22 @@ export class FiredevFileComponent implements OnInit {
   @Input() @HostBinding('style.maxHeight.px') @Input() height: number;
   @Input() @HostBinding('style.maxHeight.px') @Input() width: number;
   @Input() mode: FiredevDisplayMode = 'view';
+  @Input() viewAs: FiredevFileDefaultAs;
+
+  get defaultViewAs() {
+    if (this.viewAs) {
+      return this.viewAs;
+    }
+    return this.service.viewAs(this);
+  }
+
   readonly type: IFiredevFileType;
   public file: FiredevFile;
   @Input() src: string;
   generalHash = (new Date()).getTime();
+
+  static readonly scripts = {}
+  readonly scripts: any;
 
   get ext(): Firedev.Files.MimeType {
     return path.extname(this.src) as any;
@@ -37,8 +49,10 @@ export class FiredevFileComponent implements OnInit {
   constructor(
     protected service: FiredevFileService
   ) {
-
+    this.scripts = FiredevFileComponent.scripts;
   }
+
+
 
   async ngOnInit() {
     if (!this.contentType || !this.ext) {
@@ -64,6 +78,18 @@ export class FiredevFileComponent implements OnInit {
       }
     }
 
+
+    if (!this.viewAs) {
+      this.viewAs = this.defaultViewAs;
+    }
+
+    log.d('type', this.type)
+    log.d('src', this.src)
+    log.d('as', this.viewAs)
+
+    if (this.viewAs === 'script-tag') {
+      this.service.loadScript(this.src, this)
+    }
   }
 
 }
