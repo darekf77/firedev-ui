@@ -1,6 +1,6 @@
 //#region @browser
 
-export class Cachee {
+export class BrowserCachee {
   db: any;
   version: any;
   assets: any;
