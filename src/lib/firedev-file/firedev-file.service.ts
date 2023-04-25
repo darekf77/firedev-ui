@@ -53,7 +53,7 @@ export class FiredevFileService {
     return new Promise((resolve, reject) => {
       //resolve if already loaded
       if (context.scripts[src]) {
-        resolve({ script: src, status: 'Already Loaded' });
+        resolve({ script: src, status: 'Already Loaded Script File' });
       }
       else {
         //load script
@@ -81,6 +81,43 @@ export class FiredevFileService {
       }
     });
   }
+
+  loadStyle(src: string, context: FiredevFileComponent) {
+    const styles = context.styles;
+    return new Promise((resolve, reject) => {
+      //resolve if already loaded
+      if (styles[src]) {
+        resolve({ script: src, status: 'Already Loaded Style File' });
+      }
+      else {
+        //load script
+        let link = document.createElement('link') as any;
+        link.rel  = 'stylesheet';
+        link.type = 'text/css';
+        link.href = src;
+
+        if (link.readyState) {  //IE
+          link.onreadystatechange = () => {
+            if (link.readyState === "loaded" || link.readyState === "complete") {
+              link.onreadystatechange = null;
+              styles[src] = true;
+              resolve({ script: src, status: 'Loaded' });
+            }
+          };
+        } else {  //Others
+          link.onload = () => {
+            styles[src] = true;
+            resolve({ script: src, status: 'Loaded' });
+          };
+        }
+
+        link.onerror = (error: any) => resolve({ script: src, status: 'Loaded' });
+        document.getElementsByTagName('head')[0].appendChild(link);
+      }
+    });
+  }
+
+
 }
 
 //#endregion

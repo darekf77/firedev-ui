@@ -1,3 +1,4 @@
+// @ts-nocheck
 //#region @browser
 import { Component, HostBinding, Input, OnInit } from '@angular/core';
 import { Firedev } from 'firedev';
