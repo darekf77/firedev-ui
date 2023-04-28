@@ -40,9 +40,7 @@ export class FiredevFileComponent implements OnInit {
   readonly scripts: any;
   readonly styles: any;
 
-  get ext(): Firedev.Files.MimeType {
-    return path.extname(this.src) as any;
-  }
+  ext: Firedev.Files.MimeType;
 
 
   get contentType(): Firedev.Http.ContentType {
@@ -59,9 +57,15 @@ export class FiredevFileComponent implements OnInit {
 
 
   async ngOnInit() {
-    if (!this.contentType || !this.ext) {
-      throw new Error(`[firedev-ui][firedev-file] Can't handle src="${this.src}" in this component`)
+    if (this.viewAs) {
+      if (this.viewAs === 'css-tag') {
+        this.ext = '.css';
+      }
+    } else {
+      this.viewAs = this.defaultViewAs;
+      this.ext = path.basename(_.first(this.src.split('?'))) as any
     }
+
 
     if (!this.file) {
       this.file = new FiredevFile();
@@ -69,22 +73,19 @@ export class FiredevFileComponent implements OnInit {
       this.file.type = this.contentType;
       if (this.service.is(this.ext, 'image')) {
         this.file.blob = await FiredevFile.ctrl.getBlobFrom(`${window.location.origin}${this.src}`);
-        this.file.file = new File([this.file.blob], path.basename(this.src));
+        this.file.file = new File([this.file.blob], path.basename(_.first(this.src.split('?'))));
       }
     }
 
-    for (let index = 0; index < FiredevFileTypeArr.length; index++) {
-      const element = FiredevFileTypeArr[index];
-      if (this.service.is(this.ext, element)) {
-        // @ts-ignore
-        this.type = element;
-        break;
+    if (!this.type) {
+      for (let index = 0; index < FiredevFileTypeArr.length; index++) {
+        const element = FiredevFileTypeArr[index];
+        if (this.service.is(this.ext, element)) {
+          // @ts-ignore
+          this.type = element;
+          break;
+        }
       }
-    }
-
-
-    if (!this.viewAs) {
-      this.viewAs = this.defaultViewAs;
     }
 
     log.d('type', this.type)

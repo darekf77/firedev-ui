@@ -1,3 +1,4 @@
+export * from './firedev-admin-mode-configuration';
 export * from './firedev-file';
 export * from './firedev-github-fork-me-corner';
 export * from './firedev-github-fork-me-ribbon';

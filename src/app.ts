@@ -7,6 +7,16 @@ import { FiredevFile, FiredevFileController } from './lib/firedev-file';
 import { NgModule, NgZone, ViewEncapsulation } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from "@angular/router";
+import { HIGHLIGHT_OPTIONS } from 'ngx-highlightjs';
+import { ACE_CONFIG } from 'ngx-ace-wrapper';
+import { AceConfigInterface } from 'ngx-ace-wrapper';
+import 'brace';
+import 'brace/mode/text';
+import 'brace/theme/github';
+
+const DEFAULT_ACE_CONFIG: AceConfigInterface = {
+};
+
 //#endregion
 //#endregion
 
@@ -52,7 +62,23 @@ export class FiredevUiComponent implements OnInit {
   ],
   exports: [FiredevUiComponent],
   declarations: [FiredevUiComponent],
-  providers: [],
+  providers: [
+    {
+      provide: HIGHLIGHT_OPTIONS,
+      useValue: {
+        coreLibraryLoader: () => import('highlight.js/lib/core'),
+        languages: {
+          xml: () => import('highlight.js/lib/languages/xml'),
+          typescript: () => import('highlight.js/lib/languages/typescript'),
+          scss: () => import('highlight.js/lib/languages/scss'),
+        }
+      }
+    },
+    {
+      provide: ACE_CONFIG,
+      useValue: DEFAULT_ACE_CONFIG
+    }
+  ],
 })
 export class FiredevUiModule { }
 //#endregion

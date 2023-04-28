@@ -6,11 +6,59 @@ import { FiredevFile } from '../../../../lib';
 import { BrowserCachee } from './cache.browser';
 import * as localForge from 'localforage';
 import axios from 'axios';
+import hlsj from 'highlight.js/lib/core'
+import 'brace';
+import 'brace/mode/typescript';
+// import 'brace/theme/github';
+import 'brace/theme/twilight';
+
+
+import { AceConfigInterface } from 'ngx-ace-wrapper';
+const config: AceConfigInterface = {
+  mode: 'brace/mode/typescript',
+  theme: 'twilight',
+  readOnly: false,
+};
 
 const stor = localForge.createInstance({
   driver: localForge.INDEXEDDB,
   storeName: 'app-preview-file',
 })
+
+
+
+const lang = {
+  js: {
+    equa: /(\b=\b)/g,
+    quot: /((&#39;.*?&#39;)|(&#34;.*?&#34;)|(".*?(?<!\\)")|('.*?(?<!\\)')|`)/g,
+    comm: /((\/\*([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*\*+\/)|(\/\/.*))/g,
+    logi: /(%=|%|\-|\+|\*|&amp;{1,2}|\|{1,2}|&lt;=|&gt;=|&lt;|&gt;|!={1,2}|={2,3})/g,
+    numb: /(\d+(\.\d+)?(e\d+)?)/g,
+    func: /(?<=^|\s*)(async|await|console|alert|Math|Object|Array|String|class(?!\s*\=)|function)(?=\b)/g,
+    decl: /(?<=^|\s*)(var|let|const)/g,
+    pare: /(\(|\))/g,
+    squa: /(\[|\])/g,
+    curl: /(\{|\})/g,
+  },
+  html: {
+    tags: /(?<=&lt;(?:\/)?)(\w+)(?=\s|\&gt;)/g,
+    // Props order matters! Here I rely on "tags"
+    // being already applied in the previous iteration
+    angl: /(&lt;\/?|&gt;)/g,
+    attr: /((?<=<i class=html_tags>\w+<\/i>)[^<]+)/g,
+  }
+};
+
+
+const highLite = (el) => {
+  const dataLang = el.lang; // Detect "js", "html", "py", "bash", ...
+  const langObj = lang[dataLang]; // Extract object from lang regexes dictionary
+  let html = el.innerHTML;
+  Object.keys(langObj).forEach(function (key) {
+    html = html.replace(langObj[key], `<i class=${dataLang}_${key}>$1</i>`);
+  });
+  el.previousElementSibling.innerHTML = html; // Finally, show highlights!
+};
 
 @Component({
   selector: 'app-preview-file',
@@ -19,12 +67,13 @@ const stor = localForge.createInstance({
 })
 export class PreviewFileComponent implements OnInit {
   @ViewChild('imageToFaceDetect') imageToFaceDetect: ElementRef;
-
+  @ViewChild('editor') editor: ElementRef;
   handlers: Subscription[] = [];
   loadedImage: any;
   fromcache: any;
   loadedHammny: string;
   code = ' no code loaded';
+  config = config;
   images = [];
   generalHash = (new Date()).getTime();
 
@@ -32,6 +81,11 @@ export class PreviewFileComponent implements OnInit {
     private domSanitizer: DomSanitizer
   ) {
 
+  }
+
+  input(el: InputEvent) {
+    // console.log(el)
+    hlsj.highlightBlock(el.target as any);
   }
 
   async ngOnInit() {
@@ -83,6 +137,7 @@ export class PreviewFileComponent implements OnInit {
         url: '/src/assets/source-code/file.ts',
         responseType: 'text',
       });
+      this.code = tsfile.data
       console.log({
         tsfile
       })
@@ -124,6 +179,12 @@ export class PreviewFileComponent implements OnInit {
     //   });
     //   console.log("Hello World!");
     // });
+    // const el = (this.editor.nativeElement as HTMLElement) as any;
+    // el.contentEditable = true;
+    // el.spellcheck = false;
+    // el.autocorrect = "off";
+    // el.autocapitalize = "off";
+    // highLite(el)
   }
 
   async processFiles(files?: FileList) {
@@ -179,7 +240,7 @@ function blobToBase64(blob) {
     reader.readAsDataURL(blob);
   });
 }
-//#endregion
+
 
 
 function defer(method: ($: any) => any) {
@@ -189,3 +250,5 @@ function defer(method: ($: any) => any) {
     setTimeout(function () { defer(method) }, 50);
   }
 }
+
+//#endregion
