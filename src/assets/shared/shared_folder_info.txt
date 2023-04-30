@@ -1,1 +1,5 @@
-Assets from this folder can be used in npm package.
+THIS FILE IS GENERATED.
+          Assets from this folder can be used in npm package "firedev-ui@13.1.18"
+          created from this project.
+
+          

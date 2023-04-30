@@ -9,6 +9,22 @@ import { Subscription } from 'rxjs';
 })
 export class FiredevAdminModeConfigurationComponent implements OnInit {
   height: number = 100;
+  openedOnce = false;
+
+  _opened = false;
+  public get opened() {
+    return this._opened;
+  }
+
+
+  public set opened(v) {
+    if (v && !this.openedOnce) {
+      this.openedOnce = true;
+    }
+    this._opened = v;
+  }
+
+
   handlers: Subscription[] = [];
   @Output() firedevAdminModeConfigurationDataChanged = new EventEmitter();
   @Input() firedevAdminModeConfigurationData: any = {};
@@ -18,10 +34,16 @@ export class FiredevAdminModeConfigurationComponent implements OnInit {
   ngOnInit() {
   }
 
+  toogle() {
+    this.opened = !this.opened;
+  }
+
   ngAfterViewInit(): void {
     //Called after ngAfterContentInit when the component's view has been initialized. Applies to components only.
     //Add 'implements AfterViewInit' to the class.
-    this.height = window.innerHeight;
+    setTimeout(()=> {
+      this.height = window.innerHeight;
+    });
   }
 
   ngOnDestroy(): void {

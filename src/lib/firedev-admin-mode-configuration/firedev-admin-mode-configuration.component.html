@@ -1,20 +1,21 @@
 <button class="admin-show-button"
-        (click)="drawer.toggle()"> Admin </button>
+        (click)="toogle()"> Admin </button>
 <firedev-file src="https://fonts.googleapis.com/css2?family=Material+Icons"
               viewAs="css-tag">
   <mat-drawer-container class="example-container"
                         [style.height.px]="height"
                         style="background-color: transparent;"
-                        [hasBackdrop]="hasBackdrop.value">
+                        [hasBackdrop]="false">
     <mat-drawer #drawer
                 style="width: 500px;"
-                opened="true"
-                [mode]="mode.value">
+                [opened]="opened"
+                [mode]="'over'">
 
       <columns-container class="firedev-header-admin">
         <column width="200"
                 class="logo-header">
-          <img src="src/assets/logo-header-admin-mode.png">
+          <img *ngIf="openedOnce"
+               src="src/assets/shared/logo-header-admin-mode.png">
         </column>
 
         <column grow>
@@ -24,12 +25,14 @@
       </columns-container>
       <columns-container>
         <column grow>
-          <button mat-icon-button
+          <!-- <button mat-icon-button
                   color="primary"
                   aria-label="Example icon button with a home icon">
             <mat-icon>home</mat-icon>
-          </button>
-          <mat-checkbox>text</mat-checkbox>
+          </button> -->
+          <!-- <mat-checkbox>text</mat-checkbox> -->
+          <br>
+          <h1>Welcome inside admin mode</h1>
         </column>
 
       </columns-container>
@@ -37,27 +40,7 @@
 
     </mat-drawer>
     <mat-drawer-content>
-      <mat-form-field appearance="fill">
-        <mat-label>Sidenav mode</mat-label>
-        <mat-select #mode
-                    value="side">
-          <mat-option value="side">Side</mat-option>
-          <mat-option value="over">Over</mat-option>
-          <mat-option value="push">Push</mat-option>
-        </mat-select>
-      </mat-form-field>
-      <mat-form-field appearance="fill">
-        <mat-label>Has backdrop</mat-label>
-        <mat-select #hasBackdrop>
-          <mat-option>Unset</mat-option>
-          <mat-option [value]="true">True</mat-option>
-          <mat-option [value]="false">False</mat-option>
-        </mat-select>
-      </mat-form-field>
-      <button mat-raised-button
-              (click)="drawer.toggle()">Toggle drawer</button>
 
-      <hr>
       <ng-content>
       </ng-content>
 
