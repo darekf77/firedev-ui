@@ -109,3 +109,8 @@ body {
 mat-icon {
   @extend .color-primary-gray;
 }
+
+.mat-checkbox-background {
+  // background-color: greenyellow !important;
+  background-color: #f0eeeeb0 !important;
+}
