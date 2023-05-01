@@ -1,13 +1,9 @@
 //#region @browser
 import { Component, EventEmitter, HostBinding, Input, OnInit, Output } from '@angular/core';
-import { Subscription } from 'rxjs';
-import * as localForge from 'localforage';
-
-const stor = localForge.createInstance({
-  driver: localForge.INDEXEDDB,
-  storeName: 'app-firedev-admin-mode-configuration'
-})
-const IS_OPEN_ADMIN = 'is.open.admin';
+import { FormControl } from '@angular/forms';
+import { _ } from 'tnp-core';
+import { Cache } from '../firedev-cache.decorator';
+import { Record } from 'immutable';
 
 @Component({
   selector: 'app-firedev-admin-mode-configuration',
@@ -15,11 +11,26 @@ const IS_OPEN_ADMIN = 'is.open.admin';
   styleUrls: ['./firedev-admin-mode-configuration.component.scss']
 })
 export class FiredevAdminModeConfigurationComponent implements OnInit {
-
   //#region fields & getters
   height: number = 100;
   openedOnce = false;
-  __opened = false;
+
+  @Cache().withOptions({
+    defaultValue: new FormControl(0),
+    useIndexDb: true,
+    transformFrom: (v) => _.merge(new FormControl(0), v),
+    transformTo: (v) => { return { value: v?.value } },
+  })
+  selected: FormControl;
+
+  onSelect(index) {
+    this.selected.setValue(index);
+    this.selected = _.merge(new FormControl(0), this.selected)
+  }
+
+  @Cache().withDefaultValue(true)
+  __opened: boolean;
+
   @Output() firedevAdminModeConfigurationDataChanged = new EventEmitter();
   @Input() firedevAdminModeConfigurationData: any = {};
   public get opened() {
@@ -35,13 +46,15 @@ export class FiredevAdminModeConfigurationComponent implements OnInit {
   //#endregion
 
   //#region constructor
-  constructor() { }
+  constructor() {
+
+  }
   //#endregion
 
   //#region hooks
   async ngOnInit() {
-    this.opened = await stor.getItem(IS_OPEN_ADMIN);
-    console.log({ 'this.opened': this.opened })
+
+    this.openedOnce = this.opened;
   }
 
 
@@ -57,10 +70,12 @@ export class FiredevAdminModeConfigurationComponent implements OnInit {
 
   //#region methods
   async toogle() {
-    await stor.setItem(IS_OPEN_ADMIN, !this.opened);
+    // await stor.setItem(IS_OPEN_ADMIN, !this.opened);
     this.opened = !this.opened;
   }
   //#endregion
 
 }
+
+
 //#endregion

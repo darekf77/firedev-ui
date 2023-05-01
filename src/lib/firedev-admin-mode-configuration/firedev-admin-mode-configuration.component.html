@@ -21,6 +21,11 @@
         <column grow>
           <!-- <span>Super Admin Mode</span> -->
         </column>
+        <column width="50" >
+          <button mat-icon-button >
+            <mat-icon>close</mat-icon>
+          </button>
+        </column>
 
       </columns-container>
       <columns-container>
@@ -31,8 +36,13 @@
             <mat-icon>home</mat-icon>
           </button> -->
           <!-- <mat-checkbox>text</mat-checkbox> -->
-          <br>
-          <h1>Welcome inside admin mode</h1>
+          <!-- <br> -->
+          <mat-tab-group *ngIf="selected" [selectedIndex]="selected.value"
+                         (selectedIndexChange)="onSelect($event)">
+            <mat-tab label="DB/Cache"> Content 1 </mat-tab>
+            <mat-tab label="Files"> Content 2 </mat-tab>
+            <mat-tab label="Portal"> Content 3 </mat-tab>
+          </mat-tab-group>
         </column>
 
       </columns-container>
