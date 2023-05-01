@@ -6,48 +6,6 @@ import { FiredevFileDefaultAs, IFiredevFileType } from './firedev-file.models';
 
 @Injectable()
 export class FiredevFileService {
-  constructor() { }
-
-  is(extensionOrMimeType: string, isWhat: IFiredevFileType) {
-    if (isWhat === 'css') {
-      // @ts-ignore
-      isWhat = 'text/css'
-    }
-    if (isWhat === 'js') {
-      // @ts-ignore
-      isWhat = 'text/javascript'
-    }
-    if (isWhat === 'html') {
-      // @ts-ignore
-      isWhat = 'text/html';
-    }
-    const isExt = extensionOrMimeType.startsWith('.');
-    if (isExt) {
-      return Firedev.Files.MimeTypesObj[extensionOrMimeType].startsWith(`${isWhat}`);
-    }
-    return extensionOrMimeType.startsWith(`${isWhat}`);
-  }
-
-  viewAs(context: FiredevFileComponent): FiredevFileDefaultAs {
-    if (context.type === 'js') {
-      return 'script-tag';
-    }
-    if (context.type === 'css') {
-      return 'css-tag';
-    }
-    if (context.type === 'audio') {
-      return 'audio-tag';
-    }
-    if (context.type === 'image') {
-      return 'img-tag';
-    }
-    if (context.type === 'html') {
-      return 'html-rendered';
-    }
-    if (context.type === 'json') {
-      return 'json-editor';
-    }
-  }
 
   loadScript(src: string, context: FiredevFileComponent) {
     return new Promise((resolve, reject) => {

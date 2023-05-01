@@ -95,7 +95,7 @@ export class FiredevFileController extends Firedev.Base.Controller<FiredevFile> 
       const file = _.first(files) as FiredevUploadedFile;
       const uploadPath = crossPlatformPath([pathDest, file.md5 + '_' + file.name]);
       await repo.save(FiredevFile.from({
-        type: file.mimetype,
+        contentType: file.mimetype,
         id: file.md5,
         blob: file.data as any,
         src: uploadPath,

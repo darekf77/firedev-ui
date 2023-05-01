@@ -89,10 +89,11 @@ export class PreviewFileComponent implements OnInit {
   }
 
   async ngOnInit() {
+    /*
     const existedFiles = await stor.getItem('files');
-    console.log({
-      FILESFROMCACHE: existedFiles
-    })
+    // console.log({
+    //   FILESFROMCACHE: existedFiles
+    // })
     if (existedFiles) {
       this.processFiles(existedFiles as any)
     }
@@ -156,7 +157,7 @@ export class PreviewFileComponent implements OnInit {
         console.error(err);
       }
     })();
-
+*/
 
 
   }

@@ -8,8 +8,6 @@ import { FiredevDisplayMode } from '../firedev.models';
 import { FiredevFile } from './firedev-file';
 import { FiredevFileDefaultAs, FiredevFileTypeArr, IFiredevFileType } from './firedev-file.models';
 
-const log = Log.create('firedev file')
-
 @Component({
   selector: 'firedev-file',
   templateUrl: './firedev-file.component.html',
@@ -17,86 +15,51 @@ const log = Log.create('firedev file')
   providers: [FiredevFileService]
 })
 export class FiredevFileComponent implements OnInit {
-  @Input() @HostBinding('style.maxHeight.px') @Input() height: number;
-  @Input() @HostBinding('style.maxHeight.px') @Input() width: number;
-  @Input() mode: FiredevDisplayMode = 'view';
-  @Input() viewAs: FiredevFileDefaultAs;
 
-  get defaultViewAs() {
-    if (this.viewAs) {
-      return this.viewAs;
-    }
-    return this.service.viewAs(this);
-  }
-
-  readonly type: IFiredevFileType;
-  public file: FiredevFile;
-  @Input() src: string;
-  generalHash = (new Date()).getTime();
-
+  //#region static
   static readonly scripts = {}
   static readonly styles = {}
-
   readonly scripts: any;
   readonly styles: any;
+  //#endregion
 
-  ext: Firedev.Files.MimeType;
+  //#region fields & getters
+  public readonly file: FiredevFile;
+  @Input() @HostBinding('style.maxHeight.px') @Input() height: number;
+  @Input() @HostBinding('style.maxHeight.px') @Input() width: number;
+  @Input() readonly viewAs: FiredevFileDefaultAs;
+  @Input() readonly src: string;
 
+  //#endregion
 
-  get contentType(): Firedev.Http.ContentType {
-    return Firedev.Files.MimeTypesObj[this.ext] as Firedev.Http.ContentType;
-  }
-
+  //#region constructor
   constructor(
     protected service: FiredevFileService
   ) {
     this.scripts = FiredevFileComponent.scripts;
     this.styles = FiredevFileComponent.styles;
   }
-
+  //#endregion
 
 
   async ngOnInit() {
-    if (this.viewAs) {
-      if (this.viewAs === 'css-tag') {
-        this.ext = '.css';
-      }
-    } else {
-      this.viewAs = this.defaultViewAs;
-      this.ext = path.basename(_.first(this.src.split('?'))) as any
-    }
-
 
     if (!this.file) {
+      // @ts-ignore
       this.file = new FiredevFile();
       this.file.src = this.src;
-      this.file.type = this.contentType;
-      if (this.service.is(this.ext, 'image')) {
+      this.file.viewAs = this.viewAs ? this.viewAs : this.file.getDefaultView();
+      this.file.contentType = this.file.getContentType();
+      if (this.file.type === 'image') {
         this.file.blob = await FiredevFile.ctrl.getBlobFrom(`${window.location.origin}${this.src}`);
         this.file.file = new File([this.file.blob], path.basename(_.first(this.src.split('?'))));
       }
     }
 
-    if (!this.type) {
-      for (let index = 0; index < FiredevFileTypeArr.length; index++) {
-        const element = FiredevFileTypeArr[index];
-        if (this.service.is(this.ext, element)) {
-          // @ts-ignore
-          this.type = element;
-          break;
-        }
-      }
-    }
-
-    log.d('type', this.type)
-    log.d('src', this.src)
-    log.d('as', this.viewAs)
-
-    if (this.viewAs === 'script-tag') {
+    if (this.file.viewAs === 'script-tag') {
       this.service.loadScript(this.src, this)
     }
-
-    if (this.viewAs === 'css-tag') {
+    if (this.file.viewAs === 'css-tag') {
       this.service.loadStyle(this.src, this)
     }
   }
