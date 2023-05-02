@@ -21,9 +21,9 @@
         <column grow>
           <!-- <span>Super Admin Mode</span> -->
         </column>
-        <column width="50" >
-          <button mat-icon-button >
-            <mat-icon>close</mat-icon>
+        <column width="50">
+          <button mat-icon-button>
+            <mat-icon (click)="toogle()">close</mat-icon>
           </button>
         </column>
 
@@ -37,10 +37,12 @@
           </button> -->
           <!-- <mat-checkbox>text</mat-checkbox> -->
           <!-- <br> -->
-          <mat-tab-group *ngIf="selected" [selectedIndex]="selected.value"
-                         (selectedIndexChange)="onSelect($event)">
+          <mat-tab-group [selectedIndex]="selectedIndex"
+                         (selectedIndexChange)="selectedIndex = $event">
             <mat-tab label="DB/Cache"> Content 1 </mat-tab>
-            <mat-tab label="Files"> Content 2 </mat-tab>
+            <mat-tab label="Files">
+              <mat-checkbox [ngModel]="editMode$ | async" (change)="onEditMode($event)">Edit mode</mat-checkbox>
+            </mat-tab>
             <mat-tab label="Portal"> Content 3 </mat-tab>
           </mat-tab-group>
         </column>

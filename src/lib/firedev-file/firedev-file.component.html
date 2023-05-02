@@ -1,7 +1,13 @@
-<img [src]="file.src"
-     height="100"
-     *ngIf="file.viewAs === 'img-tag'">
+<div *ngIf="viewAs === 'img-tag'"
+     class="normal-image"
+     [ngClass]="{ 'firedev-edit-mode-image' : (editMode$ | async) }">
+  <div></div>
+  <img [src]="file.src"
+       [ngClass]="{ 'dotted' : (editMode$ | async) }"
+       height="200">
+</div>
 
+<!-- editmode: {{ (editMode$ | async) }} -->
 <!-- <script [src]="file.src"
         *ngIf="as === 'script-tag'"></script>
 
@@ -11,5 +17,3 @@
 
 
 <ng-content></ng-content>
-
-

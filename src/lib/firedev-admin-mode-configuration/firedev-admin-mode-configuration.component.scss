@@ -3,16 +3,16 @@
 }
 
 .admin-show-button {
-  position  : fixed;
-  bottom    : 100px;
-  left      : -15px;
-  z-index   : 9999999999;
-  transform : rotate(90deg);
-  border    : 0px;
-  color     : white;
+  position: fixed;
+  bottom: 100px;
+  left: -15px;
+  z-index: 9999999999;
+  transform: rotate(90deg);
+  border: 0px;
+  color: white;
   background: gray;
-  opacity   : 0.1;
-  cursor    : pointer;
+  opacity: 0.1;
+  cursor: pointer;
 
   &:hover {
     opacity: 1.0;
@@ -20,8 +20,8 @@
 }
 
 .firedev-ui-super-admin-mode {
-  font-family : "JosefinSans-Bold";
-  text-align  : right;
+  font-family: "JosefinSans-Bold";
+  text-align: right;
   margin-right: 10px;
 }
 
@@ -31,17 +31,18 @@ mat-drawer {
 }
 
 .firedev-header-admin {
-  background           : white;
+  background: white;
   // -webkit-box-shadow: 0 6px 14px -4px black;
   // -moz-box-shadow   : 0 6px 14px -4px black;
-  box-shadow           : 0 -9px 6px 6px black;
+  box-shadow: 0 -9px 6px 6px black;
 
   .logo-header {
     img {
-      height  : 18px;
-      padding : 8px;
+      height: 18px;
+      padding: 8px;
       position: relative;
-      top     : 1px;
+      top: 1px;
     }
   }
 }
+

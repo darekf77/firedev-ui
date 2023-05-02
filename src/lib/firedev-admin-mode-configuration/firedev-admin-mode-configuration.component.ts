@@ -4,6 +4,8 @@ import { FormControl } from '@angular/forms';
 import { _ } from 'tnp-core';
 import { Cache } from '../firedev-cache.decorator';
 import { Record } from 'immutable';
+import { MatCheckboxChange } from '@angular/material/checkbox';
+import { FiredevAdmin } from './firedev-admin';
 
 @Component({
   selector: 'app-firedev-admin-mode-configuration',
@@ -13,22 +15,14 @@ import { Record } from 'immutable';
 export class FiredevAdminModeConfigurationComponent implements OnInit {
   //#region fields & getters
   height: number = 100;
+  editMode$ = (window['firedev'] as FiredevAdmin).filesEditMode$;
+
   openedOnce = false;
 
-  @Cache().withOptions({
-    defaultValue: new FormControl(0),
-    useIndexDb: true,
-    transformFrom: (v) => _.merge(new FormControl(0), v),
-    transformTo: (v) => { return { value: v?.value } },
-  })
-  selected: FormControl;
+  @Cache(FiredevAdminModeConfigurationComponent).withDefaultValue(0)
+  selectedIndex: number;
 
-  onSelect(index) {
-    this.selected.setValue(index);
-    this.selected = _.merge(new FormControl(0), this.selected)
-  }
-
-  @Cache().withDefaultValue(true)
+  @Cache(FiredevAdminModeConfigurationComponent).withDefaultValue(false)
   __opened: boolean;
 
   @Output() firedevAdminModeConfigurationDataChanged = new EventEmitter();
@@ -73,6 +67,11 @@ export class FiredevAdminModeConfigurationComponent implements OnInit {
     // await stor.setItem(IS_OPEN_ADMIN, !this.opened);
     this.opened = !this.opened;
   }
+
+  onEditMode(e: MatCheckboxChange) {
+    (window['firedev'] as FiredevAdmin).setEditMode(e.checked);
+  }
+
   //#endregion
 
 }

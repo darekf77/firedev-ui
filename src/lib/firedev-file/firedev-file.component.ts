@@ -7,6 +7,9 @@ import { crossPlatformPath, Helpers, path, _ } from 'tnp-core';
 import { FiredevDisplayMode } from '../firedev.models';
 import { FiredevFile } from './firedev-file';
 import { FiredevFileDefaultAs, FiredevFileTypeArr, IFiredevFileType } from './firedev-file.models';
+import type { FiredevAdmin } from '../firedev-admin-mode-configuration';
+
+const log = Log.create('firedev file component')
 
 @Component({
   selector: 'firedev-file',
@@ -27,8 +30,12 @@ export class FiredevFileComponent implements OnInit {
   public readonly file: FiredevFile;
   @Input() @HostBinding('style.maxHeight.px') @Input() height: number;
   @Input() @HostBinding('style.maxHeight.px') @Input() width: number;
-  @Input() readonly viewAs: FiredevFileDefaultAs;
+  @Input() viewAs: FiredevFileDefaultAs;
   @Input() readonly src: string;
+
+  @HostBinding('style.display') styleDisplay: string = 'block;'
+
+  editMode$ = (window['firedev'] as FiredevAdmin).filesEditMode$;
 
   //#endregion
 
@@ -56,12 +63,22 @@ export class FiredevFileComponent implements OnInit {
       }
     }
 
+    if (!this.viewAs) {
+      this.viewAs = this.file.viewAs;
+    }
+
+    if (this.viewAs === 'img-tag') {
+      this.styleDisplay = 'inline-block'
+    }
+
     if (this.file.viewAs === 'script-tag') {
       this.service.loadScript(this.src, this)
     }
     if (this.file.viewAs === 'css-tag') {
       this.service.loadStyle(this.src, this)
     }
+
+    log.i(`display as ${this.viewAs}`)
   }
 
 }

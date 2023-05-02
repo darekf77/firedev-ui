@@ -9,25 +9,25 @@ body {
 
 @font-face {
   font-family: 'JosefinSans-Light';
-  src        : url('src/assets/fonts/josefin-sans/JosefinSans-Light.ttf') format('truetype');
+  src: url('src/assets/fonts/josefin-sans/JosefinSans-Light.ttf') format('truetype');
   /* Safari, Android, iOS */
 }
 
 @font-face {
   font-family: 'JosefinSans-Bold';
-  src        : url('src/assets/fonts/josefin-sans/JosefinSans-Bold.ttf') format('truetype');
+  src: url('src/assets/fonts/josefin-sans/JosefinSans-Bold.ttf') format('truetype');
   /* Safari, Android, iOS */
 }
 
 @font-face {
   font-family: 'JosefinSans-Bold';
-  src        : url('src/assets/fonts/josefin-sans/JosefinSans-SemiBold.ttf') format('truetype');
+  src: url('src/assets/fonts/josefin-sans/JosefinSans-SemiBold.ttf') format('truetype');
   /* Safari, Android, iOS */
 }
 
 :host {
-  width      : 100%;
-  height     : 100%;
+  width: 100%;
+  height: 100%;
   font-family: "JosefinSans-Light";
   // padding: 5px;
 }
@@ -110,7 +110,9 @@ mat-icon {
   @extend .color-primary-gray;
 }
 
-.mat-checkbox-background {
-  // background-color: greenyellow !important;
-  background-color: #f0eeeeb0 !important;
+
+.mat-tab-body-content {
+  // QUCIK_FIX FOR TABS
+  padding: 10px;
 }
+
