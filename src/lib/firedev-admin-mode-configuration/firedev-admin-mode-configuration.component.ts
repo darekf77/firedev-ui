@@ -1,26 +1,27 @@
 //#region @browser
-import { Component, EventEmitter, HostBinding, Input, OnInit, Output } from '@angular/core';
-import { _ } from 'tnp-core';
-import { MatCheckboxChange } from '@angular/material/checkbox';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Helpers, _ } from 'tnp-core';
 import { FiredevAdmin } from './firedev-admin';
 import { Stor } from 'firedev-storage';
 
 @Component({
+  //#region component options
   selector: 'app-firedev-admin-mode-configuration',
   templateUrl: './firedev-admin-mode-configuration.component.html',
   styleUrls: ['./firedev-admin-mode-configuration.component.scss']
+  //#endregion
 })
 export class FiredevAdminModeConfigurationComponent implements OnInit {
   //#region fields & getters
+  admin = (window['firedev'] as FiredevAdmin);
+  isWebSQLMode = Helpers.isWebSQL;
   height: number = 100;
-  editMode$ = (window['firedev'] as FiredevAdmin).filesEditMode$;
-
   openedOnce = false;
 
-  @Stor.in.localstorage.for(FiredevAdminModeConfigurationComponent).withDefaultValue(0)
+  @Stor.property.in.localstorage.for(FiredevAdminModeConfigurationComponent).withDefaultValue(0)
   selectedIndex: number;
 
-  @Stor.in.localstorage.for(FiredevAdminModeConfigurationComponent).withDefaultValue(false)
+  @Stor.property.in.localstorage.for(FiredevAdminModeConfigurationComponent).withDefaultValue(false)
   __opened: boolean;
 
   @Output() firedevAdminModeConfigurationDataChanged = new EventEmitter();
@@ -28,7 +29,6 @@ export class FiredevAdminModeConfigurationComponent implements OnInit {
   public get opened() {
     return this.__opened;
   }
-
   public set opened(v) {
     if (v && !this.openedOnce) {
       this.openedOnce = true;
@@ -39,7 +39,6 @@ export class FiredevAdminModeConfigurationComponent implements OnInit {
 
   //#region constructor
   constructor() {
-
   }
   //#endregion
 
@@ -66,9 +65,7 @@ export class FiredevAdminModeConfigurationComponent implements OnInit {
     this.opened = !this.opened;
   }
 
-  onEditMode(e: MatCheckboxChange) {
-    (window['firedev'] as FiredevAdmin).setEditMode(e.checked);
-  }
+
 
   //#endregion
 

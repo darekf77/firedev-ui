@@ -27,7 +27,7 @@
 
 mat-drawer {
   margin: 0px;
-  background-color: gainsboro !important;
+  background-color: rgba(220, 220, 220) !important;
 }
 
 
@@ -47,13 +47,20 @@ mat-drawer {
   }
 }
 
-:host ::ng-deep mat-tab-header {
-  background-color: white !important;
-}
 
+//#region margins around inputs
 
-:host ::ng-deep .mat-tab-body-content {
+@mixin nice-margin-around-inputs {
   >* {
     margin: 10px;
   }
 }
+
+:host ::ng-deep .mat-card-content {
+  @include nice-margin-around-inputs;
+}
+
+:host ::ng-deep .mat-tab-body-content {
+  @include nice-margin-around-inputs;
+}
+// #endregion

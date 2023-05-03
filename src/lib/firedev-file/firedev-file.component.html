@@ -3,7 +3,7 @@
      [ngClass]="{ 'firedev-edit-mode-image' : (editMode$ | async) }">
   <div></div>
   <img [src]="file.src"
-       [ngClass]="{ 'dotted' : (editMode$ | async) }"
+       [ngClass]="{ 'dotted' : (admin.filesEditMode) }"
        height="200">
 </div>
 

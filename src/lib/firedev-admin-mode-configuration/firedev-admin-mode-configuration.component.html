@@ -1,15 +1,18 @@
 <button class="admin-show-button"
+        showDesktop
         (click)="toogle()"> Admin </button>
 <firedev-file src="https://fonts.googleapis.com/css2?family=Material+Icons"
               viewAs="css-tag">
   <mat-drawer-container class="example-container"
                         [style.height.px]="height"
                         style="background-color: transparent;"
-                        [hasBackdrop]="false">
+                        (backdropClick)="opened = false"
+                        [hasBackdrop]="true">
     <mat-drawer #drawer
                 style="width: 500px;"
                 [opened]="opened"
-                [mode]="'push'">
+                showDesktop
+                [mode]="'over'">
 
       <columns-container class="firedev-header-admin">
         <column width="200"
@@ -28,31 +31,35 @@
         </column>
 
       </columns-container>
-      <columns-container  >
+      <columns-container>
         <column grow>
-          <!-- <button mat-icon-button
-                  color="primary"
-                  aria-label="Example icon button with a home icon">
-            <mat-icon>home</mat-icon>
-          </button> -->
-          <!-- <mat-checkbox>text</mat-checkbox> -->
-          <!-- <br> -->
           <mat-tab-group [selectedIndex]="selectedIndex"
                          (selectedIndexChange)="selectedIndex = $event">
             <mat-tab label="DB/Cache">
-              <mat-checkbox> [WEBSQL MODE] Don't remove data when reloading </mat-checkbox>
-              <button mat-raised-button> [WEBSQL MODE] Reinit db with default values </button><br>
-              <hr>
-              <button mat-raised-button>Start database export </button> <br>
-              <button mat-raised-button>Import whole database </button><br>
+              <mat-card>
+                <mat-card-header>
+                  <mat-card-subtitle>WEBSQL MODE</mat-card-subtitle>
+                </mat-card-header>
+                <mat-card-content>
+                  <mat-checkbox [disabled]="!isWebSQLMode"
+                                [ngModel]="admin.keepWebsqlDbDataAfterReload"
+                                (change)="admin.setKeepWebsqlDbDataAfterReload($event.checked)">
+                    Don't remove data when reloading
+                  </mat-checkbox>
+                  <button mat-raised-button
+                          [disabled]="!isWebSQLMode"> [TODO] Reinit db with default values </button>
+                </mat-card-content>
+              </mat-card>
+
+              <button mat-raised-button>[TODO] Start database export </button> <br>
+              <button mat-raised-button>[TODO] Import whole database </button><br>
             </mat-tab>
             <mat-tab label="Files">
-              <mat-checkbox [ngModel]="editMode$ | async"
-                            (change)="onEditMode($event)">Edit mode</mat-checkbox>
+              <mat-checkbox [ngModel]="admin.filesEditMode"
+                            (change)="admin.setEditMode($event.checked)">[TODO] Edit mode</mat-checkbox>
             </mat-tab>
             <mat-tab label="Portal">
-              <mat-checkbox>Maintenance Mode for whole portal (TODO) </mat-checkbox>
-
+              <mat-checkbox>[TODO] Maintenance Mode for whole portal</mat-checkbox>
             </mat-tab>
           </mat-tab-group>
         </column>
@@ -62,10 +69,8 @@
 
     </mat-drawer>
     <mat-drawer-content>
-
       <ng-content>
       </ng-content>
-
     </mat-drawer-content>
   </mat-drawer-container>
 </firedev-file>

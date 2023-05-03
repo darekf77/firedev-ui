@@ -2,14 +2,16 @@
 import { Component, HostBinding, Input, OnInit } from '@angular/core';
 import { Firedev } from 'firedev';
 import { FiredevFileService } from './firedev-file.service';
-import { Log } from 'ng2-logger';
+import { Level, Log } from 'ng2-logger';
 import { crossPlatformPath, Helpers, path, _ } from 'tnp-core';
 import { FiredevDisplayMode } from '../firedev.models';
 import { FiredevFile } from './firedev-file';
 import { FiredevFileDefaultAs, FiredevFileTypeArr, IFiredevFileType } from './firedev-file.models';
 import type { FiredevAdmin } from '../firedev-admin-mode-configuration';
 
-const log = Log.create('firedev file component')
+const log = Log.create('firedev file component',
+  Level.__NOTHING
+)
 
 @Component({
   selector: 'firedev-file',
@@ -28,6 +30,7 @@ export class FiredevFileComponent implements OnInit {
 
   //#region fields & getters
   public readonly file: FiredevFile;
+  admin = (window['firedev'] as FiredevAdmin);
   @Input() @HostBinding('style.maxHeight.px') @Input() height: number;
   @Input() @HostBinding('style.maxHeight.px') @Input() width: number;
   @Input() viewAs: FiredevFileDefaultAs;
@@ -35,7 +38,6 @@ export class FiredevFileComponent implements OnInit {
 
   @HostBinding('style.display') styleDisplay: string = 'block;'
 
-  editMode$ = (window['firedev'] as FiredevAdmin).filesEditMode$;
 
   //#endregion
 

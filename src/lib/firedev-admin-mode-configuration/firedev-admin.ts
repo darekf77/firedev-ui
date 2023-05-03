@@ -4,27 +4,44 @@ import { Stor } from 'firedev-storage';
 
 export class FiredevAdmin {
 
-  @Stor.in.localstorage.for(FiredevAdmin).withDefaultValue(false)
-  editMode: boolean;
+  //#region files edit mdoe
 
-  // @ts-ignore
-  private filesEditMode = new BehaviorSubject<boolean>();
-  filesEditMode$ = this.filesEditMode.asObservable();
+  @Stor.property.in.localstorage.for(FiredevAdmin).withDefaultValue(false)
+  public filesEditMode: boolean;
+  //#endregion
+
+  //#region keep websql database data after reloading
+  /**
+   * Property used in morphi
+   */
+  @Stor.property.in.localstorage.for(FiredevAdmin).withDefaultValue(false)
+  public keepWebsqlDbDataAfterReload: boolean;
+
+  /**
+   * Property used in morphi
+   */
+  @Stor.property.in.localstorage.for(FiredevAdmin).withDefaultValue(false)
+  public firstTimeKeepWebsqlDbDataTrue: boolean;
+  //#endregion
 
   db = new FiredevAdminDB()
 
   constructor(
     protected ENV?: any
   ) {
-    setTimeout(()=> {
-      this.setEditMode(this.editMode);
-    })
+
   }
 
 
   setEditMode(value: boolean) {
-    this.editMode = value;
-    this.filesEditMode.next(value);
+    this.filesEditMode = value;
+  }
+
+  setKeepWebsqlDbDataAfterReload(value: boolean) {
+    if (value && !this.keepWebsqlDbDataAfterReload) {
+      this.firstTimeKeepWebsqlDbDataTrue = true;
+    }
+    this.keepWebsqlDbDataAfterReload = value;
   }
 
 
