@@ -27,8 +27,9 @@
 
 mat-drawer {
   margin: 0px;
-  background-color: rgb(231, 229, 229);
+  background-color: gainsboro !important;
 }
+
 
 .firedev-header-admin {
   background: white;
@@ -46,3 +47,13 @@ mat-drawer {
   }
 }
 
+:host ::ng-deep mat-tab-header {
+  background-color: white !important;
+}
+
+
+:host ::ng-deep .mat-tab-body-content {
+  >* {
+    margin: 10px;
+  }
+}

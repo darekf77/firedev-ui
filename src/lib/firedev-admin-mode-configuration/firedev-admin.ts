@@ -1,10 +1,10 @@
 import { BehaviorSubject, Subject } from 'rxjs';
 import { FiredevAdminDB } from './firedev-admin-db';
-import { Cache } from '../firedev-cache.decorator';
+import { Stor } from 'firedev-storage';
 
 export class FiredevAdmin {
 
-  @Cache(FiredevAdmin).withDefaultValue(false)
+  @Stor.in.localstorage.for(FiredevAdmin).withDefaultValue(false)
   editMode: boolean;
 
   // @ts-ignore

@@ -1,11 +1,9 @@
 //#region @browser
 import { Component, EventEmitter, HostBinding, Input, OnInit, Output } from '@angular/core';
-import { FormControl } from '@angular/forms';
 import { _ } from 'tnp-core';
-import { Cache } from '../firedev-cache.decorator';
-import { Record } from 'immutable';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { FiredevAdmin } from './firedev-admin';
+import { Stor } from 'firedev-storage';
 
 @Component({
   selector: 'app-firedev-admin-mode-configuration',
@@ -19,10 +17,10 @@ export class FiredevAdminModeConfigurationComponent implements OnInit {
 
   openedOnce = false;
 
-  @Cache(FiredevAdminModeConfigurationComponent).withDefaultValue(0)
+  @Stor.in.localstorage.for(FiredevAdminModeConfigurationComponent).withDefaultValue(0)
   selectedIndex: number;
 
-  @Cache(FiredevAdminModeConfigurationComponent).withDefaultValue(false)
+  @Stor.in.localstorage.for(FiredevAdminModeConfigurationComponent).withDefaultValue(false)
   __opened: boolean;
 
   @Output() firedevAdminModeConfigurationDataChanged = new EventEmitter();
