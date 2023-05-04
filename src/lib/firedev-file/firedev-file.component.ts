@@ -81,7 +81,19 @@ export class FiredevFileComponent implements OnInit {
     }
 
     log.i(`display as ${this.viewAs}`)
+    if (this.file) {
+      this.admin.registeredFiles[this.file.src] = this.file;
+    }
   }
+
+  ngOnDestroy(): void {
+    //Called once, before the instance is destroyed.
+    //Add 'implements OnDestroy' to the class.
+    if (this.file && this.file.src) {
+      delete this.admin.registeredFiles[this.file.src];
+    }
+  }
+
   //#endregion
 
   //#region methods

@@ -12,12 +12,17 @@ import { FiredevAdmin } from '../../firedev-admin';
 export class FiredevAdminEditModeComponent implements OnInit {
   admin = (window['firedev'] as FiredevAdmin);
   handlers: Subscription[] = [];
+  files = [] as FiredevFile[]
   @Output() firedevAdminEditModeDataChanged = new EventEmitter();
   @Input() firedevAdminEditModeData: any = {};
 
   constructor() { }
 
   ngOnInit() {
+    this.files = this.admin.currentFiles;
+    this.handlers.push(this.admin.onEditMode$.subscribe(() => {
+      this.files = this.admin.currentFiles;
+    }))
   }
 
   ngOnDestroy(): void {

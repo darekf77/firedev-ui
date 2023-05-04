@@ -2,10 +2,23 @@
 import { FiredevAdminDB } from './firedev-admin-db';
 import { Stor } from 'firedev-storage';
 import type { FiredevFile } from '../firedev-file';
+import { _ } from 'tnp-core';
+import { Subject } from 'rxjs';
 //#endregion
 
 export class FiredevAdmin {
   //#region fields & getters
+  private onEditMode = new Subject()
+  onEditMode$ = this.onEditMode.asObservable();
+
+  public registeredFiles = {} as { [filePathOrName: string]: FiredevFile; }
+
+  get currentFiles() {
+    if(!this.filesEditMode) {
+      return [];
+    }
+    return _.values(this.registeredFiles) as FiredevFile[];
+  }
 
   public selectedFile: FiredevFile;
 
@@ -62,6 +75,7 @@ export class FiredevAdmin {
   //#region methods
   setEditMode(value: boolean) {
     this.filesEditMode = value;
+    this.onEditMode.next(value);
   }
 
   setKeepWebsqlDbDataAfterReload(value: boolean) {

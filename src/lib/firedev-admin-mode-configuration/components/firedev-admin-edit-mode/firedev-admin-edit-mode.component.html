@@ -4,4 +4,11 @@
   </div>
   <firedev-file *ngIf="admin.selectedFile"
                 [file]="admin.selectedFile"></firedev-file>
+
+  <hr>
+  <mat-selection-list >
+    <mat-list-option *ngFor="let file of files">
+      {{file.src}}
+    </mat-list-option>
+  </mat-selection-list>
 </mat-card>

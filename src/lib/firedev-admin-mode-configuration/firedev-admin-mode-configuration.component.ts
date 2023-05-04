@@ -23,10 +23,7 @@ export class FiredevAdminModeConfigurationComponent implements OnInit {
   @Stor.property.in.localstorage.for(FiredevAdminModeConfigurationComponent).withDefaultValue(0)
   selectedIndex: number;
 
-  @ViewChild('tabGroup')
-  tabGroup;
-
-
+  @ViewChild('tabGroup') tabGroup;
 
   @Stor.property.in.localstorage.for(FiredevAdminModeConfigurationComponent).withDefaultValue(false)
   wasOpenDraggablePopup: boolean;
@@ -57,6 +54,7 @@ export class FiredevAdminModeConfigurationComponent implements OnInit {
   async ngOnInit() {
 
     this.openedOnce = this.opened;
+
   }
 
 
