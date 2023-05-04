@@ -1,0 +1,7 @@
+<mat-card>
+  <div *ngIf="!admin.selectedFile">
+    Please select file from portal to edit
+  </div>
+  <firedev-file *ngIf="admin.selectedFile"
+                [file]="admin.selectedFile"></firedev-file>
+</mat-card>

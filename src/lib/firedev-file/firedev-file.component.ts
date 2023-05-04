@@ -29,7 +29,7 @@ export class FiredevFileComponent implements OnInit {
   //#endregion
 
   //#region fields & getters
-  public readonly file: FiredevFile;
+  @Input() file: FiredevFile;
   admin = (window['firedev'] as FiredevAdmin);
   @Input() @HostBinding('style.maxHeight.px') @Input() height: number;
   @Input() @HostBinding('style.maxHeight.px') @Input() width: number;
@@ -50,7 +50,7 @@ export class FiredevFileComponent implements OnInit {
   }
   //#endregion
 
-
+  //#region hooks
   async ngOnInit() {
 
     if (!this.file) {
@@ -82,6 +82,13 @@ export class FiredevFileComponent implements OnInit {
 
     log.i(`display as ${this.viewAs}`)
   }
+  //#endregion
+
+  //#region methods
+  selectForEdit() {
+    this.admin.selectedFile = this.file;
+  }
+  //#endregion
 
 }
 //#endregion

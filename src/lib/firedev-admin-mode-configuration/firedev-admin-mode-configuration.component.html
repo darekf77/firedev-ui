@@ -1,76 +1,145 @@
 <button class="admin-show-button"
         showDesktop
+        *ngIf="!admin.draggablePopupMode"
         (click)="toogle()"> Admin </button>
+
+<ng-template #content>
+  <ng-content>
+  </ng-content>
+</ng-template>
+
+
+<ng-template #adminTabs>
+  <div class="firedev-header-admin-wrapper">
+    <columns-container class="firedev-header-admin"
+                       [ngClass]="{ 'draggable-column' : (admin.draggablePopupMode) }">
+      <column width="200"
+              class="logo-header">
+        <img *ngIf="openedOnce"
+             src="src/assets/shared/logo-header-admin-mode.png">
+      </column>
+
+      <column grow>
+        <!-- <span>Super Admin Mode</span> -->
+      </column>
+      <column width="150"
+              class="draggable-popup-checkbox">
+        <mat-checkbox [ngModel]="admin.draggablePopupMode"
+                      (change)="admin.draggablePopupMode = $event.checked">Popup mode</mat-checkbox>
+      </column>
+      <column width="50">
+        <button mat-icon-button
+                class="admin-close-button">
+          <mat-icon *ngIf="admin.draggablePopupMode"
+                    (click)="admin.draggablePopupMode =false;opened = false;wasOpenDraggablePopup = true;">close</mat-icon>
+          <mat-icon *ngIf="!admin.draggablePopupMode"
+                    (click)="toogle();">close</mat-icon>
+        </button>
+      </column>
+
+    </columns-container>
+  </div>
+
+  <columns-container [ngClass]="{ 'draggable-column' : (admin.draggablePopupMode) }">
+    <column grow>
+      <mat-tab-group (wheel)="scrollTabs($event)"
+                     #tabGroup
+                     [selectedIndex]="selectedIndex"
+                     (selectedIndexChange)="selectedIndex = $event">
+        <mat-tab label="DB/Cache">
+          <mat-card>
+            <mat-card-header>
+              <mat-card-subtitle>WEBSQL MODE</mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content>
+              <mat-checkbox [disabled]="!isWebSQLMode"
+                            [ngModel]="admin.keepWebsqlDbDataAfterReload"
+                            (change)="admin.setKeepWebsqlDbDataAfterReload($event.checked)">
+                Don't remove data when reloading
+              </mat-checkbox>
+            </mat-card-content>
+          </mat-card>
+          <button mat-raised-button
+                  [disabled]="!isWebSQLMode"> [TODO] Reinit db with default values and reload </button>
+          <button mat-raised-button>[TODO] Start database export </button> <br>
+          <button mat-raised-button>[TODO] Import whole database </button><br>
+        </mat-tab>
+        <mat-tab label="Files">
+          <mat-checkbox [ngModel]="admin.filesEditMode"
+                        (change)="admin.setEditMode($event.checked)">Edit mode</mat-checkbox> <br>
+          <firedev-admin-edit-mode *ngIf="admin.filesEditMode">
+          </firedev-admin-edit-mode>
+          <br>
+          <hr>
+          <button mat-raised-button>[TODO] Start files export (as zip) </button> <br>
+          <button mat-raised-button>[TODO] Import whole database (from zip) </button><br>
+        </mat-tab>
+        <mat-tab label="Portal">
+          <mat-checkbox>[TODO] Maintenance Mode for whole portal</mat-checkbox>
+
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              [TODO] Active User: 80432
+            </mat-expansion-panel-header>
+            <button mat-raised-button>[TODO] Send notification to users </button><br>
+            <button mat-raised-button>[TODO] Send email to users </button><br>
+          </mat-expansion-panel>
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              [TODO] Enable features
+            </mat-expansion-panel-header>
+            <mat-checkbox>[TODO] AB testing</mat-checkbox>
+            <mat-checkbox>
+              [TODO] Newsletter email question popup
+            </mat-checkbox>
+            <mat-checkbox>
+              [TODO] Promotion popup
+            </mat-checkbox>
+          </mat-expansion-panel>
+        </mat-tab>
+        <mat-tab label="User">
+          Welcome in user managements
+        </mat-tab>
+        <mat-tab label="Translations">
+          Welcome in user managements
+        </mat-tab>
+
+      </mat-tab-group>
+    </column>
+
+  </columns-container>
+</ng-template>
+
+<div class="example-box"
+     *ngIf="admin.draggablePopupMode"
+     cdkDrag>
+  <ng-container [ngTemplateOutlet]="adminTabs"></ng-container>
+</div>
+
+<ng-container *ngIf="admin.draggablePopupMode"
+              [ngTemplateOutlet]="content"></ng-container>
+
 <firedev-file src="https://fonts.googleapis.com/css2?family=Material+Icons"
-              viewAs="css-tag">
-  <mat-drawer-container class="example-container"
-                        [style.height.px]="height"
-                        style="background-color: transparent;"
-                        (backdropClick)="opened = false"
-                        [hasBackdrop]="true">
-    <mat-drawer #drawer
-                style="width: 500px;"
-                [opened]="opened"
-                showDesktop
-                [mode]="'over'">
+              viewAs="css-tag"></firedev-file>
 
-      <columns-container class="firedev-header-admin">
-        <column width="200"
-                class="logo-header">
-          <img *ngIf="openedOnce"
-               src="src/assets/shared/logo-header-admin-mode.png">
-        </column>
+<mat-drawer-container *ngIf="!admin.draggablePopupMode"
+                      class="example-container"
+                      [style.height.px]="height"
+                      style="background-color: transparent;"
+                      (backdropClick)="opened = false"
+                      [hasBackdrop]="false">
+  <mat-drawer #drawer
+              style="width: 500px;"
+              [opened]="opened"
+              showDesktop
+              [mode]="'side'">
 
-        <column grow>
-          <!-- <span>Super Admin Mode</span> -->
-        </column>
-        <column width="50">
-          <button mat-icon-button>
-            <mat-icon (click)="toogle()">close</mat-icon>
-          </button>
-        </column>
+    <ng-container [ngTemplateOutlet]="adminTabs"></ng-container>
 
-      </columns-container>
-      <columns-container>
-        <column grow>
-          <mat-tab-group [selectedIndex]="selectedIndex"
-                         (selectedIndexChange)="selectedIndex = $event">
-            <mat-tab label="DB/Cache">
-              <mat-card>
-                <mat-card-header>
-                  <mat-card-subtitle>WEBSQL MODE</mat-card-subtitle>
-                </mat-card-header>
-                <mat-card-content>
-                  <mat-checkbox [disabled]="!isWebSQLMode"
-                                [ngModel]="admin.keepWebsqlDbDataAfterReload"
-                                (change)="admin.setKeepWebsqlDbDataAfterReload($event.checked)">
-                    Don't remove data when reloading
-                  </mat-checkbox>
-                  <button mat-raised-button
-                          [disabled]="!isWebSQLMode"> [TODO] Reinit db with default values </button>
-                </mat-card-content>
-              </mat-card>
+  </mat-drawer>
+  <mat-drawer-content>
+    <ng-container *ngIf="!admin.draggablePopupMode"
+                  [ngTemplateOutlet]="content"></ng-container>
 
-              <button mat-raised-button>[TODO] Start database export </button> <br>
-              <button mat-raised-button>[TODO] Import whole database </button><br>
-            </mat-tab>
-            <mat-tab label="Files">
-              <mat-checkbox [ngModel]="admin.filesEditMode"
-                            (change)="admin.setEditMode($event.checked)">[TODO] Edit mode</mat-checkbox>
-            </mat-tab>
-            <mat-tab label="Portal">
-              <mat-checkbox>[TODO] Maintenance Mode for whole portal</mat-checkbox>
-            </mat-tab>
-          </mat-tab-group>
-        </column>
-
-      </columns-container>
-
-
-    </mat-drawer>
-    <mat-drawer-content>
-      <ng-content>
-      </ng-content>
-    </mat-drawer-content>
-  </mat-drawer-container>
-</firedev-file>
+  </mat-drawer-content>
+</mat-drawer-container>

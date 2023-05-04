@@ -116,3 +116,26 @@ mat-icon {
   padding: 10px;
 }
 
+
+
+//#region margins around inputs
+
+@mixin nice-margin-around-inputs {
+  >* {
+    margin: 10px !important;
+  }
+}
+
+.mat-expansion-panel-body {
+  @include nice-margin-around-inputs;
+}
+
+.mat-card-content {
+  @include nice-margin-around-inputs;
+}
+
+.mat-tab-body-content {
+  @include nice-margin-around-inputs;
+}
+
+// #endregion
