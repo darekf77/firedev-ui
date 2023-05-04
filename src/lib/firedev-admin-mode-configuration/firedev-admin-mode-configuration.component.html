@@ -22,12 +22,10 @@
       <column grow>
         <!-- <span>Super Admin Mode</span> -->
       </column>
-      <column width="150"
-              class="draggable-popup-checkbox">
-        <mat-checkbox [ngModel]="admin.draggablePopupMode"
-                      (change)="admin.draggablePopupMode = $event.checked">Popup mode</mat-checkbox>
-      </column>
-      <column width="50">
+
+
+      <column width="40"
+              *ngIf="!admin.draggablePopupModeFullScreen && !admin.draggablePopupMode">
         <button mat-icon-button
                 class="admin-close-button">
           <mat-icon *ngIf="admin.draggablePopupMode"
@@ -36,6 +34,30 @@
                     (click)="toogle();">close</mat-icon>
         </button>
       </column>
+
+      <column width="40"
+              *ngIf="admin.draggablePopupMode">
+        <button mat-icon-button
+                class="admin-close-button">
+          <mat-icon *ngIf="!admin.draggablePopupModeFullScreen"
+                    (click)="toogleFullScreen();">fullscreen</mat-icon>
+          <mat-icon *ngIf="admin.draggablePopupModeFullScreen"
+                    (click)="toogleFullScreen();">close_fullscreen</mat-icon>
+        </button>
+      </column>
+
+      <column width="40"
+              *ngIf="!admin.draggablePopupModeFullScreen">
+        <button mat-icon-button
+                class="admin-close-button">
+          <mat-icon *ngIf="!admin.draggablePopupMode"
+                    (click)="admin.draggablePopupMode = !admin.draggablePopupMode">launch</mat-icon>
+          <mat-icon *ngIf="admin.draggablePopupMode"
+                    style="transform: rotate(180deg);"
+                    (click)="admin.draggablePopupMode = !admin.draggablePopupMode">login</mat-icon>
+        </button>
+      </column>
+
 
     </columns-container>
   </div>
@@ -110,13 +132,20 @@
   </columns-container>
 </ng-template>
 
-<div class="example-box"
-     *ngIf="admin.draggablePopupMode"
+<div class="draggable-popup-mode-window"
+     *ngIf="admin.draggablePopupMode && !admin.draggablePopupModeFullScreen"
      cdkDrag>
   <ng-container [ngTemplateOutlet]="adminTabs"></ng-container>
 </div>
 
-<ng-container *ngIf="admin.draggablePopupMode"
+<div class="draggable-popup-mode-window-full"
+     *ngIf="admin.draggablePopupModeFullScreen"
+     cdkDrag>
+  <ng-container [ngTemplateOutlet]="adminTabs"></ng-container>
+</div>
+
+
+<ng-container *ngIf="admin.draggablePopupMode || admin.draggablePopupModeFullScreen"
               [ngTemplateOutlet]="content"></ng-container>
 
 <firedev-file src="https://fonts.googleapis.com/css2?family=Material+Icons"

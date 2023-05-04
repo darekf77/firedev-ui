@@ -78,6 +78,10 @@ export class FiredevAdminModeConfigurationComponent implements OnInit {
     this.opened = !this.opened;
   }
 
+  async toogleFullScreen() {
+    this.admin.draggablePopupModeFullScreen = !this.admin.draggablePopupModeFullScreen
+  }
+
   scrollTabs(event) {
     const children = this.tabGroup._tabHeader._elementRef.nativeElement.children;
     const back = children[0];

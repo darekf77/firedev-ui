@@ -27,6 +27,11 @@ export class FiredevAdmin {
   public draggablePopupMode: boolean;
   //#endregion
 
+  //#region fields & getters / draggable popup instead side view for admin
+  @Stor.property.in.localstorage.for(FiredevAdmin).withDefaultValue(false)
+  public draggablePopupModeFullScreen: boolean;
+  //#endregion
+
   //#region fields & getters / kepp websql database data after reload
   /**
    * Property used in morphi
