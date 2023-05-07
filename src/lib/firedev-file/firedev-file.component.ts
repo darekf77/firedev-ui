@@ -8,6 +8,8 @@ import { FiredevDisplayMode } from '../firedev.models';
 import { FiredevFile } from './firedev-file';
 import { FiredevFileDefaultAs, FiredevFileTypeArr, IFiredevFileType } from './firedev-file.models';
 import type { FiredevAdmin } from '../firedev-admin-mode-configuration';
+import { FiredevUIHelpers } from '../firedev-ui-helpers';
+import { FiredevFileCss } from './firedev-file-css';
 
 const log = Log.create('firedev file component',
   Level.__NOTHING
@@ -62,9 +64,10 @@ export class FiredevFileComponent implements OnInit {
       this.file = new FiredevFile();
       this.file.src = this.src;
       this.file.viewAs = this.viewAs ? this.viewAs : this.file.getDefaultView();
+      this.file.css = FiredevFileCss.from({ display: 'block' })
       this.file.contentType = this.file.getContentType();
       if (this.file.type === 'image') {
-        this.file.blob = await FiredevFile.ctrl.getBlobFrom(`${window.location.origin}${this.src}`);
+        this.file.blob = await FiredevUIHelpers.getBlobFrom(`${window.location.origin}${this.src}`);
         this.file.file = new File([this.file.blob], path.basename(_.first(this.src.split('?'))));
       }
     }

@@ -140,12 +140,23 @@ mat-icon {
 
 // #endregion
 
-.ng-scroll-content { // TODO QUICK_FIX for modal mode
+.ng-scroll-content {
+  // TODO QUICK_FIX for modal mode
   display: block !important;
 }
 
-.mat-list-text { // TODO QUICK_FIX for list options active
+.mat-list-text {
+
+  // TODO QUICK_FIX for list options active
   strong {
     font-weight: bold !important;
   }
 }
+
+
+.formly-field-half-size {
+  width: calc(49% - 10px) !important;
+  display: inline-block;
+  margin-right: 10px;
+}
+

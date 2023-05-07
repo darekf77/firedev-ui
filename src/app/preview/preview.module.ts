@@ -14,6 +14,11 @@ const routes: Routes = [
     loadChildren: () => import('./previews/preview-file/preview-file.module')
       .then(m => m.PreviewFileModule),
   },
+  {
+    path: 'form',
+    loadChildren: () => import('./previews/preview-form/preview-form.module')
+      .then(m => m.PreviewFormModule),
+  },
 ];
 
 @NgModule({

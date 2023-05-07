@@ -14,13 +14,13 @@
     <mat-tab label="General">
       <firedev-file-general-opt [file]="admin.selectedFile"></firedev-file-general-opt>
     </mat-tab>
-    <mat-tab label="CSS Editing">
+    <!-- <mat-tab label="CSS Editing">
       <ace [mode]="'css'"
            *ngIf="admin.selectedFile"
            [(value)]="admin.selectedFile.css"
            [theme]="'github'"
            style="width: 100%;  height: 300px;"></ace>
-    </mat-tab>
+    </mat-tab> -->
     <mat-tab label="Select File">
       <columns-container>
         <column grow>

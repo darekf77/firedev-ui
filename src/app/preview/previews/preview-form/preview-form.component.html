@@ -1,0 +1,29 @@
+<button type="button"
+        [routerLink]="'/file'">
+  file
+</button>
+
+<button type="button"
+        [routerLink]="'/form'">
+  form
+</button>
+<mat-card>
+  <p>
+    preview-form works!
+  </p>
+
+  <!-- <app-form-wrapper-material *ngIf="crud && crud.entity"
+                               [crud]="crud"
+                               [entity]="crud.entity"
+                               [(model)]="model"
+                               [mode]="'create'"
+                               (complete)="complete($event)"
+                               >
+
+    </app-form-wrapper-material> -->
+  <firedev-formly-form [exclude]="['id']"
+                       [(model)]="model">
+
+  </firedev-formly-form>
+
+</mat-card>

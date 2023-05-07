@@ -3,6 +3,8 @@
 import { Firedev } from 'firedev';
 const host = 'http://localhost:4198';
 import { FiredevFile, FiredevFileController } from './lib/firedev-file';
+import { Css } from './app/preview/previews/preview-form/css';
+
 //#region @browser
 import { NgModule, NgZone, ViewEncapsulation } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
@@ -13,6 +15,8 @@ import { AceConfigInterface } from 'ngx-ace-wrapper';
 import 'brace';
 import 'brace/mode/text';
 import 'brace/theme/github';
+import { FiredevFileCss } from './lib/firedev-file/firedev-file-css';
+
 
 const DEFAULT_ACE_CONFIG: AceConfigInterface = {
 };
@@ -96,6 +100,8 @@ async function start() {
     ],
     entities: [
       FiredevFile,
+      Css,
+      FiredevFileCss,
       // PUT FIREDEV ENTITIES HERE
     ],
     //#region @websql

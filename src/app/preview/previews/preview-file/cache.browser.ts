@@ -1,5 +1,8 @@
 //#region @browser
 
+/**
+ * @deprecated
+ */
 export class BrowserCachee {
   db: any;
   version: any;

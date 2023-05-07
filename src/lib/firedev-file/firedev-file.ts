@@ -2,17 +2,23 @@ import { Firedev } from 'firedev';
 import { path, _ } from 'tnp-core';
 import type { FiredevFileController } from './firedev-file.controller';
 import { FiredevFileDefaultAs, FiredevFileTypeArr, IFiredevFileType } from './firedev-file.models';
-const fileToBlob = async (file) => new Blob([new Uint8Array(await file.arrayBuffer())], { type: file.type });
+import { FiredevFileCss } from './firedev-file-css';
 //#region @backend
 import * as FromData from 'form-data';
 import { Blob } from 'node:buffer';
 //#endregion
+import { FiredevUIHelpers } from '../firedev-ui-helpers';
 
-@Firedev.Entity({
-  className: 'FiredevFile'
+@Firedev.Entity<FiredevFile>({
+  className: 'FiredevFile',
+  defaultModelMapping: {
+    'css': 'FiredevFileCss',
+  }
 })
 export class FiredevFile extends Firedev.Base.Entity<any> {
-  static fileToBlob = fileToBlob;
+
+  //#region static
+
   static ctrl: FiredevFileController;
   static from(obj: Omit<Partial<FiredevFile>, 'ctrl'>) {
     return _.merge(new FiredevFile(), obj)
@@ -33,7 +39,7 @@ export class FiredevFile extends Firedev.Base.Entity<any> {
       const firedevFile = resp.body.json;
       firedevFile.file = file;
       if (!dontRestoreBlob) {
-        firedevFile.blob = await fileToBlob(file);
+        firedevFile.blob = await FiredevUIHelpers.fileToBlob(file);
       }
       firedevFiles.push(firedevFile);
     }
@@ -59,50 +65,14 @@ export class FiredevFile extends Firedev.Base.Entity<any> {
     }
     return extensionOrMimeType.startsWith(`${isWhat}`);
   }
+  //#endregion
 
-
-  getDefaultView(): FiredevFileDefaultAs {
-    if (this.type === 'js') {
-      return 'script-tag';
-    }
-    if (this.type === 'css') {
-      return 'css-tag';
-    }
-    if (this.type === 'audio') {
-      return 'audio-tag';
-    }
-    if (this.type === 'image') {
-      return 'img-tag';
-    }
-    if (this.type === 'html') {
-      return 'html-rendered';
-    }
-    if (this.type === 'json') {
-      return 'json-editor';
-    }
-  }
-
-  getContentType(): Firedev.Http.ContentType {
-    return Firedev.Files.MimeTypesObj[this.ext] as Firedev.Http.ContentType;
-  }
-
+  //#region fields & getters
   ctrl: FiredevFileController;
+  readonly = false;
 
-  get ext() {
-    if (this.viewAs === 'css-tag') {
-      return '.css';
-    }
-    return path.extname(_.first(this.src.split('?')));
-  }
-
-  get type() {
-    for (let index = 0; index < FiredevFileTypeArr.length; index++) {
-      const element = FiredevFileTypeArr[index];
-      if (this.is(this.ext, element)) {
-        return element;
-      }
-    }
-  }
+  //#region fields & getters / table columns
+  file: File;
 
   //#region @websql
   @Firedev.Orm.Column.Primary({
@@ -123,12 +93,9 @@ export class FiredevFile extends Firedev.Base.Entity<any> {
   src: string;
 
   //#region @websql
-  @Firedev.Orm.Column.Custom({
-    type: 'text',
-    default: '',
-  })
+  @Firedev.Orm.Column.SimpleJson()
   //#endregion
-  css: string;
+  css: FiredevFileCss;
 
   //#region @websql
   @Firedev.Orm.Column.Custom({
@@ -169,8 +136,50 @@ export class FiredevFile extends Firedev.Base.Entity<any> {
   })
   //#endregion
   blob: Blob;
+  //#endregion
 
-  readonly = false;
+  get ext() {
+    if (this.viewAs === 'css-tag') {
+      return '.css';
+    }
+    return path.extname(_.first(this.src.split('?')));
+  }
 
-  file: File;
+  get type() {
+    for (let index = 0; index < FiredevFileTypeArr.length; index++) {
+      const element = FiredevFileTypeArr[index];
+      if (this.is(this.ext, element)) {
+        return element;
+      }
+    }
+  }
+  //#endregion
+
+
+  //#region methods
+  getDefaultView(): FiredevFileDefaultAs {
+    if (this.type === 'js') {
+      return 'script-tag';
+    }
+    if (this.type === 'css') {
+      return 'css-tag';
+    }
+    if (this.type === 'audio') {
+      return 'audio-tag';
+    }
+    if (this.type === 'image') {
+      return 'img-tag';
+    }
+    if (this.type === 'html') {
+      return 'html-rendered';
+    }
+    if (this.type === 'json') {
+      return 'json-editor';
+    }
+  }
+
+  getContentType(): Firedev.Http.ContentType {
+    return Firedev.Files.MimeTypesObj[this.ext] as Firedev.Http.ContentType;
+  }
+  //#endregion
 }

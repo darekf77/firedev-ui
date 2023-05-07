@@ -1,5 +1,5 @@
 import { Firedev } from 'firedev';
-import axios, { AxiosResponse } from 'axios';
+
 import { Repository } from 'firedev-typeorm'; // must be
 import { FiredevFile } from './firedev-file';
 import { crossPlatformPath, Helpers, path, _ } from 'tnp-core';
@@ -52,15 +52,7 @@ export class FiredevFileController extends Firedev.Base.Controller<FiredevFile> 
     //#endregion
   }
 
-  async getBlobFrom(url): Promise<Blob> {
-    const response = await axios({
-      url,
-      method: 'get',
-      responseType: 'blob'
-    });
 
-    return response.data;
-  }
 
   /**
    * in angular:

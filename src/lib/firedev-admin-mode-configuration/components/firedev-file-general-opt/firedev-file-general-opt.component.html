@@ -1,3 +1,5 @@
-<p>
-  firedev-file-general-opt works!
-</p>
+<firedev-formly-form *ngIf="file"
+                     [fields]="fields"
+                     [fieldsOrder]="fieldsOrder"
+                     [exclude]="['id']"
+                     [(model)]="file.css">

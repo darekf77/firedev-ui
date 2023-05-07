@@ -45,7 +45,7 @@ export class FiredevAdmin {
 
   //#region fields & getters / kepp websql database data after reload
   /**
-   * Property used in morphi
+   * Property used in firedev
    */
   @Stor.property.in.localstorage.for(FiredevAdmin).withDefaultValue(false)
   public keepWebsqlDbDataAfterReload: boolean;
@@ -53,7 +53,7 @@ export class FiredevAdmin {
 
   //#region fields & getters / first time initing database when "keep websql databas..." is on
   /**
-   * Property used in morphi
+   * Property used in firedev
    */
   @Stor.property.in.localstorage.for(FiredevAdmin).withDefaultValue(false)
   public firstTimeKeepWebsqlDbDataTrue: boolean;
