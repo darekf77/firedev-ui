@@ -6,6 +6,12 @@ import { FiredevFile } from '../../../firedev-file';
 import { FiredevAdmin } from '../../firedev-admin';
 import { Router } from '@angular/router';
 import { Stor } from 'firedev-storage';
+import 'brace';
+import 'brace/mode/css';
+import 'brace/mode/typescript';
+import 'brace/theme/github';
+// import 'brace/theme/twilight';
+
 //#endregion
 
 @Component({
@@ -25,7 +31,7 @@ export class FiredevAdminEditModeComponent implements OnInit {
   files: FiredevFile[] = [];
 
   @Stor.property.in.localstorage.for(FiredevAdminEditModeComponent).withDefaultValue(0)
-  selectedIndex: number;
+  selectedTabIndex: number;
 
   @Stor.property.in.localstorage.for(FiredevAdminEditModeComponent).withDefaultValue('')
   fileToSearch: string;

@@ -8,13 +8,17 @@ import { StaticColumnsModule } from 'static-columns';
 import { FormsModule } from '@angular/forms';
 import { NgScrollbarModule } from 'ngx-scrollbar';
 import { NgArrayPipesModule } from 'ngx-pipes';
+import { AceModule } from 'ngx-ace-wrapper';
+import { FiredevFileGeneralOptModule } from '../firedev-file-general-opt';
 
 @NgModule({
   imports: [
     CommonModule,
     StaticColumnsModule,
     NgScrollbarModule,
+    FiredevFileGeneralOptModule,
     FormsModule,
+    AceModule,
     FiredevFileModule,
     NgArrayPipesModule,
     FiredevFullMaterialModule, // TODO import only partial things

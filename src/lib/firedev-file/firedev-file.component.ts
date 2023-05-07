@@ -30,6 +30,7 @@ export class FiredevFileComponent implements OnInit {
 
   //#region fields & getters
   @Input() file: FiredevFile;
+  @Input() insideAdmin = false;
   admin = (window['firedev'] as FiredevAdmin);
   @Input() @HostBinding('style.maxHeight.px') @Input() height: number;
   @Input() @HostBinding('style.maxHeight.px') @Input() width: number;
@@ -38,6 +39,9 @@ export class FiredevFileComponent implements OnInit {
 
   @HostBinding('style.display') styleDisplay: string = 'block;'
 
+  get isSelectedInAdmin() {
+    return this.admin?.selectedFile?.src === this.file?.src;
+  }
 
   //#endregion
 

@@ -124,6 +124,14 @@ export class FiredevFile extends Firedev.Base.Entity<any> {
 
   //#region @websql
   @Firedev.Orm.Column.Custom({
+    type: 'text',
+    default: '',
+  })
+  //#endregion
+  css: string;
+
+  //#region @websql
+  @Firedev.Orm.Column.Custom({
     type: 'varchar',
     length: 500,
     default: null,

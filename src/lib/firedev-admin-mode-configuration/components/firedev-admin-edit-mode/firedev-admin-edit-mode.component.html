@@ -3,14 +3,23 @@
     Please select file from portal to edit
   </div>
   <firedev-file *ngIf="admin.selectedFile"
+                class="file-inside-admin"
+                [insideAdmin]="true"
                 [file]="admin.selectedFile"></firedev-file>
 
   <hr>
   <mat-tab-group dynamicHeight
-                 [selectedIndex]="selectedIndex"
-                 (selectedIndexChange)="selectedIndex = $event;refresFilesList();">
+                 [selectedIndex]="selectedTabIndex"
+                 (selectedIndexChange)="selectedTabIndex = $event;refresFilesList();">
+    <mat-tab label="General">
+      <firedev-file-general-opt [file]="admin.selectedFile"></firedev-file-general-opt>
+    </mat-tab>
     <mat-tab label="CSS Editing">
-
+      <ace [mode]="'css'"
+           *ngIf="admin.selectedFile"
+           [(value)]="admin.selectedFile.css"
+           [theme]="'github'"
+           style="width: 100%;  height: 300px;"></ace>
     </mat-tab>
     <mat-tab label="Select File">
       <columns-container>
@@ -23,7 +32,8 @@
           </mat-form-field>
         </column>
         <column [width]="40">
-          <button mat-icon-button>
+          <button mat-icon-button
+                  *ngIf="fileToSearch && fileToSearch?.trim() !== ''">
             <mat-icon (click)="fileToSearch = '';refresFilesList();">backspace</mat-icon>
           </button>
         </column>
@@ -44,7 +54,11 @@
                               (selectionChange)="admin.selectedFile = filesToSelect.selectedOptions.hasValue() ? filesToSelect.selectedOptions.selected[0].value : null">
             <mat-list-option *ngFor="let file of files | filterBy: ['src']: fileToSearch"
                              [value]="file">
-              {{file.src}}
+              <strong *ngIf="file?.src === admin.selectedFile?.src"> {{file.src}} </strong>
+              <span *ngIf="file?.src !== admin.selectedFile?.src">
+                {{file.src}}
+              </span>
+
             </mat-list-option>
           </mat-selection-list>
         </ng-scrollbar>

@@ -6,13 +6,21 @@
   position: relative;
 }
 
+@mixin edit-hover {
+  background-color: rgba(38, 129, 220, 0.285) !important;
+  cursor: pointer !important;
+}
+
+.class-selected-edit {
+  @include edit-hover;
+}
+
 .firedev-edit-mode-image {
-  > div {
+  >div {
     background-color: transparent;
 
     &:hover {
-      background-color: rgba(38, 129, 220, 0.285) !important;
-      cursor: pointer !important;
+      @include edit-hover;
     }
 
     position: absolute;

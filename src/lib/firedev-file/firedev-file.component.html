@@ -1,7 +1,8 @@
 <div *ngIf="viewAs === 'img-tag'"
      class="normal-image"
      [ngClass]="{ 'firedev-edit-mode-image' : (admin.filesEditMode) }">
-  <div (click)="selectForEdit()" ></div>
+  <div (click)="selectForEdit()"
+       [ngClass]="{ 'class-selected-edit' : (isSelectedInAdmin && !insideAdmin) }"></div>
   <img [src]="file.src"
        [ngClass]="{ 'dotted' : (admin.filesEditMode) }"
        height="200">
