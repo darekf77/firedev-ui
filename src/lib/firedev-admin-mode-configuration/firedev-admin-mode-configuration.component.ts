@@ -4,6 +4,7 @@ import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angu
 import { Helpers, _ } from 'tnp-core';
 import { FiredevAdmin } from './firedev-admin';
 import { Stor } from 'firedev-storage';
+import { CdkDrag, CdkDragEnd, CdkDragMove, CdkDragRelease, Point } from '@angular/cdk/drag-drop';
 //#endregion
 
 @Component({
@@ -19,6 +20,15 @@ export class FiredevAdminModeConfigurationComponent implements OnInit {
   isWebSQLMode = Helpers.isWebSQL;
   height: number = 100;
   openedOnce = false;
+
+  @Stor.property.in.localstorage.for(FiredevAdminModeConfigurationComponent).withDefaultValue(0)
+  dragPositionX: number;
+
+  @Stor.property.in.localstorage.for(FiredevAdminModeConfigurationComponent).withDefaultValue(0)
+  dragPositionY: number;
+
+  dragPositionZero = { x: 0, y: 0 } as Point;
+  dragPosition: Point;
 
   @Stor.property.in.localstorage.for(FiredevAdminModeConfigurationComponent).withDefaultValue(0)
   selectedIndex: number;
@@ -47,14 +57,14 @@ export class FiredevAdminModeConfigurationComponent implements OnInit {
 
   //#region constructor
   constructor() {
+
   }
   //#endregion
 
   //#region hooks
   async ngOnInit() {
-
+    this.dragPosition = { x: this.dragPositionX, y: this.dragPositionY };
     this.openedOnce = this.opened;
-
   }
 
 
@@ -80,7 +90,21 @@ export class FiredevAdminModeConfigurationComponent implements OnInit {
     this.admin.draggablePopupModeFullScreen = !this.admin.draggablePopupModeFullScreen
   }
 
+  resetDrag() {
+    this.dragPositionX = 0;
+    this.dragPositionY = 0;
+    this.dragPosition = { x: this.dragPositionX, y: this.dragPositionY };
+  }
+
+  moved(c: CdkDragEnd) {
+    this.dragPositionX += c.distance.x;
+    this.dragPositionY += c.distance.y;
+  }
+
   scrollTabs(event) {
+    return;
+    event?.stopPropagation();
+    event?.stopImmediatePropagation(); // TODO not working
     const children = this.tabGroup._tabHeader._elementRef.nativeElement.children;
     const back = children[0];
     const forward = children[2];

@@ -6,9 +6,50 @@
                 [file]="admin.selectedFile"></firedev-file>
 
   <hr>
-  <mat-selection-list >
-    <mat-list-option *ngFor="let file of files">
-      {{file.src}}
-    </mat-list-option>
-  </mat-selection-list>
+  <mat-tab-group dynamicHeight
+                 [selectedIndex]="selectedIndex"
+                 (selectedIndexChange)="selectedIndex = $event;refresFilesList();">
+    <mat-tab label="CSS Editing">
+
+    </mat-tab>
+    <mat-tab label="Select File">
+      <columns-container>
+        <column grow>
+          <mat-form-field style="width: 100%;">
+            <input matInput
+                   [(ngModel)]="fileToSearch"
+                   (focus)="refresFilesList()"
+                   placeholder="Search by name" />
+          </mat-form-field>
+        </column>
+        <column [width]="40">
+          <button mat-icon-button>
+            <mat-icon (click)="fileToSearch = '';refresFilesList();">backspace</mat-icon>
+          </button>
+        </column>
+        <!-- <column [width]="40">
+          <button mat-icon-button>
+            <mat-icon (click)="refresFilesList();">refresh</mat-icon>
+          </button>
+        </column> -->
+
+      </columns-container>
+
+      <div class="scrollable-files-list">
+        <ng-scrollbar>
+          <!-- selected: "{{ selectedFile?.src }}" -->
+          <!-- {{ filesSelection.selectedOptions | json }} -->
+          <mat-selection-list [multiple]="false"
+                              #filesToSelect
+                              (selectionChange)="admin.selectedFile = filesToSelect.selectedOptions.hasValue() ? filesToSelect.selectedOptions.selected[0].value : null">
+            <mat-list-option *ngFor="let file of files | filterBy: ['src']: fileToSearch"
+                             [value]="file">
+              {{file.src}}
+            </mat-list-option>
+          </mat-selection-list>
+        </ng-scrollbar>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+
 </mat-card>

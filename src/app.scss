@@ -139,3 +139,7 @@ mat-icon {
 }
 
 // #endregion
+
+.ng-scroll-content { // TODO QUICK_FIX for modal mode
+  display: block !important;
+}

@@ -120,7 +120,7 @@ export class FiredevFile extends Firedev.Base.Entity<any> {
     default: null,
   })
   //#endregion
-  src: any
+  src: string;
 
   //#region @websql
   @Firedev.Orm.Column.Custom({

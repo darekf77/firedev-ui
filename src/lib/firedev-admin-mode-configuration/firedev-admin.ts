@@ -3,18 +3,42 @@ import { FiredevAdminDB } from './firedev-admin-db';
 import { Stor } from 'firedev-storage';
 import type { FiredevFile } from '../firedev-file';
 import { _ } from 'tnp-core';
-import { Subject } from 'rxjs';
+import { Subject, take, takeUntil, tap } from 'rxjs';
 //#endregion
 
 export class FiredevAdmin {
   //#region fields & getters
+
   private onEditMode = new Subject()
   onEditMode$ = this.onEditMode.asObservable();
 
-  public registeredFiles = {} as { [filePathOrName: string]: FiredevFile; }
+  private onRegisterFileChange = new Subject<void>()
+  private onRegisterFileChange$ = this.onRegisterFileChange.asObservable();
+
+  onRegisterFile() {
+    setTimeout(()=> {
+      this.onRegisterFileChange.next();
+    })
+    return this.onRegisterFileChange$;
+  }
+  private registeredFiles = {} as { [filePathOrName: string]: FiredevFile; };
+
+  register(file: FiredevFile) {
+    if (file?.src) {
+      this.registeredFiles[file.src] = file;
+      this.onRegisterFileChange.next(void 0)
+    }
+  }
+
+  unregister(file: FiredevFile) {
+    if (file?.src) {
+      delete this.registeredFiles[file.src];
+      this.onRegisterFileChange.next(void 0)
+    }
+  }
 
   get currentFiles() {
-    if(!this.filesEditMode) {
+    if (!this.filesEditMode) {
       return [];
     }
     return _.values(this.registeredFiles) as FiredevFile[];
@@ -71,6 +95,7 @@ export class FiredevAdmin {
 
   }
   //#endregion
+
 
   //#region methods
   setEditMode(value: boolean) {

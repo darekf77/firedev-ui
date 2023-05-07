@@ -7,12 +7,14 @@ import { StaticColumnsModule } from 'static-columns';
 import { FiredevFileModule } from '../firedev-file';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FiredevAdminEditModeModule } from './components/firedev-admin-edit-mode';
+import { NgScrollbarModule } from 'ngx-scrollbar';
 
 @NgModule({
   imports: [
     CommonModule,
     StaticColumnsModule,
     FormsModule,
+    NgScrollbarModule,
     FiredevAdminEditModeModule,
     FiredevFileModule,
     FiredevFullMaterialModule, // TODO import only partial things

@@ -82,7 +82,7 @@ export class FiredevFileComponent implements OnInit {
 
     log.i(`display as ${this.viewAs}`)
     if (this.file) {
-      this.admin.registeredFiles[this.file.src] = this.file;
+      this.admin.register(this.file);
     }
   }
 
@@ -90,7 +90,7 @@ export class FiredevFileComponent implements OnInit {
     //Called once, before the instance is destroyed.
     //Add 'implements OnDestroy' to the class.
     if (this.file && this.file.src) {
-      delete this.admin.registeredFiles[this.file.src];
+      this.admin.unregister(this.file);
     }
   }
 

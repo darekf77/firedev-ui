@@ -51,10 +51,10 @@
         <button mat-icon-button
                 class="admin-close-button">
           <mat-icon *ngIf="!admin.draggablePopupMode"
-                    (click)="admin.draggablePopupMode = !admin.draggablePopupMode">launch</mat-icon>
+                    (click)="admin.draggablePopupMode = true">launch</mat-icon>
           <mat-icon *ngIf="admin.draggablePopupMode"
                     style="transform: rotate(180deg);"
-                    (click)="admin.draggablePopupMode = !admin.draggablePopupMode">login</mat-icon>
+                    (click)="admin.draggablePopupMode = false;resetDrag();">login</mat-icon>
         </button>
       </column>
 
@@ -64,7 +64,8 @@
 
   <columns-container [ngClass]="{ 'draggable-column' : (admin.draggablePopupMode) }">
     <column grow>
-      <mat-tab-group (wheel)="scrollTabs($event)"
+      <mat-tab-group dynamicHeight
+                     (wheel)="scrollTabs($event)"
                      #tabGroup
                      [selectedIndex]="selectedIndex"
                      (selectedIndexChange)="selectedIndex = $event">
@@ -87,14 +88,17 @@
           <button mat-raised-button>[TODO] Import whole database </button><br>
         </mat-tab>
         <mat-tab label="Files">
+
           <mat-checkbox [ngModel]="admin.filesEditMode"
                         (change)="admin.setEditMode($event.checked)">Edit mode</mat-checkbox> <br>
           <firedev-admin-edit-mode *ngIf="admin.filesEditMode">
           </firedev-admin-edit-mode>
           <br>
           <hr>
+          <button mat-raised-button>[TODO] Clear Files from browser cache </button> <br>
           <button mat-raised-button>[TODO] Start files export (as zip) </button> <br>
           <button mat-raised-button>[TODO] Import whole database (from zip) </button><br>
+
         </mat-tab>
         <mat-tab label="Portal">
           <mat-checkbox>[TODO] Maintenance Mode for whole portal</mat-checkbox>
@@ -134,13 +138,18 @@
 
 <div class="draggable-popup-mode-window"
      *ngIf="admin.draggablePopupMode && !admin.draggablePopupModeFullScreen"
-     cdkDrag>
-  <ng-container [ngTemplateOutlet]="adminTabs"></ng-container>
+     cdkDrag
+     [cdkDragFreeDragPosition]="dragPosition"
+     (cdkDragEnded)="moved($event)">
+  <ng-scrollbar>
+    <ng-container [ngTemplateOutlet]="adminTabs"></ng-container>
+  </ng-scrollbar>
 </div>
 
 <div class="draggable-popup-mode-window-full"
      *ngIf="admin.draggablePopupModeFullScreen"
-     cdkDrag>
+     cdkDrag
+     [cdkDragFreeDragPosition]="dragPositionZero">
   <ng-container [ngTemplateOutlet]="adminTabs"></ng-container>
 </div>
 
