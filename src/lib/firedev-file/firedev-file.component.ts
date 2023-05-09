@@ -61,11 +61,9 @@ export class FiredevFileComponent implements OnInit {
 
     if (!this.file) {
       // @ts-ignore
-      this.file = new FiredevFile();
-      this.file.src = this.src;
-      this.file.viewAs = this.viewAs ? this.viewAs : this.file.getDefaultView();
-      this.file.css = FiredevFileCss.from({ display: 'block' })
-      this.file.contentType = this.file.getContentType();
+      this.file = FiredevFile.from({
+        src: this.src,
+      });
       if (this.file.type === 'image') {
         this.file.blob = await FiredevUIHelpers.getBlobFrom(`${window.location.origin}${this.src}`);
         this.file.file = new File([this.file.blob], path.basename(_.first(this.src.split('?'))));
@@ -73,17 +71,17 @@ export class FiredevFileComponent implements OnInit {
     }
 
     if (!this.viewAs) {
-      this.viewAs = this.file.viewAs;
+      this.viewAs = this.file.defaultViewAs;
     }
 
     if (this.viewAs === 'img-tag') {
       this.styleDisplay = 'inline-block'
     }
 
-    if (this.file.viewAs === 'script-tag') {
+    if (this.viewAs === 'script-tag') {
       this.service.loadScript(this.src, this)
     }
-    if (this.file.viewAs === 'css-tag') {
+    if (this.viewAs === 'css-tag') {
       this.service.loadStyle(this.src, this)
     }
 

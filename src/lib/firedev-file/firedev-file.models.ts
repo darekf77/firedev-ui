@@ -1,6 +1,13 @@
 import type { FiredevFile } from "./firedev-file";
+import { FiredevFileCss } from "./firedev-file-css";
 
 export type IFiredevFile = Partial<FiredevFile>;
+
+export const defaultModelValues: IFiredevFile = {
+  css: FiredevFileCss.from({ display: 'block' }),
+  readonly: false,
+}
+
 
 export type IFiredevFileType = 'image'
   | 'video'

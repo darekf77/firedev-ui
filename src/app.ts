@@ -4,6 +4,7 @@ import { Firedev } from 'firedev';
 const host = 'http://localhost:4198';
 import { FiredevFile, FiredevFileController } from './lib/firedev-file';
 import { Css } from './app/preview/previews/preview-form/css';
+import { FiredevFileCss } from './lib/firedev-file/firedev-file-css';
 
 //#region @browser
 import { NgModule, NgZone, ViewEncapsulation } from '@angular/core';
@@ -15,7 +16,7 @@ import { AceConfigInterface } from 'ngx-ace-wrapper';
 import 'brace';
 import 'brace/mode/text';
 import 'brace/theme/github';
-import { FiredevFileCss } from './lib/firedev-file/firedev-file-css';
+
 
 
 const DEFAULT_ACE_CONFIG: AceConfigInterface = {

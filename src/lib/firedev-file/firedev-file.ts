@@ -1,7 +1,7 @@
 import { Firedev } from 'firedev';
 import { path, _ } from 'tnp-core';
 import type { FiredevFileController } from './firedev-file.controller';
-import { FiredevFileDefaultAs, FiredevFileTypeArr, IFiredevFileType } from './firedev-file.models';
+import { defaultModelValues, FiredevFileDefaultAs, FiredevFileTypeArr, IFiredevFileType } from './firedev-file.models';
 import { FiredevFileCss } from './firedev-file-css';
 //#region @backend
 import * as FromData from 'form-data';
@@ -21,7 +21,20 @@ export class FiredevFile extends Firedev.Base.Entity<any> {
 
   static ctrl: FiredevFileController;
   static from(obj: Omit<Partial<FiredevFile>, 'ctrl'>) {
-    return _.merge(new FiredevFile(), obj)
+    let instance = FiredevFile.empty();
+    const clonedObj = _.cloneDeep(obj) as IFiredevFileType;
+    instance = _.merge(instance, clonedObj);
+    if (!instance.defaultViewAs) {
+      instance.defaultViewAs = instance.getDefaultView()
+    }
+    if (!instance.contentType) {
+      instance.contentType = instance.getContentType()
+    }
+    return instance;
+  }
+
+  static empty() {
+    return _.merge(new FiredevFile(), defaultModelValues);
   }
 
   static getAll() {
@@ -67,6 +80,12 @@ export class FiredevFile extends Firedev.Base.Entity<any> {
   }
   //#endregion
 
+  //#region constructor
+  private constructor(...args) { // @ts-ignore
+    super(...args);
+  }
+  //#endregion
+
   //#region fields & getters
   ctrl: FiredevFileController;
   readonly = false;
@@ -100,11 +119,11 @@ export class FiredevFile extends Firedev.Base.Entity<any> {
   //#region @websql
   @Firedev.Orm.Column.Custom({
     type: 'varchar',
-    length: 500,
+    length: 20,
     default: null,
   })
   //#endregion
-  viewAs: FiredevFileDefaultAs;
+  defaultViewAs: FiredevFileDefaultAs;
 
   //#region @websql
   @Firedev.Orm.Column.Custom({
@@ -139,7 +158,7 @@ export class FiredevFile extends Firedev.Base.Entity<any> {
   //#endregion
 
   get ext() {
-    if (this.viewAs === 'css-tag') {
+    if (this.defaultViewAs === 'css-tag') {
       return '.css';
     }
     return path.extname(_.first(this.src.split('?')));
