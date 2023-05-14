@@ -28,32 +28,6 @@ export class FiredevFileController extends Firedev.Base.Controller<FiredevFile> 
   }
   //#endregion
 
-  @Firedev.Http.GET()
-  hello(): Firedev.Response<string> {
-    return async () => {
-      return 'Hello world';
-    }
-  }
-
-  @Firedev.Http.GET({ overrideContentType: 'image/gif', overridResponseType: 'blob' })
-  getImage_text(): Firedev.Response<string> {
-    //#region @backendFunc
-    return async (req, res) => {
-      return 'data:image/png;base64,R0lGODlhDAAMAKIFAF5LAP/zxAAAANyuAP/gaP///wAAAAAAACH5BAEAAAUALAAAAAAMAAwAAAMlWLPcGjDKFYi9lxKBOaGcF35DhWHamZUW0K4mAbiwWtuf0uxFAgA7'; // emoji
-    }
-    //#endregion
-  }
-
-  @Firedev.Http.GET({ overrideContentType: 'image/jpeg', overridResponseType: 'blob' })
-  getImage_jpeg(): Firedev.Response<string> {
-    //#region @backendFunc
-    return async (req, res) => {
-      return 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD/2wBDAAMCAgMCAgMDAwMEAwMEBQgFBQQEBQoHBwYIDAoMDAsKCwsNDhIQDQ4RDgsLEBYQERMUFRUVDA8XGBYUGBIUFRT/2wBDAQMEBAUEBQkFBQkUDQsNFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBT/wAARCAAUAB4DASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD9Dr/WrXS7Ke7ubhIbaBGlkkY8KqjJJ+gFeA6v+11LLfNH4e8OrqFsH2CS7ujC7j+8FCkAfU5+lQ/tAeMLXS/hfrsVxqEdnPNBiBZZArTNkEIo77sY49a4H9m1vC3xK0k2F8sdtqUUm7a58qRP7hUd88g/WvDhmdTFVfY01yux6ksDChD2k9T1bwT+1l/bkMw1XwpfadPDceSYo5FZyoOC4V9vHBOASSMEdcD36x1KHUrOG6t5RLBMgkjdehUjINfMXjj4C+GdQhsCSLjVtNuluopJ5vntJFYhH2bgO55PHtXc+GNUTRdFgtDOFZdzGON8qu5i2Ae/X0r0KmLlhY/vFdnNDDRr6wdkUPFmlWWoaXfC5s7ef9ySfMiVs8H1FeX+G/h/4av7wSS6FYiVSCrxwhGH4jFFFflOKlKnWg4Ox9lSSlTdzvrzTLSS4EkkAmkV1w8ruxG3pyT2ro7fQdPulDyWqFiOuT/jRRXdTr1ZTd5v72YShHlWh//Z'; // hammy
-    }
-    //#endregion
-  }
-
-
 
   /**
    * in angular:
@@ -112,25 +86,11 @@ export class FiredevFileController extends Firedev.Base.Controller<FiredevFile> 
     //#endregion
   }
 
-  @Firedev.Http.GET(`/${Firedev.symbols.CRUD_TABLE_MODELS}`) // @ts-ignore
-  getAll(@Firedev.Http.Param.Query('limit') limit = Infinity): Firedev.Response<FiredevFile[]> {
-    //#region @websqlFunc
-    const config = super.getAll();
-    return async (req, res) => { // @ts-ignore
-      let arr = await Firedev.getResponseValue(config, req, res) as FiredevFile[];
-      if (arr.length > limit) {
-        arr = arr.slice(0, limit - 1);
-      }
-      return arr as any;
-    }
-    //#endregion
-  }
-
   //#region @websql
   async getAssets() {
     //#region @backend
     if (Helpers.isNode) {
-      const proj = Project.From(process.cwd()) as Project;
+      const proj = Project.From(process.cwd()) as Project;  // TODO
       const assetsList = Helpers.readJson(proj.pathFor(`tmp-apps-for-dist/firedev-ui/src/assets/assets-list.json`)) as string[];
 
       // console.log({ proj, env: global['ENV'], assetsList })
@@ -150,65 +110,18 @@ export class FiredevFileController extends Firedev.Base.Controller<FiredevFile> 
   //#region @websql
   async initExampleDbData() {
     const repo = this.connection.getRepository(this.entity);
-    // await repo.save(new FiredevFile())
-    // const all = await repo.find()
-
-    if (Helpers.isWebSQL || Helpers.isNode) {
-
-      // console.info('START INITING DATA')
-      const assets = await this.getAssets();
-      // console.log({
-      //   assets
-      // })
-      for (let index = 0; index < assets.length; index++) {
-        const src = assets[index];
-        await repo.save(FiredevFile.from({
-          src,
-        }))
-      }
-      const all = await repo.find();
-      // console.log({
-      //   all
-      // })
-      // console.info('START INITING DONE!')
+    const assets = await this.getAssets();
+    for (let index = 0; index < assets.length; index++) {
+      const src = assets[index];
+      await repo.save(FiredevFile.from({
+        src,
+      }))
     }
   }
   //#endregion
 
-
-  @Firedev.Http.POST() // @ts-ignore
-  uploadNew(): Firedev.Response<void> {
-    //#region @websqlFunc
-    return async (req, res) => { // @ts-ignore
-      console.log({
-        req, res
-      })
-    }
-    //#endregion
-  }
-
-  @Firedev.Http.PUT() // @ts-ignore
-  uploadExisted(): Firedev.Response<void> {
-    //#region @websqlFunc
-    return async (req, res) => { // @ts-ignore
-      console.log({
-        req, res
-      })
-    }
-    //#endregion
-  }
-
-  @Firedev.Http.HEAD() // @ts-ignore
-  checkExists(@Firedev.Http.Param.Body() filename: string, @Firedev.Http.Param.Body() filehash: string,): Firedev.Response<boolean> {
-    //#region @websqlFunc
-    return async (req, res) => { // @ts-ignore
-      console.log({
-        req, res
-      })
-      return true;
-    }
-    //#endregion
-  }
-
-
 }
+
+
+// const base64image1 = 'data:image/png;base64,R0lGODlhDAAMAKIFAF5LAP/zxAAAANyuAP/gaP///wAAAAAAACH5BAEAAAUALAAAAAAMAAwAAAMlWLPcGjDKFYi9lxKBOaGcF35DhWHamZUW0K4mAbiwWtuf0uxFAgA7'; // emoji
+// const bs64image2 = 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD/2wBDAAMCAgMCAgMDAwMEAwMEBQgFBQQEBQoHBwYIDAoMDAsKCwsNDhIQDQ4RDgsLEBYQERMUFRUVDA8XGBYUGBIUFRT/2wBDAQMEBAUEBQkFBQkUDQsNFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBT/wAARCAAUAB4DASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD9Dr/WrXS7Ke7ubhIbaBGlkkY8KqjJJ+gFeA6v+11LLfNH4e8OrqFsH2CS7ujC7j+8FCkAfU5+lQ/tAeMLXS/hfrsVxqEdnPNBiBZZArTNkEIo77sY49a4H9m1vC3xK0k2F8sdtqUUm7a58qRP7hUd88g/WvDhmdTFVfY01yux6ksDChD2k9T1bwT+1l/bkMw1XwpfadPDceSYo5FZyoOC4V9vHBOASSMEdcD36x1KHUrOG6t5RLBMgkjdehUjINfMXjj4C+GdQhsCSLjVtNuluopJ5vntJFYhH2bgO55PHtXc+GNUTRdFgtDOFZdzGON8qu5i2Ae/X0r0KmLlhY/vFdnNDDRr6wdkUPFmlWWoaXfC5s7ef9ySfMiVs8H1FeX+G/h/4av7wSS6FYiVSCrxwhGH4jFFFflOKlKnWg4Ox9lSSlTdzvrzTLSS4EkkAmkV1w8ruxG3pyT2ro7fQdPulDyWqFiOuT/jRRXdTr1ZTd5v72YShHlWh//Z'; // hammy

@@ -1,3 +1,4 @@
+//#region import
 import { Firedev } from 'firedev';
 import { path, _ } from 'tnp-core';
 import type { FiredevFileController } from './firedev-file.controller';
@@ -8,12 +9,14 @@ import * as FromData from 'form-data';
 import { Blob } from 'node:buffer';
 //#endregion
 import { FiredevUIHelpers } from '../firedev-ui-helpers';
-
+//#endregion
 @Firedev.Entity<FiredevFile>({
+  //#region entity config
   className: 'FiredevFile',
   defaultModelMapping: {
     'css': 'FiredevFileCss',
-  }
+  },
+  //#endregion
 })
 export class FiredevFile extends Firedev.Base.Entity<any> {
 
@@ -37,9 +40,6 @@ export class FiredevFile extends Firedev.Base.Entity<any> {
     return _.merge(new FiredevFile(), defaultModelValues);
   }
 
-  static getAll() {
-    return this.ctrl.getAll();
-  }
 
   static async upload(files: FileList | File[], options?: { dontRestoreBlob?: boolean; }): Promise<FiredevFile[]> {
     const { dontRestoreBlob } = options || {};
@@ -94,9 +94,9 @@ export class FiredevFile extends Firedev.Base.Entity<any> {
   //#region fields & getters
   ctrl: FiredevFileController;
   readonly = false;
+  file: File;
 
   //#region fields & getters / table columns
-  file: File;
 
   //#region @websql
   @Firedev.Orm.Column.Generated()
@@ -179,7 +179,6 @@ export class FiredevFile extends Firedev.Base.Entity<any> {
     }
   }
   //#endregion
-
 
   //#region methods
   getDefaultView(): FiredevFileDefaultAs {
