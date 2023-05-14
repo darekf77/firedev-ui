@@ -10,6 +10,7 @@ import { NgScrollbarModule } from 'ngx-scrollbar';
 import { NgArrayPipesModule } from 'ngx-pipes';
 import { AceModule } from 'ngx-ace-wrapper';
 import { FiredevFileGeneralOptModule } from '../firedev-file-general-opt';
+import { FiredevTableModule } from '../../../firedev-table';
 
 @NgModule({
   imports: [
@@ -21,6 +22,7 @@ import { FiredevFileGeneralOptModule } from '../firedev-file-general-opt';
     AceModule,
     FiredevFileModule,
     NgArrayPipesModule,
+    FiredevTableModule,
     FiredevFullMaterialModule, // TODO import only partial things
   ],
   declarations: [FiredevAdminEditModeComponent],

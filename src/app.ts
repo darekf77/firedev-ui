@@ -45,13 +45,16 @@ const routes: Routes = [
   templateUrl: './app.html',
 })
 export class FiredevUiComponent implements OnInit {
+  dataInited = false;
   constructor(
     private ngZone: NgZone
   ) { }
 
   async ngOnInit() {
+    // console.log('CONSTRUCTOR START!')
     Firedev.initNgZone(this.ngZone);
     await start();
+    // console.log('CONSTRUCTOR DONE!')
   }
 }
 //#endregion

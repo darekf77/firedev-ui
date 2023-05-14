@@ -1,0 +1,32 @@
+<!-- <h1 *ngIf="arrayDataConfig">
+  {{arrayDataConfig.pagination}}
+</h1>` -->
+<!-- [sorts]="[{prop: 'id', dir: 'asc'}]" -->
+<!-- {{ columns | json }} -->
+<!-- {{ rows | json }} -->
+<ngx-datatable class="material"
+               *ngIf="rows && columns;else tableLoading"
+               [rows]="rows"
+               [columnMode]="'force'"
+               [externalSorting]="true"
+               [externalPaging]="true"
+               [columns]="columns"
+               [rowHeight]="'auto'"
+               (page)='setPage($event)'
+               (sort)="setSorting($event)"
+               [count]="totalElements"
+               [offset]="pageNumber - 1"
+               [limit]="pageSize"
+               [headerHeight]="'auto'"
+               [footerHeight]="'auto'">
+</ngx-datatable>
+
+
+
+<ng-template #tableLoading>
+  Loading table
+</ng-template>
+
+<!-- (sort)="on.sort($event)"
+  [loadingIndicator]="loadingIndicator"
+               [messages]="messages" -->

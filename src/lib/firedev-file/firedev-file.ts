@@ -72,9 +72,14 @@ export class FiredevFile extends Firedev.Base.Entity<any> {
       // @ts-ignore
       isWhat = 'text/html';
     }
+    if (isWhat === 'text') {
+      // @ts-ignore
+      isWhat = 'text/html';
+    }
     const isExt = extensionOrMimeType.startsWith('.');
     if (isExt) {
-      return Firedev.Files.MimeTypesObj[extensionOrMimeType].startsWith(`${isWhat}`);
+      const mime = Firedev.Files.MimeTypesObj[extensionOrMimeType];
+      return mime?.startsWith(`${isWhat}`);
     }
     return extensionOrMimeType.startsWith(`${isWhat}`);
   }
@@ -94,18 +99,14 @@ export class FiredevFile extends Firedev.Base.Entity<any> {
   file: File;
 
   //#region @websql
-  @Firedev.Orm.Column.Primary({
-    type: 'varchar',
-    length: 100,
-    // unique: true,
-  })
+  @Firedev.Orm.Column.Generated()
   //#endregion
   id: string;
 
   //#region @websql
   @Firedev.Orm.Column.Custom({
     type: 'varchar',
-    length: 500,
+    length: 150,
     default: null,
   })
   //#endregion
@@ -161,7 +162,8 @@ export class FiredevFile extends Firedev.Base.Entity<any> {
     if (this.defaultViewAs === 'css-tag') {
       return '.css';
     }
-    return path.extname(_.first(this.src.split('?')));
+    const realSrc = _.first(this.src?.split('?'))
+    return realSrc ? path.extname(realSrc) : '';
   }
 
   get type() {

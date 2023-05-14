@@ -80,23 +80,23 @@ export class PreviewFileComponent implements OnInit {
     })()
 
     await (async () => {
-      const data2 = await FiredevFile.ctrl.hello().received;
-      console.log({
-        data2
-      })
+      // const data2 = await FiredevFile.ctrl.hello().received;
+      // console.log({
+      //   data2
+      // })
     })()
 
 
     await (async () => {
-      const tsfile = await axios({
-        method: 'GET',
-        url: '/src/assets/source-code/file.ts',
-        responseType: 'text',
-      });
-      this.code = tsfile.data
-      console.log({
-        tsfile
-      })
+      // const tsfile = await axios({
+      //   method: 'GET',
+      //   url: '/src/assets/source-code/file.ts',
+      //   responseType: 'text',
+      // });
+      // this.code = ' '; // tsfile.data
+      // console.log({
+      //   tsfile
+      // })
     })()
 
     await (async () => {

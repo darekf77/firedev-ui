@@ -11,6 +11,7 @@ const pathDest = path.join(process.cwd(), 'src/assets/private/uploaded');
 //#region @backend
 import { Blob } from 'node:buffer';
 //#endregion
+import axios from 'axios';
 
 export const FiredevFileControllerEntity = Symbol();
 
@@ -125,11 +126,41 @@ export class FiredevFileController extends Firedev.Base.Controller<FiredevFile> 
     //#endregion
   }
 
+  //#region @websqlOnly
+  async getAssets() {
+    const data = await axios({
+      url: '/assets/assets-list.json',
+      method: 'GET',
+      responseType: 'json'
+    });
+
+    return data.data as string[]
+  }
+  //#endregion
+
   //#region @websql
   async initExampleDbData() {
-    // const repo = this.connection.getRepository(FiredevFile);
+    const repo = this.connection.getRepository(this.entity);
     // await repo.save(new FiredevFile())
     // const all = await repo.find()
+    if (Helpers.isWebSQL) {
+      // console.info('START INITING DATA')
+      const assets = await this.getAssets();
+      console.log({
+        assets
+      })
+      for (let index = 0; index < assets.length; index++) {
+        const src = assets[index];
+        await repo.save(FiredevFile.from({
+          src,
+        }))
+      }
+      const all = await repo.find();
+      console.log({
+        all
+      })
+      // console.info('START INITING DONE!')
+    }
   }
   //#endregion
 

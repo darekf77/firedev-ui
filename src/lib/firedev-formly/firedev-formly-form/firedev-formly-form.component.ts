@@ -13,7 +13,9 @@ import { _ } from 'tnp-core';
 import { Log, Level } from 'ng2-logger';
 import { CLASS } from 'typescript-class-helpers';
 import { Firedev } from 'firedev';
-const log = Log.create('form warpper material component');
+const log = Log.create('form warpper material component',
+  Level.__NOTHING
+);
 //#endregion
 
 

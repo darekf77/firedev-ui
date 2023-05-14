@@ -13,6 +13,7 @@ export type IFiredevFileType = 'image'
   | 'video'
   | 'audio'
   | 'html'
+  | 'text'
   | 'md'
   | 'json'
   | 'js'
@@ -23,6 +24,7 @@ export const FiredevFileTypeArr = [
   'video',
   'audio',
   'html',
+  'text',
   'md',
   'json',
   'js',

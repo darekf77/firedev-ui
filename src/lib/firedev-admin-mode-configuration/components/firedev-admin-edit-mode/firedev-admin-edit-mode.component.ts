@@ -10,6 +10,7 @@ import 'brace';
 import 'brace/mode/css';
 import 'brace/mode/typescript';
 import 'brace/theme/github';
+import { Firedev } from 'firedev';
 // import 'brace/theme/twilight';
 
 //#endregion
@@ -24,10 +25,11 @@ import 'brace/theme/github';
 export class FiredevAdminEditModeComponent implements OnInit {
 
   //#region fields & getters
+  inited$ = Firedev.anyContextLoaded();
   private destroyed$ = new Subject()
   admin = (window['firedev'] as FiredevAdmin);
   handlers: Subscription[] = [];
-
+  entity = FiredevFile;
   files: FiredevFile[] = [];
 
   @Stor.property.in.localstorage.for(FiredevAdminEditModeComponent).withDefaultValue(0)
@@ -82,7 +84,7 @@ export class FiredevAdminEditModeComponent implements OnInit {
 
   //#region methods
   refresFilesList() {
-    console.log('refresh files list')
+    // console.log('refresh files list')
     this.files = this.admin.currentFiles;
   }
 
