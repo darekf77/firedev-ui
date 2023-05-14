@@ -7,9 +7,17 @@ import { Stor } from 'firedev-storage';
 import { Firedev } from 'firedev';
 import { CLASS } from 'typescript-class-helpers';
 import { firstValueFrom } from 'rxjs';
+import { TableColumn } from '@swimlane/ngx-datatable'
 
 const log = Log.create('Table wrapper');
-
+const defaultColums = [
+  {
+    prop: 'id'
+  },
+  {
+    prop: 'name',
+  }
+] as TableColumn[];
 
 @Component({
   selector: 'firedev-table',
@@ -19,7 +27,7 @@ const log = Log.create('Table wrapper');
 export class FiredevTableComponent {
 
   @Input() pageNumber: number = 1;
-  @Input() pageSize: number = 10;
+  @Input() pageSize: number = 5;
   @Input() allowedColumns: string[] = [];
   @Input() entity: typeof Firedev.Base.Entity;
 
@@ -38,14 +46,7 @@ export class FiredevTableComponent {
   });
 
 
-  @Input() columns = [
-    {
-      prop: 'id'
-    },
-    {
-      prop: 'name'
-    }
-  ];
+  @Input() columns = defaultColums;
 
   constructor() { }
 
@@ -63,40 +64,57 @@ export class FiredevTableComponent {
   async ngOnInit() {
 
     // this.arrayDataConfig.set.pagination.rowDisplayed(5);
-    // log.i('arrayDataConfig', this.arrayDataConfig);
-    setTimeout(()=> {
+    log.i('this.columns,', this.columns);
+    const columnsConfigSameAsDefault = _.isEqual(this.columns, defaultColums);
+    // console.log({
+    //   columnsConfigSameAsDefault
+    // })
+    setTimeout(() => {
       const entityClass = this.entity;
-    if (entityClass) {
-      log.i('this.crud.entity', CLASS.describeProperites(entityClass));
+      if (entityClass && columnsConfigSameAsDefault) {
+        log.i('this.crud.entity', CLASS.describeProperites(entityClass));
 
-      try {
-        const columns = CLASS.describeProperites(entityClass)
-          .filter(prop => this.allowedColumns.length > 0 ? this.allowedColumns.includes(prop) : true)
-          .map(prop => {
-            return { prop };
+        try {
+          const props = CLASS.describeProperites(entityClass)
+          let columns = props
+            .filter(prop => this.allowedColumns.length > 0 ? this.allowedColumns.includes(prop) : true)
+            .map(prop => {
+              return { prop };
+            });
+
+          const extra = this.allowedColumns.filter(f => !props.includes(f));
+          columns = [
+            ...columns,
+            ...extra.map((prop) => {
+              return { prop };
+            })
+          ];
+
+          console.log({
+            extra
           });
-        this.columns = columns;
-        console.log('columns', columns);
-      } catch (error) {
-        console.error(error)
+          this.columns = columns;
+          console.log('columns', columns);
+        } catch (error) {
+          console.error(error)
+        }
       }
-    }
     })
     await this.retriveData();
   }
   async retriveData() { // @ts-ignore
-    console.log('PAGINTION FETCH DATA START!')
+    // console.log('PAGINTION FETCH DATA START!')
     const controller = (this.entity.ctrl as Firedev.CRUD.Base<any>);
     const data = await controller.pagination(this.pageNumber, this.pageSize).received;
-    console.log('PAGINTION DATA', {
-      data,
-    })
+    // console.log('PAGINTION DATA', {
+    //   data,
+    // })
     const totalElements = Number(data.headers.get(Morphi.SYMBOL.X_TOTAL_COUNT));
     const rows = data.body.json;
-    console.log('PAGINTION DATA', {
-      rows,
-      totalElements,
-    })
+    // console.log('PAGINTION DATA', {
+    //   rows,
+    //   totalElements,
+    // })
     this.totalElements = totalElements;
     this.rows = rows;
   }

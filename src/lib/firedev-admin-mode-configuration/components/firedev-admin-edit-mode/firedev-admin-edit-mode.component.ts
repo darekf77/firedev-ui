@@ -11,6 +11,7 @@ import 'brace/mode/css';
 import 'brace/mode/typescript';
 import 'brace/theme/github';
 import { Firedev } from 'firedev';
+import { TableColumn } from '@swimlane/ngx-datatable';
 // import 'brace/theme/twilight';
 
 //#endregion
@@ -37,7 +38,19 @@ export class FiredevAdminEditModeComponent implements OnInit {
 
   @Stor.property.in.localstorage.for(FiredevAdminEditModeComponent).withDefaultValue('')
   fileToSearch: string;
-
+  columns = [
+    {
+      prop: 'id',
+      maxWidth: 50,
+    },
+    {
+      prop: 'src'
+    },
+    {
+      prop: 'mime',
+      maxWidth: 100,
+    }
+  ] as TableColumn[];
   @Output() firedevAdminEditModeDataChanged = new EventEmitter();
   @Input() firedevAdminEditModeData: any = {};
   //#endregion

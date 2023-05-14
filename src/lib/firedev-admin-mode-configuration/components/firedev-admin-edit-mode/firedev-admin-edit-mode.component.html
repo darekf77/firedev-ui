@@ -1,4 +1,4 @@
-<mat-card  *ngIf="inited$ | async">
+<mat-card *ngIf="inited$ | async">
   <div *ngIf="!admin.selectedFile">
     Please select file from portal to edit
   </div>
@@ -23,7 +23,9 @@
     </mat-tab> -->
     <mat-tab label="Files Picker">
       <firedev-table [entity]="entity"
-                     [allowedColumns]="['src']">
+                     [allowedColumns]="['src','mime']"
+                     [columns]="columns"
+                     >
 
       </firedev-table>
     </mat-tab>

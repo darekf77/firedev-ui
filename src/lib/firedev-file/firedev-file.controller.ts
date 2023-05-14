@@ -126,7 +126,7 @@ export class FiredevFileController extends Firedev.Base.Controller<FiredevFile> 
     //#endregion
   }
 
-  //#region @websqlOnly
+  //#region @websql
   async getAssets() {
     const data = await axios({
       url: '/assets/assets-list.json',
@@ -144,6 +144,7 @@ export class FiredevFileController extends Firedev.Base.Controller<FiredevFile> 
     // await repo.save(new FiredevFile())
     // const all = await repo.find()
     if (Helpers.isWebSQL) {
+
       // console.info('START INITING DATA')
       const assets = await this.getAssets();
       console.log({

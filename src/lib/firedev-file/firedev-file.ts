@@ -166,6 +166,10 @@ export class FiredevFile extends Firedev.Base.Entity<any> {
     return realSrc ? path.extname(realSrc) : '';
   }
 
+  get mime() {
+    return Firedev.Files.MimeTypesObj[this.ext];
+  }
+
   get type() {
     for (let index = 0; index < FiredevFileTypeArr.length; index++) {
       const element = FiredevFileTypeArr[index];
