@@ -29,7 +29,8 @@
         <button mat-icon-button
                 class="admin-close-button">
           <mat-icon *ngIf="admin.draggablePopupMode"
-                    (click)="admin.draggablePopupMode =false;opened = false;wasOpenDraggablePopup = true;">close</mat-icon>
+                    (click)="admin.draggablePopupMode =false;opened = false;wasOpenDraggablePopup = true;">close
+          </mat-icon>
           <mat-icon *ngIf="!admin.draggablePopupMode"
                     (click)="toogle();">close</mat-icon>
         </button>
@@ -70,58 +71,69 @@
                      [selectedIndex]="selectedIndex"
                      (selectedIndexChange)="selectedIndex = $event">
         <mat-tab label="DB/Cache">
-          <mat-card>
-            <mat-card-header>
-              <mat-card-subtitle>WEBSQL MODE</mat-card-subtitle>
-            </mat-card-header>
-            <mat-card-content>
-              <mat-checkbox [disabled]="!isWebSQLMode"
-                            [ngModel]="admin.keepWebsqlDbDataAfterReload"
-                            (change)="admin.setKeepWebsqlDbDataAfterReload($event.checked)">
-                Don't remove data when reloading
-              </mat-checkbox>
-            </mat-card-content>
-          </mat-card>
-          <button mat-raised-button
-                  [disabled]="!isWebSQLMode"> [TODO] Reinit db with default values and reload </button>
-          <button mat-raised-button>[TODO] Start database export </button> <br>
-          <button mat-raised-button>[TODO] Import whole database </button><br>
+          <section>
+            <mat-card>
+              <mat-card-header>
+                <mat-card-subtitle>WEBSQL MODE</mat-card-subtitle>
+              </mat-card-header>
+              <mat-card-content>
+                <mat-checkbox [disabled]="!isWebSQLMode"
+                              [ngModel]="admin.keepWebsqlDbDataAfterReload"
+                              (change)="admin.setKeepWebsqlDbDataAfterReload($event.checked)">
+                  Don't remove data when reloading
+                </mat-checkbox>
+              </mat-card-content>
+            </mat-card>
+            <button mat-raised-button
+                    [disabled]="!isWebSQLMode"> [TODO] Reinit db with default values and reload </button> <br>
+            <button mat-raised-button>[TODO] Start database export </button> <br>
+            <button mat-raised-button>[TODO] Import whole database </button><br>
+          </section>
         </mat-tab>
-        <mat-tab label="Files">
 
-          <mat-checkbox [ngModel]="admin.filesEditMode"
-                        (change)="admin.setEditMode($event.checked)">Edit mode</mat-checkbox> <br>
+        <mat-tab label="Files">
+          <section>
+            <mat-checkbox [ngModel]="admin.filesEditMode"
+                          (change)="admin.setEditMode($event.checked)">Edit mode</mat-checkbox>
+          </section>
+          <!-- admin.filesEditMode: {{ admin.filesEditMode }} -->
           <firedev-admin-edit-mode *ngIf="admin.filesEditMode">
           </firedev-admin-edit-mode>
           <br>
           <hr>
-          <button mat-raised-button>[TODO] Clear Files from browser cache </button> <br>
-          <button mat-raised-button>[TODO] Start files export (as zip) </button> <br>
-          <button mat-raised-button>[TODO] Import whole database (from zip) </button><br>
-
+          <section>
+            <button mat-raised-button>[TODO] Clear Files from browser cache </button> <br>
+            <button mat-raised-button>[TODO] Start files export (as zip) </button> <br>
+            <button mat-raised-button>[TODO] Import whole database (from zip) </button><br>
+          </section>
         </mat-tab>
         <mat-tab label="Portal">
-          <mat-checkbox>[TODO] Maintenance Mode for whole portal</mat-checkbox>
+          <section>
+            <mat-checkbox>[TODO] Maintenance Mode for whole portal</mat-checkbox>
 
-          <mat-expansion-panel>
-            <mat-expansion-panel-header>
-              [TODO] Active User: 80432
-            </mat-expansion-panel-header>
-            <button mat-raised-button>[TODO] Send notification to users </button><br>
-            <button mat-raised-button>[TODO] Send email to users </button><br>
-          </mat-expansion-panel>
-          <mat-expansion-panel>
-            <mat-expansion-panel-header>
-              [TODO] Enable features
-            </mat-expansion-panel-header>
-            <mat-checkbox>[TODO] AB testing</mat-checkbox>
-            <mat-checkbox>
-              [TODO] Newsletter email question popup
-            </mat-checkbox>
-            <mat-checkbox>
-              [TODO] Promotion popup
-            </mat-checkbox>
-          </mat-expansion-panel>
+            <mat-expansion-panel>
+
+              <mat-expansion-panel-header>
+                [TODO] Active User: 80432
+              </mat-expansion-panel-header>
+              <section>
+                <button mat-raised-button>[TODO] Send notification to users </button><br>
+                <button mat-raised-button>[TODO] Send email to users </button><br>
+              </section>
+            </mat-expansion-panel>
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                [TODO] Enable features
+              </mat-expansion-panel-header>
+              <mat-checkbox>[TODO] AB testing</mat-checkbox> <br>
+              <mat-checkbox>
+                [TODO] Newsletter email question popup
+              </mat-checkbox> <br>
+              <mat-checkbox>
+                [TODO] Promotion popup
+              </mat-checkbox> <br>
+            </mat-expansion-panel>
+          </section>
         </mat-tab>
         <mat-tab label="User">
           Welcome in user managements
@@ -167,7 +179,7 @@
                       (backdropClick)="opened = false"
                       [hasBackdrop]="false">
   <mat-drawer #drawer
-              style="width: 600px;"
+              style="width: 580px;"
               [opened]="opened"
               showDesktop
               [mode]="'side'">

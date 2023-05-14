@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output } from '@angular/core';
+import { Component, OnInit, Input, Output, TemplateRef, EventEmitter } from '@angular/core';
 import * as _ from 'lodash';
 import { Morphi } from 'morphi';
 import { Log, Level } from 'ng2-logger';
@@ -8,16 +8,20 @@ import { Firedev } from 'firedev';
 import { CLASS } from 'typescript-class-helpers';
 import { firstValueFrom } from 'rxjs';
 import { TableColumn } from '@swimlane/ngx-datatable'
+import { PageEvent } from '@angular/material/paginator';
+import { MtxGridColumn } from '@ng-matero/extensions/grid';
 
 const log = Log.create('Table wrapper');
 const defaultColums = [
   {
-    prop: 'id'
+    header: 'ID',
+    field: 'id'
   },
   {
-    prop: 'name',
+    header: 'NAME',
+    field: 'name',
   }
-] as TableColumn[];
+] as MtxGridColumn[];
 
 @Component({
   selector: 'firedev-table',
@@ -26,17 +30,15 @@ const defaultColums = [
 })
 export class FiredevTableComponent {
 
+  isLoading = false;
   @Input() pageNumber: number = 1;
   @Input() pageSize: number = 5;
   @Input() allowedColumns: string[] = [];
   @Input() entity: typeof Firedev.Base.Entity;
-
+  expandable: boolean = false;
+  @Input() expansionTemplate: TemplateRef<any>;
+  @Output() expansionChange = new EventEmitter();
   totalElements: number = 100;
-
-  public messages = {
-    emptyMessage: undefined,
-    totalMessage: undefined
-  };
 
   @Input() rows = _.times(50, (id) => {
     return {
@@ -46,23 +48,21 @@ export class FiredevTableComponent {
   });
 
 
-  @Input() columns = defaultColums;
+  @Input() columns = defaultColums as MtxGridColumn[];
 
   constructor() { }
 
-  async setSorting(e: {}) {
-    log.i('sorting', e);
-  }
-
-
-  async setPage(e: { count: number, pageSize: number, limit: number, offset: number }) {
-    // this.arrayDataConfig.set.pagination.pageNumber(e.offset + 1);
-    this.pageNumber = e.offset + 1;
+  async getNextPage(e: PageEvent) {
+    console.log({
+      e
+    });
+    this.pageNumber = e.pageIndex + 1;
+    this.pageSize = e.pageSize;
     await this.retriveData();
   }
 
   async ngOnInit() {
-
+    this.expandable = !!this.expansionTemplate;
     // this.arrayDataConfig.set.pagination.rowDisplayed(5);
     log.i('this.columns,', this.columns);
     const columnsConfigSameAsDefault = _.isEqual(this.columns, defaultColums);
@@ -79,30 +79,37 @@ export class FiredevTableComponent {
           let columns = props
             .filter(prop => this.allowedColumns.length > 0 ? this.allowedColumns.includes(prop) : true)
             .map(prop => {
-              return { prop };
+              return {
+                header: _.upperCase(prop),
+                field: prop,
+              } as MtxGridColumn;
             });
 
           const extra = this.allowedColumns.filter(f => !props.includes(f));
           columns = [
             ...columns,
             ...extra.map((prop) => {
-              return { prop };
+              return {
+                header: _.upperCase(prop),
+                field: prop,
+              } as MtxGridColumn;
             })
           ];
 
-          console.log({
-            extra
-          });
+          // console.log({
+          //   extra
+          // });
           this.columns = columns;
-          console.log('columns', columns);
         } catch (error) {
           console.error(error)
         }
       }
+
     })
     await this.retriveData();
   }
   async retriveData() { // @ts-ignore
+    this.isLoading = true;
     // console.log('PAGINTION FETCH DATA START!')
     const controller = (this.entity.ctrl as Firedev.CRUD.Base<any>);
     const data = await controller.pagination(this.pageNumber, this.pageSize).received;
@@ -117,6 +124,11 @@ export class FiredevTableComponent {
     // })
     this.totalElements = totalElements;
     this.rows = rows;
+    this.isLoading = false;
+  }
+
+  expansionRow(e) {
+    this.expansionChange.next(e);
   }
 
   onTableContextMenu(e) {

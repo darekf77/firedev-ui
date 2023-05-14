@@ -12,6 +12,7 @@ import 'brace/mode/typescript';
 import 'brace/theme/github';
 import { Firedev } from 'firedev';
 import { TableColumn } from '@swimlane/ngx-datatable';
+import { MtxGridColumn } from '@ng-matero/extensions/grid';
 // import 'brace/theme/twilight';
 
 //#endregion
@@ -40,17 +41,22 @@ export class FiredevAdminEditModeComponent implements OnInit {
   fileToSearch: string;
   columns = [
     {
-      prop: 'id',
-      maxWidth: 50,
-    },
-    {
-      prop: 'src'
-    },
-    {
-      prop: 'mime',
+      header: 'ID',
+      field: 'id',
       maxWidth: 100,
+      showExpand: true
+    },
+    {
+      header: 'src',
+      field: 'src',
+      maxWidth: 250
+    },
+    {
+      header: 'MIME',
+      field: 'mime',
+      maxWidth: 120
     }
-  ] as TableColumn[];
+  ] as MtxGridColumn[];
   @Output() firedevAdminEditModeDataChanged = new EventEmitter();
   @Input() firedevAdminEditModeData: any = {};
   //#endregion
@@ -96,6 +102,10 @@ export class FiredevAdminEditModeComponent implements OnInit {
   //#endregion
 
   //#region methods
+
+  expansionRow(e) {
+    console.log(e)
+  }
   refresFilesList() {
     // console.log('refresh files list')
     this.files = this.admin.currentFiles;

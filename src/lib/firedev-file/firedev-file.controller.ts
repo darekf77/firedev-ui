@@ -1,4 +1,4 @@
-import { Firedev } from 'firedev';
+import { Firedev, Project } from 'firedev';
 
 import { Repository } from 'firedev-typeorm'; // must be
 import { FiredevFile } from './firedev-file';
@@ -128,6 +128,15 @@ export class FiredevFileController extends Firedev.Base.Controller<FiredevFile> 
 
   //#region @websql
   async getAssets() {
+    //#region @backend
+    if (Helpers.isNode) {
+      const proj = Project.From(process.cwd()) as Project;
+      const assetsList = Helpers.readJson(proj.pathFor(`tmp-apps-for-dist/firedev-ui/src/assets/assets-list.json`)) as string[];
+
+      // console.log({ proj, env: global['ENV'], assetsList })
+      return assetsList;
+    }
+    //#endregion
     const data = await axios({
       url: '/assets/assets-list.json',
       method: 'GET',
@@ -143,13 +152,14 @@ export class FiredevFileController extends Firedev.Base.Controller<FiredevFile> 
     const repo = this.connection.getRepository(this.entity);
     // await repo.save(new FiredevFile())
     // const all = await repo.find()
-    if (Helpers.isWebSQL) {
+
+    if (Helpers.isWebSQL || Helpers.isNode) {
 
       // console.info('START INITING DATA')
       const assets = await this.getAssets();
-      console.log({
-        assets
-      })
+      // console.log({
+      //   assets
+      // })
       for (let index = 0; index < assets.length; index++) {
         const src = assets[index];
         await repo.save(FiredevFile.from({
@@ -157,9 +167,9 @@ export class FiredevFileController extends Firedev.Base.Controller<FiredevFile> 
         }))
       }
       const all = await repo.find();
-      console.log({
-        all
-      })
+      // console.log({
+      //   all
+      // })
       // console.info('START INITING DONE!')
     }
   }
