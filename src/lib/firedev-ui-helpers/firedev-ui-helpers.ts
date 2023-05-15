@@ -12,11 +12,11 @@ import type { Firedev } from "firedev";
  * File -> on browser side for easy manipulation, download link
  */
 export namespace FiredevUIHelpers {
-  export function arrayBufferToBlob(buffer, type) {
-    return new Blob([buffer], { type: type });
+  export function arrayBufferToBlob(buffer, contentType: Firedev.Http.ContentType) {
+    return new Blob([buffer], { type: contentType });
   }
 
-  export function blobToArrayBuffer(blob) {
+  export function blobToArrayBuffer(blob: Blob) {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.addEventListener('loadend', () => {
@@ -27,7 +27,12 @@ export namespace FiredevUIHelpers {
     });
   }
 
-  export function blobToBase64(blob) {
+  /**
+   * it is revers to base64toBlob
+   * @param blob
+   * @returns
+   */
+  export function blobToBase64(blob: Blob) {
     return new Promise<any>((resolve, _) => {
       const reader = new FileReader();
       reader.onloadend = () => resolve(reader.result);
@@ -35,25 +40,38 @@ export namespace FiredevUIHelpers {
     });
   }
 
-  export function base64toBlob(base64Data, contentType: Firedev.Http.ContentType) {
-    contentType = (contentType || '') as any;
-    var sliceSize = 1024;
-    var byteCharacters = atob(base64Data);
-    var bytesLength = byteCharacters.length;
-    var slicesCount = Math.ceil(bytesLength / sliceSize);
-    var byteArrays = new Array(slicesCount);
+  /**
+   * it is revers to blobToBase64()
+   * @param base64Data
+   * @returns
+   */
+  export function base64toBlob(base64Data: string) {
+    const m = /^data:(.+?);base64,(.+)$/.exec(base64Data);
+    if (!m) {
+      throw new Error(`[firedev-framework][base64toBlob] Not a base64 blob [${base64Data}]`)
+    }
+    // tslint:disable-next-line:prefer-const
+    let [__, content_type, file_base64] = m;
+    content_type = (content_type || '') as any;
+    base64Data = file_base64;
+    const sliceSize = 1024;
+    const byteCharacters = atob(base64Data);
+    const bytesLength = byteCharacters.length;
+    const slicesCount = Math.ceil(bytesLength / sliceSize);
+    const byteArrays = new Array(slicesCount);
 
-    for (var sliceIndex = 0; sliceIndex < slicesCount; ++sliceIndex) {
-      var begin = sliceIndex * sliceSize;
-      var end = Math.min(begin + sliceSize, bytesLength);
+    for (let sliceIndex = 0; sliceIndex < slicesCount; ++sliceIndex) {
+      const begin = sliceIndex * sliceSize;
+      const end = Math.min(begin + sliceSize, bytesLength);
 
-      var bytes = new Array(end - begin);
-      for (var offset = begin, i = 0; offset < end; ++i, ++offset) {
+      const bytes = new Array(end - begin);
+      // tslint:disable-next-line:one-variable-per-declaration
+      for (let offset = begin, i = 0; offset < end; ++i, ++offset) {
         bytes[i] = byteCharacters[offset].charCodeAt(0);
       }
       byteArrays[sliceIndex] = new Uint8Array(bytes);
     }
-    return new Blob(byteArrays, { type: contentType });
+    return new Blob(byteArrays, { type: content_type });
   }
 
   export async function fileToBlob(file: File) {
@@ -63,14 +81,9 @@ export namespace FiredevUIHelpers {
   export async function blobToFile(blob: Blob, nameForFile = 'my-file-name') {
     if (!nameForFile) {
       nameForFile = nameForFile + (new Date()).getTime();
-    }
-    // const m = /^data:(.+?);base64,(.+)$/.exec(img_base64)
-    // if (!m) {
-    //   throw new Error(`[firedev-framework] Not a base64 image [${img_base64}]`)
-    // }
-    // const [_, content_type, file_base64] = m
-    return new File([blob], nameForFile)
-  };
+      return new File([blob], nameForFile)
+    };
+  }
 
 
   export async function getBlobFrom(url): Promise<Blob> {
@@ -79,7 +92,6 @@ export namespace FiredevUIHelpers {
       method: 'get',
       responseType: 'blob'
     });
-
     return response.data;
   }
 
