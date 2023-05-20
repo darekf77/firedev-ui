@@ -6,8 +6,7 @@ import { Router } from '@angular/router';
 import { Stor } from 'firedev-storage';
 import { Firedev } from 'firedev';
 import { CLASS } from 'typescript-class-helpers';
-import { firstValueFrom } from 'rxjs';
-import { TableColumn } from '@swimlane/ngx-datatable'
+
 import { PageEvent } from '@angular/material/paginator';
 import { MtxGridColumn } from '@ng-matero/extensions/grid';
 

@@ -45,15 +45,17 @@ export namespace FiredevUIHelpers {
    * @param base64Data
    * @returns
    */
-  export function base64toBlob(base64Data: string) {
-    const m = /^data:(.+?);base64,(.+)$/.exec(base64Data);
-    if (!m) {
-      throw new Error(`[firedev-framework][base64toBlob] Not a base64 blob [${base64Data}]`)
+  export function base64toBlob(base64Data: string, contentTypeOverride?: Firedev.Http.ContentType) {
+    if (!contentTypeOverride) {
+      const m = /^data:(.+?);base64,(.+)$/.exec(base64Data);
+      if (!m) {
+        throw new Error(`[firedev-framework][base64toBlob] Not a base64 blob [${base64Data}]`)
+      }
+      // tslint:disable-next-line:prefer-const
+      var [__, content_type, file_base64] = m;
     }
-    // tslint:disable-next-line:prefer-const
-    let [__, content_type, file_base64] = m;
-    content_type = (content_type || '') as any;
-    base64Data = file_base64;
+    content_type = (contentTypeOverride ? contentTypeOverride : content_type || '') as any;
+    base64Data = contentTypeOverride ? base64Data : file_base64;
     const sliceSize = 1024;
     const byteCharacters = atob(base64Data);
     const bytesLength = byteCharacters.length;

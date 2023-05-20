@@ -11,7 +11,6 @@ import 'brace/mode/css';
 import 'brace/mode/typescript';
 import 'brace/theme/github';
 import { Firedev } from 'firedev';
-import { TableColumn } from '@swimlane/ngx-datatable';
 import { MtxGridColumn } from '@ng-matero/extensions/grid';
 // import 'brace/theme/twilight';
 
