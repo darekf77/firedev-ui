@@ -8,6 +8,8 @@ import { FiredevFileModule } from '../firedev-file';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FiredevAdminEditModeModule } from './components/firedev-admin-edit-mode';
 import { NgScrollbarModule } from 'ngx-scrollbar';
+import { FiredevProgressBarModule } from '../firedev-progress-bar';
+import { FiredevNotificationsModule } from '../firedev-notifications';
 
 @NgModule({
   imports: [
@@ -17,6 +19,8 @@ import { NgScrollbarModule } from 'ngx-scrollbar';
     NgScrollbarModule,
     FiredevAdminEditModeModule,
     FiredevFileModule,
+    FiredevProgressBarModule,
+    FiredevNotificationsModule,
     FiredevFullMaterialModule, // TODO import only partial things
   ],
   declarations: [FiredevAdminModeConfigurationComponent],

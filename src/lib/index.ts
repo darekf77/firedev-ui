@@ -6,6 +6,8 @@ export * from './firedev-github-fork-me-ribbon';
 export * from './firedev-table';
 export * from './firedev-ui-helpers';
 export * from './firedev-websql-control-panel';
+export * from './firedev-progress-bar';
+export * from './firedev-notifications';
 //#region @browser
 export * from './firedev-full-material.module';
 //#endregion

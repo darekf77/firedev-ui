@@ -10,7 +10,9 @@ import { CLASS } from 'typescript-class-helpers';
 import { PageEvent } from '@angular/material/paginator';
 import { MtxGridColumn } from '@ng-matero/extensions/grid';
 
-const log = Log.create('Table wrapper');
+const log = Log.create('Table wrapper',
+  Level.__NOTHING
+);
 const defaultColums = [
   {
     header: 'ID',
