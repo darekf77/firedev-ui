@@ -17,7 +17,7 @@ import 'brace';
 import 'brace/mode/text';
 import 'brace/theme/github';
 
-
+// Firedev.Websql.useFakeTimeout(5000)
 
 const DEFAULT_ACE_CONFIG: AceConfigInterface = {
 };

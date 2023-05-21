@@ -61,7 +61,10 @@ export class FiredevProgressBarComponent implements OnInit {
 
       const update = e => {
         // NProgress.inc(calculatePercentage(e.loaded, e.total))
-        this.labProgress.inc(calculatePercentage(e.loaded, e.total))
+
+        const percentage = calculatePercentage(e.loaded, e.total) * 100;
+        // console.log(`loaded: ${e.loaded}, total: ${e.total} , pecent: ${percentage}`)
+        this.labProgress.inc(percentage)
       }
       instance.defaults.onDownloadProgress = update
       instance.defaults.onUploadProgress = update
@@ -99,11 +102,47 @@ export class FiredevProgressBarComponent implements OnInit {
       window[SYMBOL.WEBSQL_REST_PROGRESS_FUN] = new Subject();
     }
     updateFun = window[SYMBOL.WEBSQL_REST_PROGRESS_FUN];
+
+    let startFun: Subject<void> = window[SYMBOL.WEBSQL_REST_PROGRESS_FUN_START];
+    if (!window[SYMBOL.WEBSQL_REST_PROGRESS_FUN_START]) {
+      window[SYMBOL.WEBSQL_REST_PROGRESS_FUN_START] = new Subject();
+    }
+    startFun = window[SYMBOL.WEBSQL_REST_PROGRESS_FUN_START];
+
+    let doneFun: Subject<void> = window[SYMBOL.WEBSQL_REST_PROGRESS_FUN_DONE];
+    if (!window[SYMBOL.WEBSQL_REST_PROGRESS_FUN_DONE]) {
+      window[SYMBOL.WEBSQL_REST_PROGRESS_FUN_DONE] = new Subject();
+    }
+    doneFun = window[SYMBOL.WEBSQL_REST_PROGRESS_FUN_DONE];
+
     this.handlers.push(
-      updateFun.subscribe((v) => {
-          // @LAST handl update: done, star
+      updateFun.subscribe((loaded) => {
+        // @LAST handl update: done, star
+        // console.log(`update: ${loaded}`)
+        const total = 100;
+        const percentage = calculatePercentage(loaded, total) * 100;
+        // console.log(`set pecentage: ${percentage}`)
+        this.labProgress.set(percentage)
       })
-    )
+    );
+    this.handlers.push(
+      startFun.subscribe(() => {
+        // requestsCounter++;
+        // console.log('START WEBSQL REQUEST')
+        this.labProgress.start();
+      })
+    );
+
+    this.handlers.push(
+      doneFun.subscribe(() => {
+        // if ((--requestsCounter) === 0) {
+        // console.log('DONE WEBSQL REQUEST')
+        this.labProgress.complete()
+        // NProgress.done()
+        // }
+      })
+    );
+
     //#endregion
   }
 
