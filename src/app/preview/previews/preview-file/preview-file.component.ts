@@ -183,7 +183,7 @@ export class PreviewFileComponent implements OnInit {
 
   async sendFile() {
 
-    const resp = await FiredevFile.upload(this.files);
+    const resp = await FiredevFile.uploadFiles(this.files);
     console.log('response firedevfile', resp)
   }
 

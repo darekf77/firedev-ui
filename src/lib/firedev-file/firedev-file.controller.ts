@@ -1,34 +1,37 @@
+//#region imports
 import { Firedev, Project } from 'firedev';
-
 import { Repository } from 'firedev-typeorm'; // must be
 import { FiredevFile } from './firedev-file';
 import { crossPlatformPath, Helpers, path, _ } from 'tnp-core';
+import axios from 'axios';
 //#region @backend
 import * as FormData from 'form-data';
 import { FiredevUploadedFile } from '../firedev.models';
 const pathDest = path.join(process.cwd(), 'src/assets/private/uploaded');
-//#endregion
-//#region @backend
 import { Blob } from 'node:buffer';
 //#endregion
-import axios from 'axios';
+//#endregion
 
 export const FiredevFileControllerEntity = Symbol();
 
 @Firedev.Controller({
+  //#region controller config
   className: 'FiredevFileController',
   entity: FiredevFile
+  //#endregion
 })
 export class FiredevFileController extends Firedev.Base.Controller<FiredevFile> {
   [FiredevFileControllerEntity] = FiredevFile;
 
-  //#region @websql
-  private async getRepo() {
-    return await this.connection.getRepository<FiredevFile>(this[FiredevFileControllerEntity]);
+
+  //#region methods
+
+  @Firedev.Http.GET()
+  getOneBlobless() {
+
   }
-  //#endregion
 
-
+  //#region methods / __ upload
   /**
    * in angular:
    * const formData = new FormData();
@@ -85,9 +88,30 @@ export class FiredevFileController extends Firedev.Base.Controller<FiredevFile> 
     }
     //#endregion
   }
+  //#endregion
 
+  //#region methods / init example data
   //#region @websql
-  async getAssets() {
+  async initExampleDbData() {
+    const repo = this.connection.getRepository(this.entity);
+    const assets = await this.getAssets();
+    for (let index = 0; index < assets.length; index++) {
+      const src = assets[index];
+      await repo.save(FiredevFile.from({
+        src,
+      }))
+    }
+  }
+  //#endregion
+  //#endregion
+
+  //#endregion
+
+  //#region private methods
+
+  //#region private methods / get assets
+  //#region @websql
+  private async getAssets() {
     //#region @backend
     if (Helpers.isNode) {
       const proj = Project.From(process.cwd()) as Project;  // TODO
@@ -106,18 +130,16 @@ export class FiredevFileController extends Firedev.Base.Controller<FiredevFile> 
     return data.data as string[]
   }
   //#endregion
+  //#endregion
 
+  //#region private methods / get repo
   //#region @websql
-  async initExampleDbData() {
-    const repo = this.connection.getRepository(this.entity);
-    const assets = await this.getAssets();
-    for (let index = 0; index < assets.length; index++) {
-      const src = assets[index];
-      await repo.save(FiredevFile.from({
-        src,
-      }))
-    }
+  private async getRepo() {
+    return await this.connection.getRepository<FiredevFile>(this[FiredevFileControllerEntity]);
   }
+  //#endregion
+  //#endregion
+
   //#endregion
 
 }

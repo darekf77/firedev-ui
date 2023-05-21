@@ -1,4 +1,4 @@
-//#region import
+//#region imports
 import { Firedev } from 'firedev';
 import { path, _ } from 'tnp-core';
 import type { FiredevFileController } from './firedev-file.controller';
@@ -10,6 +10,7 @@ import { Blob } from 'node:buffer';
 //#endregion
 import { FiredevUIHelpers } from '../firedev-ui-helpers';
 //#endregion
+
 @Firedev.Entity<FiredevFile>({
   //#region entity config
   className: 'FiredevFile',
@@ -22,7 +23,11 @@ export class FiredevFile extends Firedev.Base.Entity<any> {
 
   //#region static
 
+  //#region static / ctrl
   static ctrl: FiredevFileController;
+  //#endregion
+
+  //#region static / from
   static from(obj: Omit<Partial<FiredevFile>, 'ctrl'>) {
     let instance = FiredevFile.empty();
     const clonedObj = _.cloneDeep(obj) as IFiredevFileType;
@@ -35,13 +40,16 @@ export class FiredevFile extends Firedev.Base.Entity<any> {
     }
     return instance;
   }
+  //#endregion
 
+  //#region static / empty
   static empty() {
     return _.merge(new FiredevFile(), defaultModelValues);
   }
+  //#endregion
 
-
-  static async upload(files: FileList | File[], options?: { dontRestoreBlob?: boolean; }): Promise<FiredevFile[]> {
+  //#region static / upload files
+  static async uploadFiles(files: FileList | File[], options?: { dontRestoreBlob?: boolean; }): Promise<FiredevFile[]> {
     const { dontRestoreBlob } = options || {};
     const firedevFiles: FiredevFile[] = [];
     for (let index = 0; index < files.length; index++) {
@@ -58,8 +66,10 @@ export class FiredevFile extends Firedev.Base.Entity<any> {
     }
     return firedevFiles;
   }
+  //#endregion
 
-  private is(extensionOrMimeType: string, isWhat: IFiredevFileType): boolean {
+  //#region static / is
+  private static is(extensionOrMimeType: string, isWhat: IFiredevFileType): boolean {
     if (isWhat === 'css') {
       // @ts-ignore
       isWhat = 'text/css'
@@ -85,6 +95,8 @@ export class FiredevFile extends Firedev.Base.Entity<any> {
   }
   //#endregion
 
+  //#endregion
+
   //#region constructor
   private constructor(...args) { // @ts-ignore
     super(...args);
@@ -92,17 +104,27 @@ export class FiredevFile extends Firedev.Base.Entity<any> {
   //#endregion
 
   //#region fields & getters
+
+  //#region fields & getters / ctrl
   ctrl: FiredevFileController;
+  //#endregion
+
+  //#region fields & getters / readonly
   readonly = false;
+  //#endregion
+
+  //#region fields & getters / file
   file: File;
+  //#endregion
 
-  //#region fields & getters / table columns
-
+  //#region fields & getters / id
   //#region @websql
   @Firedev.Orm.Column.Generated()
   //#endregion
   id: string;
+  //#endregion
 
+  //#region fields & getters / src
   //#region @websql
   @Firedev.Orm.Column.Custom({
     type: 'varchar',
@@ -111,12 +133,16 @@ export class FiredevFile extends Firedev.Base.Entity<any> {
   })
   //#endregion
   src: string;
+  //#endregion
 
+  //#region fields & getters / css
   //#region @websql
   @Firedev.Orm.Column.SimpleJson()
   //#endregion
   css: FiredevFileCss;
+  //#endregion
 
+  //#region fields & getters / default view as
   //#region @websql
   @Firedev.Orm.Column.Custom({
     type: 'varchar',
@@ -125,7 +151,9 @@ export class FiredevFile extends Firedev.Base.Entity<any> {
   })
   //#endregion
   defaultViewAs: FiredevFileDefaultAs;
+  //#endregion
 
+  //#region fields & getters / content type
   //#region @websql
   @Firedev.Orm.Column.Custom({
     type: 'varchar',
@@ -134,7 +162,9 @@ export class FiredevFile extends Firedev.Base.Entity<any> {
   })
   //#endregion
   contentType: Firedev.Http.ContentType;
+  //#endregion
 
+  //#region fields & getters / version
   //#region @websql
   @Firedev.Orm.Column.Custom({
     type: 'varchar',
@@ -143,7 +173,9 @@ export class FiredevFile extends Firedev.Base.Entity<any> {
   })
   //#endregion
   version: Firedev.Files.MimeType;
+  //#endregion
 
+  //#region fields & getters / blob
   //#region @websql
   @Firedev.Orm.Column.Custom({
     type: 'blob',
@@ -158,6 +190,7 @@ export class FiredevFile extends Firedev.Base.Entity<any> {
   blob: Blob;
   //#endregion
 
+  //#region fields & getters / ext
   get ext() {
     if (this.defaultViewAs === 'css-tag') {
       return '.css';
@@ -165,22 +198,30 @@ export class FiredevFile extends Firedev.Base.Entity<any> {
     const realSrc = _.first(this.src?.split('?'))
     return realSrc ? path.extname(realSrc) : '';
   }
+  //#endregion
 
+  //#region fields & getters / mime
   get mime() {
     return Firedev.Files.MimeTypesObj[this.ext];
   }
+  //#endregion
 
+  //#region fields & getters / type
   get type() {
     for (let index = 0; index < FiredevFileTypeArr.length; index++) {
       const element = FiredevFileTypeArr[index];
-      if (this.is(this.ext, element)) {
+      if (FiredevFile.is(this.ext, element)) {
         return element;
       }
     }
   }
   //#endregion
 
+  //#endregion
+
   //#region methods
+
+  //#region methods / get default view
   getDefaultView(): FiredevFileDefaultAs {
     if (this.type === 'js') {
       return 'script-tag';
@@ -201,9 +242,13 @@ export class FiredevFile extends Firedev.Base.Entity<any> {
       return 'json-editor';
     }
   }
+  //#endregion
 
+  //#region methods / get content type
   getContentType(): Firedev.Http.ContentType {
     return Firedev.Files.MimeTypesObj[this.ext] as Firedev.Http.ContentType;
   }
+  //#endregion
+
   //#endregion
 }
