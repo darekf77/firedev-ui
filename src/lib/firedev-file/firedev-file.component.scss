@@ -2,8 +2,21 @@
   position: relative;
 }
 
-.normal-image {
+.wrapper {
   position: relative;
+  text-align: center;
+
+  audio {
+    display: inline-block;
+  }
+
+  article {
+    text-align: initial;
+  }
+}
+
+article {
+  overflow: scroll;
 }
 
 @mixin edit-hover {
@@ -15,7 +28,7 @@
   @include edit-hover;
 }
 
-.firedev-edit-mode-image {
+.firedev-file-edit-mode {
   >div {
     background-color: transparent;
 

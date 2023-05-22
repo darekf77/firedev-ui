@@ -124,7 +124,7 @@ export class FiredevAdmin {
   }
 
   unregister(file: FiredevFile) {
-    if (file?.src) {
+    if (file?.src && this.registeredFiles[file.src]) {
       if (this.registeredFiles[file.src].refCount > 1) {
         this.registeredFiles[file.src].refCount--;
       } else {

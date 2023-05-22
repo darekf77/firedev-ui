@@ -6,10 +6,7 @@ import { FiredevFile, FiredevUIHelpers } from '../../../../lib';
 import * as localForge from 'localforage';
 import axios from 'axios';
 import hlsj from 'highlight.js/lib/core'
-import 'brace';
-import 'brace/mode/typescript';
-// import 'brace/theme/github';
-import 'brace/theme/twilight';
+
 
 const stor = localForge.createInstance({
   driver: localForge.INDEXEDDB,
@@ -150,8 +147,8 @@ export class PreviewFileComponent implements OnInit {
       let file = files.item(i)
       this.files.push(file);
       console.log(file.name);
-      const blobString = await FiredevUIHelpers.blobToBase64(file)
-      this.images.push(blobString);
+      // const blobString = await FiredevUIHelpers.blobToBase64(file)
+      // this.images.push(blobString);
 
       // elem.files = null;
       // var reader = new FileReader();

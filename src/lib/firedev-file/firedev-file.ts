@@ -29,7 +29,7 @@ export class FiredevFile extends Firedev.Base.Entity<any> {
 
   //#region static / from
   static from(obj: Omit<Partial<FiredevFile>, 'ctrl'>) {
-    let instance = FiredevFile.empty();
+    let instance = FiredevFile.empty(); // @ts-ignore
     const clonedObj = _.cloneDeep(obj) as IFiredevFileType;
     instance = _.merge(instance, clonedObj);
     if (!instance.defaultViewAs) {
@@ -58,7 +58,7 @@ export class FiredevFile extends Firedev.Base.Entity<any> {
       formData.append(`file${index + 1}`, file);
       const resp = await this.ctrl.__upload(formData as any).received;
       const firedevFile = resp.body.json;
-      firedevFile.file = file;
+      firedevFile.tempFile = file;
       if (!dontRestoreBlob) {
         firedevFile.blob = await FiredevUIHelpers.fileToBlob(file);
       }
@@ -86,6 +86,11 @@ export class FiredevFile extends Firedev.Base.Entity<any> {
       // @ts-ignore
       isWhat = 'text/html';
     }
+    if (isWhat === 'json') {
+      // @ts-ignore
+      isWhat = 'application/json';
+    }
+
     const isExt = extensionOrMimeType.startsWith('.');
     if (isExt) {
       const mime = Firedev.Files.MimeTypesObj[extensionOrMimeType];
@@ -113,9 +118,18 @@ export class FiredevFile extends Firedev.Base.Entity<any> {
   readonly = false;
   //#endregion
 
-  //#region fields & getters / file
-  file: File;
+  //#region fields & getters / temp file
+  tempFile?: File;
   //#endregion
+
+  //#region fields & getters / temp text
+  tempText?: string;
+
+  //#endregion
+  //#region fields & getters / temp link
+  tempLink?: string;
+  //#endregion
+
 
   //#region fields & getters / id
   //#region @websql
@@ -207,7 +221,7 @@ export class FiredevFile extends Firedev.Base.Entity<any> {
   //#endregion
 
   //#region fields & getters / type
-  get type() {
+  get type(): IFiredevFileType {
     for (let index = 0; index < FiredevFileTypeArr.length; index++) {
       const element = FiredevFileTypeArr[index];
       if (FiredevFile.is(this.ext, element)) {
@@ -231,6 +245,9 @@ export class FiredevFile extends Firedev.Base.Entity<any> {
     }
     if (this.type === 'audio') {
       return 'audio-tag';
+    }
+    if (this.type === 'video') {
+      return 'video-tag';
     }
     if (this.type === 'image') {
       return 'img-tag';
