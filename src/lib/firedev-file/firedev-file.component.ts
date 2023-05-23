@@ -24,10 +24,12 @@ const DEFAULT_WIDTH = 244;
 const DEFAULT_HEIGHT = 177;
 
 @Component({
+  //#region component options
   selector: 'firedev-file',
   templateUrl: './firedev-file.component.html',
   styleUrls: ['./firedev-file.component.scss'],
   providers: [FiredevFileService]
+  //#endregion
 })
 export class FiredevFileComponent implements OnInit {
 
@@ -39,31 +41,46 @@ export class FiredevFileComponent implements OnInit {
   //#endregion
 
   //#region fields & getters
+  tempFile?: File;
+  tempText?: string;
+  tempLink?: string;
+  admin = (window['firedev'] as FiredevAdmin);
   @Input() file: FiredevFile;
   @Input() insideAdmin = false;
-  admin = (window['firedev'] as FiredevAdmin);
   @Input() @HostBinding('style.width.px') @Input() width: number = DEFAULT_WIDTH;
   @Input() @HostBinding('style.height.px') @Input() height: number = DEFAULT_HEIGHT;
   @Input() viewAs: FiredevFileDefaultAs;
   @Input() readonly src: string;
-
   @ViewChild('audio') audio: any;
   @ViewChild('video') video: any;
   @ViewChild('image') image: any;
   @ViewChild('html') html: any;
   @ViewChild('json') json: any;
+  @HostBinding('style.display') styleDisplay: 'block' | 'inline-block' | 'none' = 'inline-block';
 
+  get FiredevFile() {
+    return FiredevFile;
+  }
+
+  //#region fields & getters / debouce init
+  debounceInit = _.debounce(async () => {
+    await this.init(false)
+  }, 200)
+  //#endregion
+
+  //#region fields & getters / native element
   get nativeElement(): any {
     // const native = (this[this?.file.type] as ElementRef)?.nativeElement;
     // return native ? native : this[this?.file?.type];
     return this[this?.file?.type];
   }
+  //#endregion
 
-  @HostBinding('style.display') styleDisplay: 'block' | 'inline-block' | 'none' = 'inline-block';
-
+  //#region fields & getters / is selected in admin
   get isSelectedInAdmin() {
     return this.admin?.selectedFile?.src === this.file?.src;
   }
+  //#endregion
 
   //#endregion
 
@@ -78,19 +95,20 @@ export class FiredevFileComponent implements OnInit {
 
   //#region hooks
 
-  debounceInit = _.debounce(async () => {
-    await this.init(false)
-  }, 200)
-
+  //#region hooks / on changes
   ngOnChanges(changes): void {
     // console.log(changes)
     this.debounceInit()
   }
+  //#endregion
 
+  //#region hooks / on init
   async ngOnInit() {
     await this.init(true);
   }
+  //#endregion
 
+  //#region hooks / after view init
   async ngAfterViewInit() {
     //Called after ngAfterContentInit when the component's view has been initialized. Applies to components only.
     //Add 'implements AfterViewInit' to the class.
@@ -101,7 +119,9 @@ export class FiredevFileComponent implements OnInit {
     //   native: this.nativeElement
     // })
   }
+  //#endregion
 
+  //#region hooks / on destroy
   ngOnDestroy(): void {
     //Called once, before the instance is destroyed.
     //Add 'implements OnDestroy' to the class.
@@ -109,11 +129,31 @@ export class FiredevFileComponent implements OnInit {
       this.admin.unregister(this.file);
     }
   }
+  //#endregion
 
   //#endregion
 
   //#region methods
 
+  static inProcessOfDownload = {};
+
+  async getFile() {
+
+    if (this.src.endsWith('arnold.png')) {
+      debugger
+      const fileBySrcNoBlob = await this.FiredevFile.getBloblessBy(this.src);
+      debugger
+
+      const fileBlob = await this.FiredevFile.getBlobOnlyBy(this.src);
+      debugger
+    }
+
+    return FiredevFile.from({
+      src: this.src,
+    });
+  }
+
+  //#region methods / init
   async init(firstTime: boolean) {
 
     if (this.file) {
@@ -121,36 +161,37 @@ export class FiredevFileComponent implements OnInit {
         if (!this.file.blob) {
           this.file.blob = await FiredevUIHelpers.getBlobFrom(`${window.location.origin}${this.src}`);
         }
-        if (!this.file.tempFile) {
-          this.file.tempFile = new File([this.file.blob], path.basename(_.first(this.src.split('?'))));
+        if (!this.tempFile) {
+          this.tempFile = new File([this.file.blob], path.basename(_.first(this.src.split('?'))));
         }
       }
       if (this.file.type === 'html' || this.file.type === 'json') {
         if (!this.file.blob) {
           this.file.blob = await FiredevUIHelpers.getBlobFrom(`${window.location.origin}${this.src}`);
         }
-        if (!this.file.tempText) {
-          this.file.tempText = await this.file.blob.text()
+        if (!this.tempText) {
+          this.tempText = await (this.file.blob as Blob).text()
         }
       }
       if (this.file.type === 'video' || this.file.type === 'audio') {
-        this.file.tempLink = this.file.src;
+        this.tempLink = this.file.src;
       }
     } else {
+
+
+
       // @ts-ignore
-      this.file = FiredevFile.from({
-        src: this.src,
-      });
+      this.file = await this.getFile()
       if (this.file.type === 'image') {
         this.file.blob = await FiredevUIHelpers.getBlobFrom(`${window.location.origin}${this.src}`);
-        this.file.tempFile = new File([this.file.blob], path.basename(_.first(this.src.split('?'))));
+        this.tempFile = new File([this.file.blob], path.basename(_.first(this.src.split('?'))));
       }
       if (this.file.type === 'html' || this.file.type === 'json') {
         this.file.blob = await FiredevUIHelpers.getBlobFrom(`${window.location.origin}${this.src}`);
-        this.file.tempText = await this.file.blob.text()
+        this.tempText = await this.file.blob.text()
       }
       if (this.file.type === 'video' || this.file.type === 'audio') {
-        this.file.tempLink = this.file.src; //  URL.createObjectURL(this.file.blob);
+        this.tempLink = this.file.src; //  URL.createObjectURL(this.file.blob);
       }
     }
 
@@ -206,11 +247,15 @@ export class FiredevFileComponent implements OnInit {
     }
 
   }
+  //#endregion
 
+  //#region methods / select to edit
   selectForEdit() {
-    console.log('SELECT FOR EDIT')
+    // console.log('SELECT FOR EDIT')
     this.admin.selectedFile = this.file;
   }
+  //#endregion
+
   //#endregion
 
 }

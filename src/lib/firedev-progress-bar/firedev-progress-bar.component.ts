@@ -117,7 +117,6 @@ export class FiredevProgressBarComponent implements OnInit {
 
     this.handlers.push(
       updateFun.subscribe((loaded) => {
-        // @LAST handl update: done, star
         // console.log(`update: ${loaded}`)
         const total = 100;
         const percentage = calculatePercentage(loaded, total) * 100;

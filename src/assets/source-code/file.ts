@@ -40,11 +40,6 @@
 //   readonly scripts: any;
 //   readonly styles: any;
 
-//   get ext(): Firedev.Files.MimeType {
-//     return path.extname(this.src) as any;
-//   }
-
-
 //   get contentType(): Firedev.Http.ContentType {
 //     return Firedev.Files.MimeTypesObj[this.ext] as Firedev.Http.ContentType;
 //   }

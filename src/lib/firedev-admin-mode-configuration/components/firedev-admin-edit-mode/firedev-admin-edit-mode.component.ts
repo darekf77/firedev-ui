@@ -51,8 +51,8 @@ export class FiredevAdminEditModeComponent implements OnInit {
       maxWidth: 250
     },
     {
-      header: 'MIME',
-      field: 'mime',
+      header: 'Content Type',
+      field: 'contentType',
       maxWidth: 120
     }
   ] as MtxGridColumn[];

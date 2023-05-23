@@ -1,6 +1,6 @@
 //#region imports
 import { Firedev } from 'firedev';
-import { path, _ } from 'tnp-core';
+import { Helpers, path, _ } from 'tnp-core';
 import type { FiredevFileController } from './firedev-file.controller';
 import { defaultModelValues, FiredevFileDefaultAs, FiredevFileTypeArr, IFiredevFileType } from './firedev-file.models';
 import { FiredevFileCss } from './firedev-file-css';
@@ -58,7 +58,6 @@ export class FiredevFile extends Firedev.Base.Entity<any> {
       formData.append(`file${index + 1}`, file);
       const resp = await this.ctrl.__upload(formData as any).received;
       const firedevFile = resp.body.json;
-      firedevFile.tempFile = file;
       if (!dontRestoreBlob) {
         firedevFile.blob = await FiredevUIHelpers.fileToBlob(file);
       }
@@ -68,8 +67,20 @@ export class FiredevFile extends Firedev.Base.Entity<any> {
   }
   //#endregion
 
+  static async getBloblessBy(src: string) {
+    const data = await this.ctrl.getBloblessBy(encodeURI(src)).received;
+    // @LAST blob is not blob
+    debugger
+    return data.body.json;
+  }
+
+  static async getBlobOnlyBy(src: string) {
+    const data = await this.ctrl.getBlobOnlyBy(encodeURI(src)).received;
+    return data.body.blob;
+  }
+
   //#region static / is
-  private static is(extensionOrMimeType: string, isWhat: IFiredevFileType): boolean {
+  private static is(extensionOrContentType: string, isWhat: IFiredevFileType): boolean {
     if (isWhat === 'css') {
       // @ts-ignore
       isWhat = 'text/css'
@@ -91,12 +102,12 @@ export class FiredevFile extends Firedev.Base.Entity<any> {
       isWhat = 'application/json';
     }
 
-    const isExt = extensionOrMimeType.startsWith('.');
+    const isExt = extensionOrContentType.startsWith('.');
     if (isExt) {
-      const mime = Firedev.Files.MimeTypesObj[extensionOrMimeType];
-      return mime?.startsWith(`${isWhat}`);
+      const contentType = Firedev.Files.MimeTypesObj[extensionOrContentType];
+      return contentType?.startsWith(`${isWhat}`);
     }
-    return extensionOrMimeType.startsWith(`${isWhat}`);
+    return extensionOrContentType.startsWith(`${isWhat}`);
   }
   //#endregion
 
@@ -113,23 +124,6 @@ export class FiredevFile extends Firedev.Base.Entity<any> {
   //#region fields & getters / ctrl
   ctrl: FiredevFileController;
   //#endregion
-
-  //#region fields & getters / readonly
-  readonly = false;
-  //#endregion
-
-  //#region fields & getters / temp file
-  tempFile?: File;
-  //#endregion
-
-  //#region fields & getters / temp text
-  tempText?: string;
-
-  //#endregion
-  //#region fields & getters / temp link
-  tempLink?: string;
-  //#endregion
-
 
   //#region fields & getters / id
   //#region @websql
@@ -179,32 +173,90 @@ export class FiredevFile extends Firedev.Base.Entity<any> {
   //#endregion
 
   //#region fields & getters / version
+  /**
+   * automatic version increment
+   */
   //#region @websql
-  @Firedev.Orm.Column.Custom({
-    type: 'varchar',
-    length: 40,
-    default: null,
-  })
+  @Firedev.Orm.Column.Version()
   //#endregion
-  version: Firedev.Files.MimeType;
+  version: number;
+  //#endregion
+
+  //#region fields & getters / version
+  /**
+   * Field is create by user with uniqu name
+   */
+  //#region @websql
+  @Firedev.Orm.Column.Boolean(false)
+  //#endregion
+  hasEmptyBlob: boolean;
+  //#endregion
+
+  //#region fields & getters / version
+  /**
+  * Field is create when initing assets
+  */
+  //#region @websql
+  @Firedev.Orm.Column.Boolean(false)
+  //#endregion
+  isFromAssets: boolean;
   //#endregion
 
   //#region fields & getters / blob
+  /**
+   * Blob stored in database
+   */
   //#region @websql
   @Firedev.Orm.Column.Custom({
-    type: 'blob',
+    type: Helpers.isWebSQL ? 'text' : 'blob',
     default: null,
-    // transformer: {
-    //   // to: (value: string) => Buffer.from(value), // entity type
-    //   to: (value: string) => Buffer.from(value), // entity type
-    //   from: (value: Buffer) => value.toString() // database type
-    // }
+    transformer: {
+      /**
+       *
+       * @param value from entity type
+       * @returns
+       */
+      to: (value: string) => {
+        // console.log('TO', value)
+        // if (value instanceof Blob) {
+        //   console.log(`TO (BLOB IS BLOB):`, value)
+        //   return await FiredevUIHelpers.blobToBase64(value)
+        // }
+        // console.log(`TO (BLOB IS NOT BLOB):`, value)
+        // return
+
+        // if (value instanceof Blob) {
+        //   FiredevUIHelpers.arrayBufferToBlob
+        // }
+
+        // return Buffer.from(value);
+        return value;
+      },
+      /**
+       *
+       * @param value in database type
+       * @returns
+       */
+      from: (value: string) => {
+        // console.log('FROM', value)
+        // if (_.isString(value)) {
+        //   console.log(`FROM (value is string):`, value)
+        //   return await FiredevUIHelpers.base64toBlob(value);
+        // }
+        // console.log(`FROM (value is not string):`, value)
+        // return value.toString();
+        return value;
+      }
+    }
   })
   //#endregion
-  blob: Blob;
+  blob: Blob | string;
   //#endregion
 
   //#region fields & getters / ext
+  /**
+   * file proper extension (when saved on disc)
+   */
   get ext() {
     if (this.defaultViewAs === 'css-tag') {
       return '.css';
@@ -214,13 +266,11 @@ export class FiredevFile extends Firedev.Base.Entity<any> {
   }
   //#endregion
 
-  //#region fields & getters / mime
-  get mime() {
-    return Firedev.Files.MimeTypesObj[this.ext];
-  }
-  //#endregion
-
   //#region fields & getters / type
+  /**
+   * General type of content (short alternative to mime):
+   * text, audio, video, html, json, js
+   */
   get type(): IFiredevFileType {
     for (let index = 0; index < FiredevFileTypeArr.length; index++) {
       const element = FiredevFileTypeArr[index];

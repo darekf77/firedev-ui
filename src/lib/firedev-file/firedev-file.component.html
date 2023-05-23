@@ -22,8 +22,8 @@
      [ngClass]="{ 'firedev-file-edit-mode' : (admin.filesEditMode) }">
   <ng-container *ngTemplateOutlet="mask"></ng-container>
   <article #html
-           *ngIf="file"
-           [firedevInjectHTML]="file.tempText"
+           *ngIf="file && tempText"
+           [firedevInjectHTML]="tempText"
            [style.height.px]="height"
            [style.width.px]="width"></article>
 </div>
@@ -34,11 +34,11 @@
   <ng-container *ngTemplateOutlet="mask"></ng-container>
 
   <video controls
-         *ngIf="file && file.tempLink"
+         *ngIf="file && tempLink"
          #video
          [style.height.px]="height"
          [style.width.px]="width">
-    <source [src]="file.tempLink"
+    <source [src]="tempLink"
             type="video/mp4">
     Your browser does not support the video tag.
   </video>
@@ -50,9 +50,9 @@
      [ngClass]="{ 'firedev-file-edit-mode' : (admin.filesEditMode) }">
   <ng-container *ngTemplateOutlet="mask"></ng-container>
   <ace [mode]="'json'"
-       *ngIf="file && file.tempText"
+       *ngIf="file && tempText"
        #json
-       [(value)]="file.tempText"
+       [(value)]="tempText"
        [theme]="'twilight'"
        [style.height.px]="height"
        [style.width.px]="width"></ace>
@@ -64,13 +64,13 @@
   <ng-container *ngTemplateOutlet="mask"></ng-container>
   <!-- <div class="audio-wrapper"> -->
   <audio controls
-         *ngIf="file && file.tempLink"
+         *ngIf="file && tempLink"
          style="position: relative;"
          #audio
          [style.height.px]="height"
          [style.width.px]="width"
          [style.top.px]="-(height / 2 - 27)">
-    <source [src]="file.tempLink"
+    <source [src]="tempLink"
             [type]="file.contentType">
     Your browser does not support the audio element.
   </audio>

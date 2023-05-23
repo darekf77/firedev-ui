@@ -29,7 +29,7 @@
 
     <mat-tab label="Files Picker">
       <firedev-table [entity]="entity"
-                     [allowedColumns]="['src','mime']"
+                     [allowedColumns]="['src','contentType']"
                      [columns]="columns"
                      [expansionTemplate]="expansionTpl"
                      (expansionChange)="expansionRow($event)">
@@ -38,7 +38,7 @@
     </mat-tab>
     <mat-tab label="File Version History">
       <firedev-table [entity]="entity"
-                     [allowedColumns]="['src','mime']"
+                     [allowedColumns]="['src','contentType']"
                      [columns]="columns"
                      [expansionTemplate]="expansionTpl"
                      (expansionChange)="expansionRow($event)">

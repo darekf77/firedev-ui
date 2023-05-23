@@ -4,6 +4,7 @@ import { Repository } from 'firedev-typeorm'; // must be
 import { FiredevFile } from './firedev-file';
 import { crossPlatformPath, Helpers, path, _ } from 'tnp-core';
 import axios from 'axios';
+import { FiredevUIHelpers } from '../firedev-ui-helpers';
 //#region @backend
 import * as FormData from 'form-data';
 import { FiredevUploadedFile } from '../firedev.models';
@@ -12,7 +13,7 @@ import { Blob } from 'node:buffer';
 //#endregion
 //#endregion
 
-export const FiredevFileControllerEntity = Symbol();
+
 
 @Firedev.Controller({
   //#region controller config
@@ -21,14 +22,80 @@ export const FiredevFileControllerEntity = Symbol();
   //#endregion
 })
 export class FiredevFileController extends Firedev.Base.Controller<FiredevFile> {
-  [FiredevFileControllerEntity] = FiredevFile;
-
 
   //#region methods
 
-  @Firedev.Http.GET()
-  getOneBlobless() {
+  //#region @websql
+  async restoreBlob(item: FiredevFile) {
+    const repo = this.repository;
+    const shouldRestoreBlob = (item.isFromAssets || item.hasEmptyBlob) && _.isNil(item.blob);
+    // console.log({
+    //   shouldRestoreBlob
+    // })
+    if (shouldRestoreBlob) {
+      //#region @websqlOnly
+      if (Helpers.isWebSQL) {
+        const blob = await FiredevUIHelpers.getBlobFrom(`${window.location.origin}${item.src}`);
+        // console.log({
+        //   blob
+        // })
+        item.blob = await FiredevUIHelpers.blobToBase64(blob);
+        // console.log('blob update')
+        await repo.update(item.id, item);
+        // console.log('blob update')
+      }
+      //#endregion
+      //#region @backend
+      if (Helpers.isNode) {
+        // TODO
+      }
+      //#endregion
+    }
+    return item;
+  }
+  //#endregion
 
+  @Firedev.Http.GET('/blobless/:src')
+  getBloblessBy(@Firedev.Http.Param.Path('src') src: string): Firedev.Response<FiredevFile> {
+    //#region @websqlFunc
+    return async (req, res) => {
+      const repo = this.repository;
+      src = decodeURI(src);
+
+      let item = await repo.findOne({
+        where: {
+          src,
+        }
+      });
+      console.log({
+        src,
+        entity: item
+      })
+      item = await this.restoreBlob(item);
+      delete item.blob;
+      return item;
+    }
+    //#endregion
+  }
+
+  @Firedev.Http.GET({
+    overridResponseType: 'blob',
+    path: '/blobonly/:src'
+  })
+  getBlobOnlyBy(@Firedev.Http.Param.Path('src') src: string): Firedev.Response<Blob> {
+    //#region @websqlFunc
+    return async (req, res) => {
+      const repo = this.repository;
+      let item = await repo.findOne({
+        where: {
+          src: decodeURI(src),
+        }
+      });
+      item = await this.restoreBlob(item);
+      const blob = FiredevUIHelpers.base64toBlob(item.blob as string);
+      return blob;
+    }
+    //#endregion
   }
 
   //#region methods / __ upload
@@ -60,7 +127,7 @@ export class FiredevFileController extends Firedev.Base.Controller<FiredevFile> 
         Helpers.mkdirp(path.dirname(pathDest))
       }
 
-      const repo = await this.getRepo();
+      const repo = this.repository;
 
       const file = _.first(files) as FiredevUploadedFile;
       const uploadPath = crossPlatformPath([pathDest, file.md5 + '_' + file.name]);
@@ -93,12 +160,13 @@ export class FiredevFileController extends Firedev.Base.Controller<FiredevFile> 
   //#region methods / init example data
   //#region @websql
   async initExampleDbData() {
-    const repo = this.connection.getRepository(this.entity);
+    const repo = this.repository;
     const assets = await this.getAssets();
     for (let index = 0; index < assets.length; index++) {
       const src = assets[index];
       await repo.save(FiredevFile.from({
         src,
+        isFromAssets: true,
       }))
     }
   }
@@ -128,14 +196,6 @@ export class FiredevFileController extends Firedev.Base.Controller<FiredevFile> 
     });
 
     return data.data as string[]
-  }
-  //#endregion
-  //#endregion
-
-  //#region private methods / get repo
-  //#region @websql
-  private async getRepo() {
-    return await this.connection.getRepository<FiredevFile>(this[FiredevFileControllerEntity]);
   }
   //#endregion
   //#endregion

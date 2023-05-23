@@ -89,7 +89,7 @@ export namespace FiredevUIHelpers {
 
 
   export async function getBlobFrom(url): Promise<Blob> {
-    const response = await axios({
+    const response: AxiosResponse<Blob> = await axios({
       url,
       method: 'get',
       responseType: 'blob'

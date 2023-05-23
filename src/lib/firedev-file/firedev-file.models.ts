@@ -5,7 +5,6 @@ export type IFiredevFile = Partial<FiredevFile>;
 
 export const defaultModelValues: IFiredevFile = {
   css: FiredevFileCss.from({ display: 'block' }),
-  readonly: false,
 }
 
 
