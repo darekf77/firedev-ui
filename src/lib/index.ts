@@ -7,7 +7,6 @@ export * from './firedev-notifications';
 export * from './firedev-progress-bar';
 export * from './firedev-table';
 export * from './firedev-ui-helpers';
-export * from './firedev-websql-control-panel';
 //#region @browser
 export * from './firedev-full-material.module';
 //#endregion

@@ -3,6 +3,7 @@
 }
 
 $background-admin: rgba(220, 220, 220);
+$draggablezindex: 50;
 
 .draggable-column {
   display: block !important;
@@ -13,7 +14,7 @@ $background-admin: rgba(220, 220, 220);
   position: fixed;
   bottom: 100px;
   left: -15px;
-  z-index: 99999;
+  z-index: 2147483647;
   transform: rotate(90deg);
   border: 0px;
   color: white;
@@ -72,7 +73,7 @@ mat-drawer {
   background: #fff;
   border-radius: 4px;
   position: absolute;
-  z-index: 9999;
+  z-index: $draggablezindex;
   background-color: $background-admin !important;
   transition: box-shadow 200ms cubic-bezier(0, 0, 0.2, 1);
   box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2),
@@ -95,7 +96,7 @@ mat-drawer {
   background: #fff;
   border-radius: 4px;
   position: absolute;
-  z-index: 9999;
+  z-index: $draggablezindex;
   background-color: $background-admin !important;
 }
 
