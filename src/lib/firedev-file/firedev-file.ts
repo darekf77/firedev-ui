@@ -6,7 +6,7 @@ import { defaultModelValues, FiredevFileDefaultAs, FiredevFileTypeArr, IFiredevF
 import { FiredevFileCss } from './firedev-file-css';
 //#region @backend
 import * as FromData from 'form-data';
-import { Blob } from 'node:buffer';
+import { Blob } from 'buffer';
 //#endregion
 import { FiredevUIHelpers } from '../firedev-ui-helpers';
 //#endregion

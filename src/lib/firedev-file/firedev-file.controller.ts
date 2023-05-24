@@ -9,7 +9,7 @@ import { FiredevUIHelpers } from '../firedev-ui-helpers';
 import * as FormData from 'form-data';
 import { FiredevUploadedFile } from '../firedev.models';
 const pathDest = path.join(process.cwd(), 'src/assets/private/uploaded');
-import { Blob } from 'node:buffer';
+import { Blob } from 'buffer';
 //#endregion
 //#endregion
 
@@ -182,15 +182,20 @@ export class FiredevFileController extends Firedev.Base.Controller<FiredevFile> 
   //#region methods / init example data
   //#region @websql
   async initExampleDbData() {
+    console.log('initing assets data start')
     const repo = this.repository;
     const assets = await this.getAssets();
+    const filesToSave = [];
     for (let index = 0; index < assets.length; index++) {
       const src = assets[index];
-      await repo.save(FiredevFile.from({
+      const file = FiredevFile.from({
         src,
         isFromAssets: true,
-      }))
+      });
+      filesToSave.push(file);
     }
+    await repo.save(filesToSave);
+    console.log('initing assets data')
   }
   //#endregion
   //#endregion

@@ -8,7 +8,7 @@ import axios from 'axios';
 import hlsj from 'highlight.js/lib/core'
 
 
-const stor = localForge.createInstance({
+const previewStorage = localForge.createInstance({
   driver: localForge.INDEXEDDB,
   storeName: 'app-preview-file',
 })
@@ -42,7 +42,7 @@ export class PreviewFileComponent implements OnInit {
 
   async ngOnInit() {
 
-    const existedFiles = await stor.getItem('files');
+    const existedFiles = await previewStorage.getItem('files');
     // console.log({
     //   FILESFROMCACHE: existedFiles
     // })
@@ -174,7 +174,7 @@ export class PreviewFileComponent implements OnInit {
     let files = elem.files;
     if (files) {
       this.processFiles(files)
-      await stor.setItem('files', files);
+      await previewStorage.setItem('files', files);
     }
   }
 

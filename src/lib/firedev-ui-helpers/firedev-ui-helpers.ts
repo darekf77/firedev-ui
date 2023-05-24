@@ -1,6 +1,6 @@
 //#region @backend
 import * as FromData from 'form-data';
-import { Blob } from 'node:buffer';
+import { Blob } from 'buffer';
 //#endregion
 import axios, { AxiosResponse } from 'axios';
 
