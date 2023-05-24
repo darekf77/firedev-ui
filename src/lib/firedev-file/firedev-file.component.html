@@ -10,7 +10,7 @@
      [ngClass]="{ 'firedev-file-edit-mode' : (admin.filesEditMode) }">
   <ng-container *ngTemplateOutlet="mask"></ng-container>
 
-  <img [src]="file.src"
+  <img [src]="tempLink"
        #image
        *ngIf="file"
        [ngClass]="{ 'dotted' : (admin.filesEditMode) }"

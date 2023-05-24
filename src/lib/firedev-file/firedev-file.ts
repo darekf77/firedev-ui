@@ -74,6 +74,13 @@ export class FiredevFile extends Firedev.Base.Entity<any> {
     return data.body.json;
   }
 
+  static async getLatestVersion(src: string) {
+    const data = await this.ctrl.getLatestVersion(encodeURI(src)).received;
+    // @LAST blob is not blob
+
+    return Number(data.body.text);
+  }
+
   static async getBlobOnlyBy(src: string) {
     const data = await this.ctrl.getBlobOnlyBy(encodeURI(src)).received;
     return data.body.blob;
@@ -124,6 +131,11 @@ export class FiredevFile extends Firedev.Base.Entity<any> {
   //#region fields & getters / ctrl
   ctrl: FiredevFileController;
   //#endregion
+
+  /**
+   * temporary file
+   */
+  file: File;
 
   //#region fields & getters / id
   //#region @websql

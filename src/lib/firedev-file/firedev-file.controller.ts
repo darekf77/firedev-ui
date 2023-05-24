@@ -55,6 +55,24 @@ export class FiredevFileController extends Firedev.Base.Controller<FiredevFile> 
   }
   //#endregion
 
+  @Firedev.Http.GET('/version/:src')
+  getLatestVersion(@Firedev.Http.Param.Path('src') src: string): Firedev.Response<number> {
+    //#region @websqlFunc
+    return async (req, res) => {
+      const repo = this.repository;
+      src = decodeURI(src);
+
+      let item = await repo.findOne({
+        where: {
+          src,
+        }
+      });
+
+      return item?.version || 0;
+    }
+    //#endregion
+  }
+
   @Firedev.Http.GET('/blobless/:src')
   getBloblessBy(@Firedev.Http.Param.Path('src') src: string): Firedev.Response<FiredevFile> {
     //#region @websqlFunc
@@ -67,12 +85,10 @@ export class FiredevFileController extends Firedev.Base.Controller<FiredevFile> 
           src,
         }
       });
-      console.log({
-        src,
-        entity: item
-      })
-      item = await this.restoreBlob(item);
-      delete item.blob;
+
+      if(item?.blob) {
+        delete item.blob;
+      }
       return item;
     }
     //#endregion

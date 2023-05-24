@@ -15,6 +15,8 @@ import 'brace/mode/typescript';
 import 'brace/mode/json';
 // import 'brace/theme/github';
 import 'brace/theme/twilight';
+import { firstValueFrom, Observable, Subject } from 'rxjs';
+import { DomSanitizer } from '@angular/platform-browser';
 
 const log = Log.create('firedev file component',
   Level.__NOTHING
@@ -41,7 +43,8 @@ export class FiredevFileComponent implements OnInit {
   //#endregion
 
   //#region fields & getters
-  tempFile?: File;
+  linksToRevoke = [];
+  // tempFile?: File;
   tempText?: string;
   tempLink?: string;
   admin = (window['firedev'] as FiredevAdmin);
@@ -86,7 +89,8 @@ export class FiredevFileComponent implements OnInit {
 
   //#region constructor
   constructor(
-    protected service: FiredevFileService
+    protected service: FiredevFileService,
+    private domSanitizer: DomSanitizer,
   ) {
     this.scripts = FiredevFileComponent.scripts;
     this.styles = FiredevFileComponent.styles;
@@ -128,6 +132,10 @@ export class FiredevFileComponent implements OnInit {
     if (this.file && this.file.src) {
       this.admin.unregister(this.file);
     }
+    for (let index = 0; index < this.linksToRevoke.length; index++) {
+      const link = this.linksToRevoke[index];
+      URL.revokeObjectURL(link);
+    }
   }
   //#endregion
 
@@ -135,26 +143,71 @@ export class FiredevFileComponent implements OnInit {
 
   //#region methods
 
-  static inProcessOfDownload = {};
+  private static cachedFiles = {} as { [src in string]: { [version in number]: FiredevFile; } };
+  private static cachedFilesLastVer = {} as { [src in string]: number; };
+  private static currentProcessing = {} as { [src in string]: Subject<FiredevFile>; };
+  private static filesToCache = [
+    'image'
+  ] as IFiredevFileType[];
 
-  async getFile() {
+  async getFile(src: string) {
+    // console.log({
+    //   'cachedFilesLastVer': FiredevFileComponent.cachedFiles
+    // })
 
-    if (this.src.endsWith('.png') || this.src.endsWith('.jpg')) {
-
-      const fileBySrcNoBlob = await this.FiredevFile.getBloblessBy(this.src);
-      console.log({
-        fileBySrcNoBlob
-      })
-
-      // const fileBlob = await this.FiredevFile.getBlobOnlyBy(this.src);
-      // console.log({
-      //   fileBlob
-      // })
+    if (_.isUndefined(FiredevFileComponent.currentProcessing[src])) {
+      FiredevFileComponent.currentProcessing[src] = new Subject();
+    } else {
+      const obs = FiredevFileComponent.currentProcessing[src] as Observable<FiredevFile>;
+      const fromSubjectCache = await firstValueFrom(obs);
+      console.log('** subject cache ', fromSubjectCache);
+      return fromSubjectCache;
     }
 
-    return FiredevFile.from({
-      src: this.src,
-    });
+    let latestVersion: number;
+    if (_.isUndefined(FiredevFileComponent.cachedFilesLastVer[src])) {
+      latestVersion = await this.FiredevFile.getLatestVersion(src);
+      FiredevFileComponent.cachedFilesLastVer[src] = latestVersion;
+    } else {
+      latestVersion = FiredevFileComponent.cachedFilesLastVer[src]
+    }
+
+    console.log(`version for ${src}`, latestVersion)
+
+    if (!FiredevFileComponent.cachedFiles[src]) {
+      FiredevFileComponent.cachedFiles[src] = {}
+    }
+
+    if ( // invalidate cache
+      Object.keys(FiredevFileComponent.cachedFiles[src]).length > 0
+      && _.isUndefined(FiredevFileComponent.cachedFiles[src][latestVersion])
+    ) { //
+      console.log(`INVALIDATE CACHE FOR ${src}`)
+      FiredevFileComponent.cachedFiles[src] = {};
+    }
+
+    if (_.isUndefined(FiredevFileComponent.cachedFiles[src][latestVersion])) {
+
+      const bloblessFile = await this.FiredevFile.getBloblessBy(src);
+
+      if (FiredevFileComponent.filesToCache.includes(bloblessFile.type)) { // only cache blob of images
+        const fileBlob = await this.FiredevFile.getBlobOnlyBy(bloblessFile.src);
+        bloblessFile.blob = fileBlob as any;
+        bloblessFile.file = new File([bloblessFile.blob], path.basename(_.first(bloblessFile.src.split('?'))));
+      }
+      FiredevFileComponent.cachedFiles[src][bloblessFile.version] = bloblessFile;
+      FiredevFileComponent.cachedFilesLastVer[src] = bloblessFile.version;
+      console.log('** caching file ', bloblessFile)
+      const obs = FiredevFileComponent.currentProcessing[src] as Subject<FiredevFile>;
+      obs.next(bloblessFile);
+      obs.unsubscribe();
+      delete FiredevFileComponent.currentProcessing[src];
+      return bloblessFile; // => this file has blob
+    } else {
+      const fromCache = FiredevFileComponent.cachedFiles[src][latestVersion];
+      console.log('** file from cache ', fromCache)
+      return FiredevFileComponent.cachedFiles[src][latestVersion];
+    }
   }
 
   //#region methods / init
@@ -162,11 +215,17 @@ export class FiredevFileComponent implements OnInit {
 
     if (this.file) {
       if (this.file.type === 'image') {
-        if (!this.file.blob) {
-          this.file.blob = await FiredevUIHelpers.getBlobFrom(`${window.location.origin}${this.file.src}`);
-        }
-        if (!this.tempFile) {
-          this.tempFile = new File([this.file.blob], path.basename(_.first(this.file.src.split('?'))));
+        // if (!this.file.blob) {
+        //   this.file.blob = await FiredevUIHelpers.getBlobFrom(`${window.location.origin}${this.file.src}`);
+        // }
+        // if (!this.tempFile) {
+        //   this.tempFile = new File([this.file.blob], path.basename(_.first(this.file.src.split('?'))));
+        // }
+        if (!this.tempLink) {
+          this.tempLink = this.domSanitizer.bypassSecurityTrustUrl(URL.createObjectURL(this.file.file)) as any;
+          if (!this.linksToRevoke.includes(this.tempLink)) {
+            this.linksToRevoke.push(this.tempLink);
+          }
         }
       }
       if (this.file.type === 'html' || this.file.type === 'json') {
@@ -185,10 +244,14 @@ export class FiredevFileComponent implements OnInit {
 
 
       // @ts-ignore
-      this.file = await this.getFile()
+      this.file = await this.getFile(this.src)
       if (this.file.type === 'image') {
-        this.file.blob = await FiredevUIHelpers.getBlobFrom(`${window.location.origin}${this.src}`);
-        this.tempFile = new File([this.file.blob], path.basename(_.first(this.src.split('?'))));
+        // this.file.blob = await FiredevUIHelpers.getBlobFrom(`${window.location.origin}${this.src}`);
+        // this.tempFile = new File([this.file.blob], path.basename(_.first(this.src.split('?'))));
+        this.tempLink = this.domSanitizer.bypassSecurityTrustUrl(URL.createObjectURL(this.file.file)) as any;
+        if (!this.linksToRevoke.includes(this.tempLink)) {
+          this.linksToRevoke.push(this.tempLink);
+        }
       }
       if (this.file.type === 'html' || this.file.type === 'json') {
         this.file.blob = await FiredevUIHelpers.getBlobFrom(`${window.location.origin}${this.src}`);
