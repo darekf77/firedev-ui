@@ -98,6 +98,28 @@ export class FiredevFileController extends Firedev.Base.Controller<FiredevFile> 
     //#endregion
   }
 
+
+  @Firedev.Http.DELETE({
+    overridResponseType: 'blob',
+    path: '/blobonly/:src'
+  })
+  deleteBy(@Firedev.Http.Param.Path('src') src: string): Firedev.Response<FiredevFile> {
+    //#region @websqlFunc
+    return async (req, res) => {
+      const repo = this.repository;
+      let item = await repo.findOne({
+        where: {
+          src: decodeURI(src),
+        }
+      });
+      // await repo.delete
+
+      delete item.blob;
+      return item;
+    }
+    //#endregion
+  }
+
   //#region methods / __ upload
   /**
    * in angular:

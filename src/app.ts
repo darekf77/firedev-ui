@@ -44,18 +44,8 @@ const routes: Routes = [
   styleUrls: ['./app.scss'],
   templateUrl: './app.html',
 })
-export class FiredevUiComponent implements OnInit {
-  dataInited = false;
-  constructor(
-    private ngZone: NgZone
-  ) { }
+export class FiredevUiComponent {
 
-  async ngOnInit() {
-    // console.log('CONSTRUCTOR START!')
-    Firedev.initNgZone(this.ngZone);
-    await start();
-    // console.log('CONSTRUCTOR DONE!')
-  }
 }
 //#endregion
 
@@ -95,7 +85,7 @@ export class FiredevUiModule { }
 //#region firedev start function
 async function start() {
   // Firedev.enableProductionMode();
-
+  console.log('INITING CONTEXT')
   const context = await Firedev.init({
     host,
     controllers: [
@@ -116,6 +106,9 @@ async function start() {
     }
     //#endregion
   });
+  console.log('CONTEXT INITED', context)
+
+
   //#region @backend
   console.log('process.cwd()', process.cwd())
 

@@ -139,14 +139,18 @@ export class FiredevFileComponent implements OnInit {
 
   async getFile() {
 
-    if (this.src.endsWith('arnold.png')) {
-      debugger
-      const fileBySrcNoBlob = await this.FiredevFile.getBloblessBy(this.src);
-      debugger
+    // if (this.src.endsWith('arnold.png')) {
 
-      const fileBlob = await this.FiredevFile.getBlobOnlyBy(this.src);
-      debugger
-    }
+    //   const fileBySrcNoBlob = await this.FiredevFile.getBloblessBy(this.src);
+    //   console.log({
+    //     fileBySrcNoBlob
+    //   })
+
+    //   const fileBlob = await this.FiredevFile.getBlobOnlyBy(this.src);
+    //   console.log({
+    //     fileBlob
+    //   })
+    // }
 
     return FiredevFile.from({
       src: this.src,
@@ -159,15 +163,15 @@ export class FiredevFileComponent implements OnInit {
     if (this.file) {
       if (this.file.type === 'image') {
         if (!this.file.blob) {
-          this.file.blob = await FiredevUIHelpers.getBlobFrom(`${window.location.origin}${this.src}`);
+          this.file.blob = await FiredevUIHelpers.getBlobFrom(`${window.location.origin}${this.file.src}`);
         }
         if (!this.tempFile) {
-          this.tempFile = new File([this.file.blob], path.basename(_.first(this.src.split('?'))));
+          this.tempFile = new File([this.file.blob], path.basename(_.first(this.file.src.split('?'))));
         }
       }
       if (this.file.type === 'html' || this.file.type === 'json') {
         if (!this.file.blob) {
-          this.file.blob = await FiredevUIHelpers.getBlobFrom(`${window.location.origin}${this.src}`);
+          this.file.blob = await FiredevUIHelpers.getBlobFrom(`${window.location.origin}${this.file.src}`);
         }
         if (!this.tempText) {
           this.tempText = await (this.file.blob as Blob).text()

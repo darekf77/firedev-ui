@@ -70,7 +70,7 @@ export class FiredevFile extends Firedev.Base.Entity<any> {
   static async getBloblessBy(src: string) {
     const data = await this.ctrl.getBloblessBy(encodeURI(src)).received;
     // @LAST blob is not blob
-    debugger
+
     return data.body.json;
   }
 
