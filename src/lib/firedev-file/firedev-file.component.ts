@@ -139,12 +139,12 @@ export class FiredevFileComponent implements OnInit {
 
   async getFile() {
 
-    if (this.src.endsWith('arnold.png') || this.src.endsWith('cutsmall.jpg')) {
+    if (this.src.endsWith('.png') || this.src.endsWith('.jpg')) {
 
-      // const fileBySrcNoBlob = await this.FiredevFile.getBloblessBy(this.src);
-      // console.log({
-      //   fileBySrcNoBlob
-      // })
+      const fileBySrcNoBlob = await this.FiredevFile.getBloblessBy(this.src);
+      console.log({
+        fileBySrcNoBlob
+      })
 
       // const fileBlob = await this.FiredevFile.getBlobOnlyBy(this.src);
       // console.log({
