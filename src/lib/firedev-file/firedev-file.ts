@@ -136,6 +136,10 @@ export class FiredevFile extends Firedev.Base.Entity<any> {
    * temporary file
    */
   file: File;
+  /**
+   * temporary file
+   */
+  text: string;
 
   //#region fields & getters / id
   //#region @websql

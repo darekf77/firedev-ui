@@ -147,7 +147,16 @@ export class FiredevFileComponent implements OnInit {
   private static cachedFilesLastVer = {} as { [src in string]: number; };
   private static currentProcessing = {} as { [src in string]: Subject<FiredevFile>; };
   private static filesToCache = [
-    'image'
+    'image',
+    'html',
+    'json',
+    'js'
+  ] as IFiredevFileType[];
+
+  private static filesToCacheText = [
+    'html',
+    'json',
+    'js'
   ] as IFiredevFileType[];
 
   async getFile(src: string) {
@@ -194,6 +203,9 @@ export class FiredevFileComponent implements OnInit {
         const fileBlob = await this.FiredevFile.getBlobOnlyBy(bloblessFile.src);
         bloblessFile.blob = fileBlob as any;
         bloblessFile.file = new File([bloblessFile.blob], path.basename(_.first(bloblessFile.src.split('?'))));
+        if (FiredevFileComponent.filesToCacheText.includes(bloblessFile.type)) {
+          bloblessFile.text = await bloblessFile.file.text()
+        }
       }
       FiredevFileComponent.cachedFiles[src][bloblessFile.version] = bloblessFile;
       FiredevFileComponent.cachedFilesLastVer[src] = bloblessFile.version;
@@ -213,14 +225,16 @@ export class FiredevFileComponent implements OnInit {
   //#region methods / init
   async init(firstTime: boolean) {
 
-    if (this.file) {
-      if (this.file.type === 'image') {
-        // if (!this.file.blob) {
-        //   this.file.blob = await FiredevUIHelpers.getBlobFrom(`${window.location.origin}${this.file.src}`);
-        // }
-        // if (!this.tempFile) {
-        //   this.tempFile = new File([this.file.blob], path.basename(_.first(this.file.src.split('?'))));
-        // }
+    if (!this.file) {
+      this.file = await this.getFile(this.src)
+    }
+
+    if (FiredevFileComponent.filesToCache.includes(this.file.type)) {
+      if (FiredevFileComponent.filesToCacheText.includes(this.file.type)) {
+        if (!this.tempText) {
+          this.tempText = await this.file.text;
+        }
+      } else {
         if (!this.tempLink) {
           this.tempLink = this.domSanitizer.bypassSecurityTrustUrl(URL.createObjectURL(this.file.file)) as any;
           if (!this.linksToRevoke.includes(this.tempLink)) {
@@ -228,39 +242,9 @@ export class FiredevFileComponent implements OnInit {
           }
         }
       }
-      if (this.file.type === 'html' || this.file.type === 'json') {
-        if (!this.file.blob) {
-          this.file.blob = await FiredevUIHelpers.getBlobFrom(`${window.location.origin}${this.file.src}`);
-        }
-        if (!this.tempText) {
-          this.tempText = await (this.file.blob as Blob).text()
-        }
-      }
-      if (this.file.type === 'video' || this.file.type === 'audio') {
-        this.tempLink = this.file.src;
-      }
-    } else {
-
-
-
-      // @ts-ignore
-      this.file = await this.getFile(this.src)
-      if (this.file.type === 'image') {
-        // this.file.blob = await FiredevUIHelpers.getBlobFrom(`${window.location.origin}${this.src}`);
-        // this.tempFile = new File([this.file.blob], path.basename(_.first(this.src.split('?'))));
-        this.tempLink = this.domSanitizer.bypassSecurityTrustUrl(URL.createObjectURL(this.file.file)) as any;
-        if (!this.linksToRevoke.includes(this.tempLink)) {
-          this.linksToRevoke.push(this.tempLink);
-        }
-      }
-      if (this.file.type === 'html' || this.file.type === 'json') {
-        this.file.blob = await FiredevUIHelpers.getBlobFrom(`${window.location.origin}${this.src}`);
-        this.tempText = await this.file.blob.text()
-      }
-      if (this.file.type === 'video' || this.file.type === 'audio') {
-        this.tempLink = this.file.src; //  URL.createObjectURL(this.file.blob);
-      }
     }
+
+
 
     const isTag = this.viewAs === 'script-tag' || this.viewAs === 'css-tag';
 
