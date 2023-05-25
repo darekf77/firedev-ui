@@ -51,9 +51,10 @@ export class FiredevFileComponent implements OnInit {
   @Input() file: FiredevFile;
   @Input() insideAdmin = false;
   @Input() @HostBinding('style.width.px') @Input() width: number = DEFAULT_WIDTH;
-  @Input() @HostBinding('style.height.px') @Input() height: number = DEFAULT_HEIGHT;
+  @Input() @HostBinding('style.height.px') @Input() height: number = 0;
   @Input() viewAs: FiredevFileDefaultAs;
   @Input() readonly src: string;
+  @Input() offline: boolean;
   @ViewChild('audio') audio: any;
   @ViewChild('video') video: any;
   @ViewChild('image') image: any;
@@ -108,6 +109,10 @@ export class FiredevFileComponent implements OnInit {
 
   //#region hooks / on init
   async ngOnInit() {
+    if(_.isUndefined(this.offline)) {
+      this.offline = true;
+    }
+
     await this.init(true);
   }
   //#endregion
@@ -169,7 +174,7 @@ export class FiredevFileComponent implements OnInit {
     } else {
       const obs = FiredevFileComponent.currentProcessing[src] as Observable<FiredevFile>;
       const fromSubjectCache = await firstValueFrom(obs);
-      console.log('** subject cache ', fromSubjectCache);
+      // console.log('** subject cache ', fromSubjectCache);
       return fromSubjectCache;
     }
 
@@ -181,7 +186,7 @@ export class FiredevFileComponent implements OnInit {
       latestVersion = FiredevFileComponent.cachedFilesLastVer[src]
     }
 
-    console.log(`version for ${src}`, latestVersion)
+    // console.log(`version for ${src}`, latestVersion)
 
     if (!FiredevFileComponent.cachedFiles[src]) {
       FiredevFileComponent.cachedFiles[src] = {}
@@ -191,7 +196,7 @@ export class FiredevFileComponent implements OnInit {
       Object.keys(FiredevFileComponent.cachedFiles[src]).length > 0
       && _.isUndefined(FiredevFileComponent.cachedFiles[src][latestVersion])
     ) { //
-      console.log(`INVALIDATE CACHE FOR ${src}`)
+      // console.log(`INVALIDATE CACHE FOR ${src}`)
       FiredevFileComponent.cachedFiles[src] = {};
     }
 
@@ -209,7 +214,7 @@ export class FiredevFileComponent implements OnInit {
       }
       FiredevFileComponent.cachedFiles[src][bloblessFile.version] = bloblessFile;
       FiredevFileComponent.cachedFilesLastVer[src] = bloblessFile.version;
-      console.log('** caching file ', bloblessFile)
+      // console.log('** caching file ', bloblessFile)
       const obs = FiredevFileComponent.currentProcessing[src] as Subject<FiredevFile>;
       obs.next(bloblessFile);
       obs.unsubscribe();
@@ -217,8 +222,8 @@ export class FiredevFileComponent implements OnInit {
       return bloblessFile; // => this file has blob
     } else {
       const fromCache = FiredevFileComponent.cachedFiles[src][latestVersion];
-      console.log('** file from cache ', fromCache)
-      return FiredevFileComponent.cachedFiles[src][latestVersion];
+      // console.log('** file from cache ', fromCache)
+      return fromCache;
     }
   }
 

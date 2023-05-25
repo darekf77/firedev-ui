@@ -54,9 +54,9 @@ export class FiredevTableComponent {
   constructor() { }
 
   async getNextPage(e: PageEvent) {
-    console.log({
-      e
-    });
+    // console.log({
+    //   e
+    // });
     this.pageNumber = e.pageIndex + 1;
     this.pageSize = e.pageSize;
     await this.retriveData();

@@ -35,7 +35,8 @@ export class FiredevFileController extends Firedev.Base.Controller<FiredevFile> 
     if (shouldRestoreBlob) {
       //#region @websqlOnly
       if (Helpers.isWebSQL) {
-        const blob = await FiredevUIHelpers.getBlobFrom(`${window.location.origin}${item.src}`);
+        const realSrc = item.src.startsWith('http') ? item.src : `${window.location.origin}${item.src}`
+        const blob = await FiredevUIHelpers.getBlobFrom(realSrc);
         // console.log({
         //   blob
         // })
@@ -86,7 +87,7 @@ export class FiredevFileController extends Firedev.Base.Controller<FiredevFile> 
         }
       });
 
-      if(item?.blob) {
+      if (item?.blob) {
         delete item.blob;
       }
       return item;
@@ -198,7 +199,7 @@ export class FiredevFileController extends Firedev.Base.Controller<FiredevFile> 
   //#region methods / init example data
   //#region @websql
   async initExampleDbData() {
-    console.log('initing assets data start')
+    // console.log('initing assets data start')
     const repo = this.repository;
     const assets = await this.getAssets();
     const filesToSave = [];
@@ -211,7 +212,8 @@ export class FiredevFileController extends Firedev.Base.Controller<FiredevFile> 
       filesToSave.push(file);
     }
     await repo.save(filesToSave);
-    console.log('initing assets data')
+    // const all = await repo.find();
+    // console.log('initing assets data done')
   }
   //#endregion
   //#endregion

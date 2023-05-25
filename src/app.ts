@@ -106,7 +106,7 @@ async function start() {
     }
     //#endregion
   });
-  console.log('CONTEXT INITED', context)
+  // console.log('CONTEXT INITED', context)
 
 
   //#region @backend

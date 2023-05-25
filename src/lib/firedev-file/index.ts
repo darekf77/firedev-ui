@@ -11,3 +11,5 @@ export * from './firedev-file.module';
 export * from './firedev-file.service';
 //#endregion
 export * from './firedev-file';
+export * from './firedev-file-css';
+

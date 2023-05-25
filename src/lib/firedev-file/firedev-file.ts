@@ -9,6 +9,7 @@ import * as FromData from 'form-data';
 import { Blob } from 'buffer';
 //#endregion
 import { FiredevUIHelpers } from '../firedev-ui-helpers';
+import { firstValueFrom, Observable, Subject } from 'rxjs';
 //#endregion
 
 @Firedev.Entity<FiredevFile>({
@@ -68,9 +69,13 @@ export class FiredevFile extends Firedev.Base.Entity<any> {
   //#endregion
 
   static async getBloblessBy(src: string) {
+    if (src.startsWith('http')) {
+      return FiredevFile.from({
+        src,
+        version: 0,
+      })
+    }
     const data = await this.ctrl.getBloblessBy(encodeURI(src)).received;
-    // @LAST blob is not blob
-
     return data.body.json;
   }
 
@@ -82,6 +87,15 @@ export class FiredevFile extends Firedev.Base.Entity<any> {
   }
 
   static async getBlobOnlyBy(src: string) {
+    if (src.startsWith('http')) {
+      const blob = await FiredevUIHelpers.getBlobFrom(src);
+      return FiredevFile.from({
+        src,
+        blob,
+        version: 0,
+      })
+    }
+
     const data = await this.ctrl.getBlobOnlyBy(encodeURI(src)).received;
     return data.body.blob;
   }
