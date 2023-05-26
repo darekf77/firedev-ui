@@ -1,3 +1,7 @@
+@import '../firedev.scss';
+
+@include section;
+
 :host {
   display: block;
 }
@@ -58,6 +62,7 @@ mat-drawer {
       position: relative;
       float: left;
       top: 1px;
+      box-sizing: content-box;
     }
   }
 }

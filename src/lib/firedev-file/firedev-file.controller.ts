@@ -13,7 +13,7 @@ import { Blob } from 'buffer';
 //#endregion
 //#endregion
 
-
+declare const ENV: any;
 
 @Firedev.Controller({
   //#region controller config
@@ -199,6 +199,9 @@ export class FiredevFileController extends Firedev.Base.Controller<FiredevFile> 
   //#region methods / init example data
   //#region @websql
   async initExampleDbData() {
+    if (ENV.dontLoadAssets) {
+      return;
+    }
     // console.log('initing assets data start')
     const repo = this.repository;
     const assets = await this.getAssets();

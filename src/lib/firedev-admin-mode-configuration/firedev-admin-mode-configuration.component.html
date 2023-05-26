@@ -38,7 +38,7 @@
         </button>
       </column>
 
-      <column width="40"
+      <!-- <column width="40"
               *ngIf="admin.draggablePopupMode">
         <button mat-icon-button
                 class="admin-close-button">
@@ -47,7 +47,7 @@
           <mat-icon *ngIf="admin.draggablePopupModeFullScreen"
                     (click)="toogleFullScreen();">close_fullscreen</mat-icon>
         </button>
-      </column>
+      </column> -->
 
       <column width="40"
               *ngIf="!admin.draggablePopupModeFullScreen">
@@ -86,10 +86,10 @@
                 </mat-checkbox>
               </mat-card-content>
             </mat-card>
-            <button mat-raised-button
+            <!-- <button mat-raised-button
                     [disabled]="!isWebSQLMode"> [TODO] Reinit db with default values and reload </button> <br>
             <button mat-raised-button>[TODO] Start database export </button> <br>
-            <button mat-raised-button>[TODO] Import whole database </button><br>
+            <button mat-raised-button>[TODO] Import whole database </button><br> -->
           </section>
         </mat-tab>
 
@@ -102,14 +102,14 @@
           <firedev-admin-edit-mode *ngIf="admin.filesEditMode">
           </firedev-admin-edit-mode>
           <br>
-          <hr>
-          <section>
+          <hr *ngIf="admin.filesEditMode" >
+          <!-- <section>
             <button mat-raised-button>[TODO] Clear Files from browser cache </button> <br>
             <button mat-raised-button>[TODO] Start files export (as zip) </button> <br>
             <button mat-raised-button>[TODO] Import whole database (from zip) </button><br>
-          </section>
+          </section> -->
         </mat-tab>
-        <mat-tab label="Portal">
+        <!-- <mat-tab label="Portal">
           <section>
             <mat-checkbox>[TODO] Maintenance Mode for whole portal</mat-checkbox>
 
@@ -142,7 +142,7 @@
         </mat-tab>
         <mat-tab label="Translations">
           Welcome in user managements
-        </mat-tab>
+        </mat-tab> -->
 
       </mat-tab-group>
     </column>
@@ -170,9 +170,6 @@
 
 <ng-container *ngIf="admin.draggablePopupMode || admin.draggablePopupModeFullScreen"
               [ngTemplateOutlet]="content"></ng-container>
-<!--
-<firedev-file src="https://fonts.googleapis.com/css2?family=Material+Icons"
-              viewAs="css-tag"></firedev-file> -->
 
 <mat-drawer-container *ngIf="!admin.draggablePopupMode"
                       class="example-container"

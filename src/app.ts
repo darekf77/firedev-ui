@@ -89,13 +89,10 @@ async function start() {
   const context = await Firedev.init({
     host,
     controllers: [
-      FiredevFileController
       // PUT FIREDEV CONTORLLERS HERE
     ],
     entities: [
-      FiredevFile,
       Css,
-      FiredevFileCss,
       // PUT FIREDEV ENTITIES HERE
     ],
     //#region @websql
