@@ -1,10 +1,12 @@
 //#region @browser
 //#region imports
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, HostListener, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { Helpers, _ } from 'tnp-core';
 import { FiredevAdmin } from './firedev-admin';
 import { Stor } from 'firedev-storage';
 import { CdkDrag, CdkDragEnd, CdkDragMove, CdkDragRelease, Point } from '@angular/cdk/drag-drop';
+import { BreakpointsService } from 'static-columns';
+import { Subject, takeUntil, tap } from 'rxjs';
 //#endregion
 
 @Component({
@@ -16,6 +18,8 @@ import { CdkDrag, CdkDragEnd, CdkDragMove, CdkDragRelease, Point } from '@angula
 })
 export class FiredevAdminModeConfigurationComponent implements OnInit {
   //#region fields & getters
+  $destroy = new Subject();
+  isDesktop: boolean;
   admin = (window['firedev'] as FiredevAdmin);
   isWebSQLMode = Helpers.isWebSQL;
   height: number = 100;
@@ -56,13 +60,20 @@ export class FiredevAdminModeConfigurationComponent implements OnInit {
   //#endregion
 
   //#region constructor
-  constructor() {
-
+  constructor(
+    private breakpointsService: BreakpointsService,
+  ) {
+    this.breakpointsService.listenTo().pipe(
+      takeUntil(this.$destroy),
+    ).subscribe(breakpoint => {
+      this.isDesktop = (breakpoint === 'desktop');
+    })
   }
   //#endregion
 
   //#region hooks
   async ngOnInit() {
+    // console.log('ONINIT')
     this.dragPosition = { x: this.dragPositionX, y: this.dragPositionY };
     this.openedOnce = this.opened;
   }
@@ -73,9 +84,21 @@ export class FiredevAdminModeConfigurationComponent implements OnInit {
     //Add 'implements AfterViewInit' to the class.
     setTimeout(() => {
       this.height = window.innerHeight;
-      const tablist = (this.tabGroup._tabHeader._elementRef.nativeElement as HTMLElement).querySelector('.mat-tab-list') as HTMLElement;
-      tablist.style.transform = 'translateX(0px)'; // TODO QUICK_FIX
+      const tablist = (this.tabGroup?._tabHeader?._elementRef?.nativeElement as HTMLElement).querySelector('.mat-tab-list') as HTMLElement;
+      if(tablist) {
+        tablist.style.transform = 'translateX(0px)'; // TODO QUICK_FIX
+      }
     });
+  }
+
+  ngOnDestroy(): void {
+    this.$destroy.next(void 0);
+    this.$destroy.complete()
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: Event) {
+    this.height = window.innerHeight;
   }
 
   //#endregion

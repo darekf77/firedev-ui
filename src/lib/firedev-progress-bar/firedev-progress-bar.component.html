@@ -5,7 +5,7 @@
              [min]="options.min"
              [max]="options.max"
              [speed]="options.speed"
-             [spinner]="options.spinner"
+             [spinner]="options.spinner && (!admin.adminPanelIsOpen || (admin.adminPanelIsOpen && (admin.draggablePopupMode || !isDesktop)))"
              [spinnerPosition]="options.spinnerPosition"
              [direction]="options.direction"
              [trickleSpeed]="options.trickleSpeed"

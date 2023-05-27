@@ -1,4 +1,5 @@
-<ng-template #expansionTpl let-row>
+<ng-template #expansionTpl
+             let-row>
   hello from expansion {{row.src}}
 </ng-template>
 
@@ -46,7 +47,7 @@
       </firedev-table>
     </mat-tab>
     <mat-tab label="Current File">
-      <columns-container>
+      <columns-container *ngIf="files.length > 0">
         <column grow>
           <mat-form-field style="width: 100%;">
             <input matInput
@@ -68,8 +69,14 @@
         </column> -->
 
       </columns-container>
+      <columns-container *ngIf="files.length == 0">
+        <section>
+          <code>No &lt;firedev-file/&gt; - s components detected on this page</code>
+        </section>
+      </columns-container>
 
-      <div class="scrollable-files-list">
+      <div class="scrollable-files-list"
+           *ngIf="files.length > 0">
         <ng-scrollbar>
           <!-- selected: "{{ selectedFile?.src }}" -->
           <!-- {{ filesSelection.selectedOptions | json }} -->

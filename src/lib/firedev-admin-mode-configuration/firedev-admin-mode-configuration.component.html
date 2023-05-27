@@ -1,8 +1,7 @@
-<firedev-progress-bar></firedev-progress-bar>
+<firedev-progress-bar [isDesktop]="isDesktop" ></firedev-progress-bar>
 <firedev-notifications></firedev-notifications>
 <button class="admin-show-button"
-        showDesktop
-        *ngIf="!admin.draggablePopupMode"
+        *ngIf="!admin.draggablePopupMode && isDesktop"
         (click)="toogle()"> Admin </button>
 
 <ng-template #content>
@@ -168,10 +167,10 @@
 </div>
 
 
-<ng-container *ngIf="admin.draggablePopupMode || admin.draggablePopupModeFullScreen"
+<ng-container *ngIf="!isDesktop || admin.draggablePopupMode || admin.draggablePopupModeFullScreen"
               [ngTemplateOutlet]="content"></ng-container>
 
-<mat-drawer-container *ngIf="!admin.draggablePopupMode"
+<mat-drawer-container *ngIf="!admin.draggablePopupMode && isDesktop"
                       class="example-container"
                       [style.height.px]="height"
                       style="background-color: transparent;"
@@ -180,7 +179,6 @@
   <mat-drawer #drawer
               style="width: 580px;"
               [opened]="opened"
-              showDesktop
               [mode]="'side'">
 
     <ng-container [ngTemplateOutlet]="adminTabs"></ng-container>

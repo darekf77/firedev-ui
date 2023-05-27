@@ -41,7 +41,7 @@ export class FiredevTableComponent {
   @Output() expansionChange = new EventEmitter();
   totalElements: number = 100;
 
-  @Input() rows = _.times(50, (id) => {
+  @Input() rows = _.times(20, (id) => {
     return {
       id,
       name: `Amazing ${id} row `
@@ -63,6 +63,9 @@ export class FiredevTableComponent {
   }
 
   async ngOnInit() {
+    if (!!this.entity) {
+      this.rows = [];
+    }
     this.expandable = !!this.expansionTemplate;
     // this.arrayDataConfig.set.pagination.rowDisplayed(5);
     log.i('this.columns,', this.columns);

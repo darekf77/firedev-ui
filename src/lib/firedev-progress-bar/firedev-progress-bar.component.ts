@@ -1,13 +1,16 @@
 //#region @browser
 import { Component, EventEmitter, HostBinding, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { Observable, Subject, Subscription } from 'rxjs';
+import { _ } from 'tnp-core';
 
 import axios from 'axios'
 import { NgProgressConfig, NgProgressModule, NgProgressRef } from 'ngx-progressbar';
 import { Morphi } from 'morphi';
+import { Models } from 'tnp-models';
+import type { FiredevAdmin } from '../firedev-admin-mode-configuration';
 
 const calculatePercentage = (loaded, total) => (Math.floor(loaded * 1.0) / total)
-
+declare const ENV: Models.env.EnvConfig;
 
 @Component({
   selector: 'firedev-progress-bar',
@@ -15,9 +18,11 @@ const calculatePercentage = (loaded, total) => (Math.floor(loaded * 1.0) / total
   styleUrls: ['./firedev-progress-bar.component.scss']
 })
 export class FiredevProgressBarComponent implements OnInit {
+  admin = (window['firedev'] as FiredevAdmin);
   @ViewChild('labProgress') labProgress: NgProgressRef;
+  @Input() isDesktop: boolean;
   handlers: Subscription[] = [];
-  options: NgProgressConfig = {
+  options: NgProgressConfig = _.merge({
     min: 8,
     max: 100,
     speed: 200,
@@ -31,16 +36,21 @@ export class FiredevProgressBarComponent implements OnInit {
     meteor: true,
     spinner: true,
     thick: false
-  };
+  }, _.get(ENV, `plugins['ngx-progressbar']`));
 
   constructor() { }
 
   ngOnInit() {
-    this.loadProgressBar(void 0, axios)
+
   }
 
   ngOnDestroy(): void {
     this.handlers.forEach(h => h.unsubscribe());
+  }
+
+  ngAfterViewInit(): void {
+    // this.labProgress.set(20)
+    this.loadProgressBar(void 0, axios)
   }
 
 

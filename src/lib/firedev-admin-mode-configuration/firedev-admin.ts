@@ -55,8 +55,8 @@ export class FiredevAdmin {
   /**
    * Property used in firedev
    */
-  @Stor.property.in.localstorage.for(FiredevAdmin).withDefaultValue(false)
-  public firstTimeKeepWebsqlDbDataTrue: boolean;
+  // @Stor.property.in.localstorage.for(FiredevAdmin).withDefaultValue(false)
+  // public firstTimeKeepWebsqlDbDataTrue: boolean;
   //#endregion
 
   db = new FiredevAdminDB()
@@ -95,9 +95,9 @@ export class FiredevAdmin {
   }
 
   setKeepWebsqlDbDataAfterReload(value: boolean) {
-    if (value && !this.keepWebsqlDbDataAfterReload) {
-      this.firstTimeKeepWebsqlDbDataTrue = true;
-    }
+    // if (value && !this.keepWebsqlDbDataAfterReload) {
+    //   this.firstTimeKeepWebsqlDbDataTrue = true;
+    // }
     this.keepWebsqlDbDataAfterReload = value;
   }
 
