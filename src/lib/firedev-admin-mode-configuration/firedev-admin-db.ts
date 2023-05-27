@@ -1,4 +1,4 @@
-
+//#region @browser
 import { FrameworkContext } from 'morphi';
 
 
@@ -10,3 +10,4 @@ export class FiredevAdminDB {
   }
 
 }
+//#endregion

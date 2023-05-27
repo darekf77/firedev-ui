@@ -1,3 +1,4 @@
+//#region @browser
 //#region import
 import { FiredevAdminDB } from './firedev-admin-db';
 import { Stor } from 'firedev-storage';
@@ -151,3 +152,4 @@ export class FiredevAdmin {
   //#endregion
 
 }
+//#endregion
