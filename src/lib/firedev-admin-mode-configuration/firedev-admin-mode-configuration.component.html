@@ -1,4 +1,4 @@
-<firedev-progress-bar [isDesktop]="isDesktop" ></firedev-progress-bar>
+<firedev-progress-bar [isDesktop]="isDesktop"></firedev-progress-bar>
 <firedev-notifications></firedev-notifications>
 <button class="admin-show-button"
         *ngIf="!admin.draggablePopupMode && isDesktop"
@@ -101,7 +101,7 @@
           <firedev-admin-edit-mode *ngIf="admin.filesEditMode">
           </firedev-admin-edit-mode>
           <br>
-          <hr *ngIf="admin.filesEditMode" >
+          <hr *ngIf="admin.filesEditMode">
           <!-- <section>
             <button mat-raised-button>[TODO] Clear Files from browser cache </button> <br>
             <button mat-raised-button>[TODO] Start files export (as zip) </button> <br>
@@ -166,9 +166,11 @@
   <ng-container [ngTemplateOutlet]="adminTabs"></ng-container>
 </div>
 
-
-<ng-container *ngIf="!isDesktop || admin.draggablePopupMode || admin.draggablePopupModeFullScreen"
-              [ngTemplateOutlet]="content"></ng-container>
+<div [style.height.px]="height"
+     *ngIf="!isDesktop || admin.draggablePopupMode || admin.draggablePopupModeFullScreen"
+     style="width: 100%;display: block;">
+  <ng-container [ngTemplateOutlet]="content"></ng-container>
+</div>
 
 <mat-drawer-container *ngIf="!admin.draggablePopupMode && isDesktop"
                       class="example-container"
