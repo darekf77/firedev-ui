@@ -35,7 +35,13 @@ export class FiredevFileController extends Firedev.Base.Controller<FiredevFile> 
     if (shouldRestoreBlob) {
       //#region @websqlOnly
       if (Helpers.isWebSQL) {
-        const realSrc = item.src.startsWith('http') ? item.src : `${window.location.origin}${item.src}`
+        // @ts-ignore
+        const basename = (window?.ENV?.basename ? (window.ENV.basename) : '') as string;
+
+        const realSrc = item.src.startsWith('http')
+          ? item.src //@ts-ignore
+          : `${window.location.origin}${basename.endsWith('/') ? '' : '/'}${item.src}`
+        // console.log({ basename, realSrc })
         const blob = await FiredevUIHelpers.getBlobFrom(realSrc);
         // console.log({
         //   blob
@@ -237,8 +243,11 @@ export class FiredevFileController extends Firedev.Base.Controller<FiredevFile> 
       return assetsList;
     }
     //#endregion
+    // @ts-ignore
+    const basename = (window?.ENV?.basename ? (window.ENV.basename) : '') as string;
     const data = await axios({
-      url: '/assets/assets-list.json',
+      // @ts-ignore
+      url: `${basename}${basename.endsWith('/') ? '' : '/'}assets/assets-list.json`,
       method: 'GET',
       responseType: 'json'
     });
