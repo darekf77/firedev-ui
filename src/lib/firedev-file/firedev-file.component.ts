@@ -109,7 +109,7 @@ export class FiredevFileComponent implements OnInit {
 
   //#region hooks / on init
   async ngOnInit() {
-    if(_.isUndefined(this.offline)) {
+    if (_.isUndefined(this.offline)) {
       this.offline = true;
     }
 

@@ -75,6 +75,7 @@ export class FiredevFile extends Firedev.Base.Entity<any> {
         version: 0,
       })
     }
+
     const data = await this.ctrl.getBloblessBy(encodeURI(src)).received;
     return data.body.json;
   }

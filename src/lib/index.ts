@@ -1,4 +1,3 @@
-export { Stor } from 'firedev-storage';
 //#region @browser
 export * from './firedev-admin-mode-configuration';
 //#endregion
