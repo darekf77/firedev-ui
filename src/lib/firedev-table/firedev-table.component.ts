@@ -1,3 +1,4 @@
+//#region @browser
 import { Component, OnInit, Input, Output, TemplateRef, EventEmitter } from '@angular/core';
 import * as _ from 'lodash';
 import { Morphi } from 'morphi';
@@ -143,3 +144,4 @@ export class FiredevTableComponent {
   }
 
 }
+//#endregion

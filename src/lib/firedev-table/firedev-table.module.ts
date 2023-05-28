@@ -1,3 +1,4 @@
+//#region @browser
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatSelectModule } from '@angular/material/select';
@@ -16,3 +17,4 @@ import { MtxGridModule } from '@ng-matero/extensions/grid'
   declarations: [FiredevTableComponent]
 })
 export class FiredevTableModule { }
+//#endregion
