@@ -2,16 +2,22 @@
   "resources": ['README.md','logo.png'],
   "overrided": {
     "linkedFolders": [],
+
     "ignoreDepsPattern": [
       "*"
     ],
+
     "includeAsDev": [],
+
     "includeOnly": [
       'tnp-helpers'
     ],
+
     "dependencies": {
       '@types/node': '16.18.21',
-    }
+    },
+
+    'npmFixes': [],
   },
   "linkedProjects": [],
   "smartContainerBuildTarget": "",
