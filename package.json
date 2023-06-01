@@ -124,7 +124,7 @@
     "firedev-ports": "~13.1.44",
     "firedev-storage": "~13.2.36",
     "firedev-typeorm": "~13.1.31",
-    "firedev-ui": "~13.2.7",
+    "firedev-ui": "~13.2.8",
     "fkill": "6.1.0",
     "font-awesome": "4.7.0",
     "form-data": "4.0.0",
@@ -245,5 +245,5 @@
     "yup": "1.1.1",
     "zone.js": "~0.11.4"
   },
-  "lastBuildTagHash": "6b4ec58e383b37ad68a807a2ed3861ea550f156a"
+  "lastBuildTagHash": "31d296a53ed34f6dcdac1e4c812916aee8b1c680"
 }
