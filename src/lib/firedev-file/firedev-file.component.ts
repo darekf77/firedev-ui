@@ -1,5 +1,6 @@
 //#region @browser
-import { Component, ElementRef, HostBinding, Input, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostBinding, Injector, Input, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+
 import { Firedev } from 'firedev';
 import { FiredevFileService } from './firedev-file.service';
 import { Level, Log } from 'ng2-logger';
@@ -92,6 +93,7 @@ export class FiredevFileComponent implements OnInit {
   constructor(
     protected service: FiredevFileService,
     private domSanitizer: DomSanitizer,
+
   ) {
     this.scripts = FiredevFileComponent.scripts;
     this.styles = FiredevFileComponent.styles;
@@ -109,6 +111,8 @@ export class FiredevFileComponent implements OnInit {
 
   //#region hooks / on init
   async ngOnInit() {
+
+
     if (_.isUndefined(this.offline)) {
       this.offline = true;
     }
