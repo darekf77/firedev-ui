@@ -13,9 +13,7 @@
       'tnp-helpers'
     ],
 
-    "dependencies": {
-      '@types/node': '16.18.21',
-    },
+    "dependencies": {},
 
     'npmFixes': [],
   },
