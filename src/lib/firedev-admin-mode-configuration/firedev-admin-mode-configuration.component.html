@@ -28,12 +28,17 @@
       <column width="40"
               *ngIf="!admin.draggablePopupModeFullScreen && !admin.draggablePopupMode">
         <button mat-icon-button
+                *ngIf="admin.draggablePopupMode"
+                (click)="admin.draggablePopupMode =false;opened = false;wasOpenDraggablePopup = true;"
                 class="admin-close-button">
-          <mat-icon *ngIf="admin.draggablePopupMode"
-                    (click)="admin.draggablePopupMode =false;opened = false;wasOpenDraggablePopup = true;">close
-          </mat-icon>
-          <mat-icon *ngIf="!admin.draggablePopupMode"
-                    (click)="toogle();">close</mat-icon>
+          <mat-icon>close </mat-icon>
+        </button>
+
+        <button mat-icon-button
+                *ngIf="!admin.draggablePopupMode"
+                (click)="toogle();"
+                class="admin-close-button">
+          <mat-icon>close</mat-icon>
         </button>
       </column>
 
@@ -51,12 +56,17 @@
       <column width="40"
               *ngIf="!admin.draggablePopupModeFullScreen">
         <button mat-icon-button
+                *ngIf="!admin.draggablePopupMode"
+                (click)="admin.draggablePopupMode = true"
                 class="admin-close-button">
-          <mat-icon *ngIf="!admin.draggablePopupMode"
-                    (click)="admin.draggablePopupMode = true">launch</mat-icon>
-          <mat-icon *ngIf="admin.draggablePopupMode"
-                    style="transform: rotate(180deg);"
-                    (click)="admin.draggablePopupMode = false;resetDrag();">login</mat-icon>
+          <mat-icon>launch</mat-icon>
+        </button>
+
+        <button mat-icon-button
+                *ngIf="admin.draggablePopupMode"
+                (click)="admin.draggablePopupMode = false;resetDrag();"
+                class="admin-close-button">
+          <mat-icon style="transform: rotate(180deg);">login</mat-icon>
         </button>
       </column>
 

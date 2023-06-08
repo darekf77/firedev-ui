@@ -58,13 +58,14 @@
         </column>
         <column [width]="40">
           <button mat-icon-button
+                  (click)="fileToSearch = '';refresFilesList();"
                   *ngIf="fileToSearch && fileToSearch?.trim() !== ''">
-            <mat-icon (click)="fileToSearch = '';refresFilesList();">backspace</mat-icon>
+            <mat-icon>backspace</mat-icon>
           </button>
         </column>
         <!-- <column [width]="40">
-          <button mat-icon-button>
-            <mat-icon (click)="refresFilesList();">refresh</mat-icon>
+          <button mat-icon-button (click)="refresFilesList();" >
+            <mat-icon >refresh</mat-icon>
           </button>
         </column> -->
 
