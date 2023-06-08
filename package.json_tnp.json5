@@ -10,6 +10,7 @@
     "includeAsDev": [],
 
     "includeOnly": [
+      'static-columns',
       'tnp-helpers'
     ],
 
