@@ -109,27 +109,12 @@ export class FiredevAdminModeConfigurationComponent implements OnInit {
 
   //#endregion
 
-  async pizda() {
-    console.log('pizad]')
-    await Helpers.wait(2)
-  }
-
   //#region methods
   async toogle() {
-    console.log('toogle')
     // await stor.setItem(IS_OPEN_ADMIN, !this.opened);
     this.opened = !this.opened;
   }
 
-  async toogleDraggableMode(value: boolean) {
-    console.log('toogle draggable')
-    if(value) {
-      this.admin.draggablePopupMode = true
-    } else {
-      this.admin.draggablePopupMode = false;
-      this.resetDrag();
-    }
-  }
 
   async toogleFullScreen() {
     this.admin.draggablePopupModeFullScreen = !this.admin.draggablePopupModeFullScreen

@@ -53,7 +53,7 @@ mat-drawer {
   // -webkit-box-shadow: 0 6px 14px -4px black;
   // -moz-box-shadow   : 0 6px 14px -4px black;
   box-shadow: 0 -9px 6px 6px black;
-  height: 40px;
+  height: 47px;
 
   .logo-header {
     img {
@@ -61,8 +61,10 @@ mat-drawer {
       padding: 8px;
       position: relative;
       float: left;
-      top: 1px;
+      top: 7px;
       box-sizing: content-box;
+      transform: scale(1.5);
+      left: 49px;
     }
   }
 }
