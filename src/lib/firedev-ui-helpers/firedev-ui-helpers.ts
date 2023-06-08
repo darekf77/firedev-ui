@@ -22,7 +22,7 @@ export namespace FiredevUIHelpers {
       reader.addEventListener('loadend', () => {
         resolve(reader.result);
       });
-      reader.addEventListener('error', reject);
+      reader.addEventListener('error', reject); // @ts-ignore
       reader.readAsArrayBuffer(blob);
     });
   }
@@ -35,7 +35,7 @@ export namespace FiredevUIHelpers {
   export function blobToBase64(blob: Blob) {
     return new Promise<any>((resolve, _) => {
       const reader = new FileReader();
-      reader.onloadend = () => resolve(reader.result);
+      reader.onloadend = () => resolve(reader.result); // @ts-ignore
       reader.readAsDataURL(blob);
     });
   }
@@ -83,6 +83,7 @@ export namespace FiredevUIHelpers {
   export async function blobToFile(blob: Blob, nameForFile = 'my-file-name') {
     if (!nameForFile) {
       nameForFile = nameForFile + (new Date()).getTime();
+      // @ts-ignore
       return new File([blob], nameForFile)
     };
   }
