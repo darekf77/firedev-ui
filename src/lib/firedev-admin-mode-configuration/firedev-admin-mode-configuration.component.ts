@@ -22,6 +22,7 @@ export class FiredevAdminModeConfigurationComponent implements OnInit {
   //#region fields & getters
   $destroy = new Subject();
   isDesktop: boolean;
+  isWebsql = Helpers.isWebSQL;
   admin = (window['firedev'] as FiredevAdmin);
   isWebSQLMode = Helpers.isWebSQL;
   height: number = 100;
@@ -90,10 +91,11 @@ export class FiredevAdminModeConfigurationComponent implements OnInit {
     //Add 'implements AfterViewInit' to the class.
     setTimeout(() => {
       this.height = window.innerHeight;
-      const tablist = (this.tabGroup?._tabHeader?._elementRef?.nativeElement as HTMLElement).querySelector('.mat-tab-list') as HTMLElement;
-      if (tablist) {
-        tablist.style.transform = 'translateX(0px)'; // TODO QUICK_FIX
-      }
+
+      // const tablist = (this.tabGroup?._tabHeader?._elementRef?.nativeElement as HTMLElement).querySelector('.mat-tab-list') as HTMLElement;
+      // if (tablist) {
+      //   tablist.style.transform = 'translateX(0px)'; // TODO QUICK_FIX
+      // }
     });
   }
 

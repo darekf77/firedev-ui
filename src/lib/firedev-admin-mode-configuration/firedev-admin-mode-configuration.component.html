@@ -1,8 +1,18 @@
 <firedev-progress-bar [isDesktop]="isDesktop"></firedev-progress-bar>
 <firedev-notifications></firedev-notifications>
-<button class="admin-show-button"
+<button mat-fab
+        class="fab-button"
+        color="accent"
+        aria-label="Firedev Admin Mode"
+        *ngIf="!admin.draggablePopupMode && isDesktop && isWebsql"
+        (click)="toogle()">
+  <mat-icon>build</mat-icon>
+</button>
+
+<!-- small hidden button -->
+<!-- <button class="admin-show-button"
         *ngIf="!admin.draggablePopupMode && isDesktop"
-        (click)="toogle()"> Admin </button>
+        (click)="toogle()"> Admin </button> -->
 
 <ng-template #content>
   <ng-content>
@@ -102,7 +112,8 @@
           </section>
         </mat-tab>
 
-        <mat-tab label="Files">
+        <mat-tab label="Files"
+                 *ngIf="admin.enabledTabs.includes('files')">
           <section>
             <mat-checkbox [ngModel]="admin.filesEditMode"
                           (change)="admin.setEditMode($event.checked)">Edit mode</mat-checkbox>

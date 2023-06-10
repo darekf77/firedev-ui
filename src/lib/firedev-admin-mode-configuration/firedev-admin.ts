@@ -135,6 +135,7 @@ export class FiredevAdmin {
     }
   }
 
+  enabledTabs = [];
 
   hide() {
     this.draggablePopupMode = false;
