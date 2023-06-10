@@ -1,6 +1,6 @@
 {
   "name": "firedev-ui",
-  "version": "16.0.3",
+  "version": "16.0.4",
   "dependencies": {
     "static-columns": "~16.0.2",
     "tnp-helpers": "~16.0.2"
