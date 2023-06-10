@@ -1,4 +1,34 @@
 {
+  "tnp": {
+    "resources": [
+      "README.md",
+      "logo.png"
+    ],
+    "overrided": {
+      "linkedFolders": [],
+      "ignoreDepsPattern": [
+        "*"
+      ],
+      "includeAsDev": [],
+      "includeOnly": [
+        "static-columns",
+        "tnp-helpers"
+      ],
+      "dependencies": {},
+      "npmFixes": []
+    },
+    "linkedProjects": [],
+    "smartContainerBuildTarget": "",
+    "linkedRepos": [],
+    "libReleaseOptions": {
+      "nodts": false,
+      "obscure": false,
+      "ugly": false,
+      "includeNodeModules": false
+    },
+    "version": "v4",
+    "type": "isomorphic-lib"
+  },
   "name": "firedev-ui",
   "version": "16.0.5",
   "dependencies": {
