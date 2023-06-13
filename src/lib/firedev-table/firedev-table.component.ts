@@ -31,7 +31,7 @@ const defaultColums = [
   styleUrls: ['./firedev-table.component.scss']
 })
 export class FiredevTableComponent {
-
+  showPaginator = true;
   isLoading = false;
   @Input() pageNumber: number = 1;
   @Input() pageSize: number = 5;
@@ -108,12 +108,21 @@ export class FiredevTableComponent {
         } catch (error) {
           console.error(error)
         }
+      } else {
+
       }
 
     })
+    if (!this.entity) {
+      this.showPaginator = false;
+    }
+
     await this.retriveData();
   }
   async retriveData() { // @ts-ignore
+    if (!this.entity) {
+      return;
+    }
     this.isLoading = true;
     // console.log('PAGINTION FETCH DATA START!')
     const controller = (this.entity.ctrl as Firedev.CRUD.Base<any>);

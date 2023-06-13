@@ -1,0 +1,14 @@
+<swal #usernamePopup
+      title="Username input"
+      input="text"
+      text="Enter your username to submit answers"
+      [showCancelButton]="true"
+      [focusCancel]="true"
+      (confirm)="emailEntered()">
+</swal>
+
+With [swal]:
+<button [swal]="usernamePopup">ASdasdasd</button>
+
+Or DIY:
+<button (click)="usernamePopup.fire()">AAAsda</button>

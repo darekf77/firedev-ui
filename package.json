@@ -32,7 +32,7 @@
   "name": "firedev-ui",
   "version": "16.0.6",
   "dependencies": {
-    "static-columns": "~16.0.4",
+    "static-columns": "~16.0.5",
     "tnp-helpers": "~16.0.5"
   },
   "devDependencies": {
@@ -265,7 +265,7 @@
     "tnp-config": "~16.0.8",
     "tnp-core": "~16.0.9",
     "tnp-db": "~16.0.26",
-    "tnp-models": "~16.0.32",
+    "tnp-models": "~16.0.33",
     "ts-debug": "1.3.0",
     "ts-loader": "2.3.1",
     "ts-node": "10.9.1",
