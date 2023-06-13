@@ -30,7 +30,7 @@
     "type": "isomorphic-lib"
   },
   "name": "firedev-ui",
-  "version": "16.0.6",
+  "version": "16.0.7",
   "dependencies": {
     "static-columns": "~16.0.5",
     "tnp-helpers": "~16.0.5"
