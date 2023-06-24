@@ -76,12 +76,16 @@ export class FiredevFile extends Firedev.Base.Entity<any> {
       })
     }
 
-    const data = await this.ctrl.getBloblessBy(encodeURI(src)).received;
+    src = encodeURIComponent(src);
+    const data = await this.ctrl.getBloblessBy(src).received;
+
     return data.body.json;
   }
 
   static async getLatestVersion(src: string) {
-    const data = await this.ctrl.getLatestVersion(encodeURI(src)).received;
+    src = encodeURIComponent(src);
+
+    const data = await this.ctrl.getLatestVersion(src).received;
     // @LAST blob is not blob
 
     return Number(data.body.text);
@@ -97,7 +101,8 @@ export class FiredevFile extends Firedev.Base.Entity<any> {
       })
     }
 
-    const data = await this.ctrl.getBlobOnlyBy(encodeURI(src)).received;
+    src = encodeURIComponent(src);
+    const data = await this.ctrl.getBlobOnlyBy(src).received;
     return data.body.blob;
   }
 

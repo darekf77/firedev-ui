@@ -6,6 +6,10 @@ import { FiredevFile, FiredevFileController } from './lib/firedev-file';
 import { Css } from './app/preview/previews/preview-form/css';
 import { FiredevFileCss } from './lib/firedev-file/firedev-file-css';
 
+console.log({
+  FiredevFile, FiredevFileController, FiredevFileCss
+})
+
 //#region @browser
 import { NgModule, NgZone, ViewEncapsulation } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
@@ -95,6 +99,7 @@ async function start() {
       Css,
       // PUT FIREDEV ENTITIES HERE
     ],
+    disabledRealtime: true,
     //#region @websql
     config: {
       type: 'better-sqlite3',

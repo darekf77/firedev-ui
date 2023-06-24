@@ -1,9 +1,7 @@
-//#region @browser
+//#region  imports
 import { Component, ElementRef, HostBinding, Injector, Input, OnInit, SimpleChanges, ViewChild } from '@angular/core';
-
 import { Firedev } from 'firedev';
-import { FiredevFileService } from './firedev-file.service';
-import { Level, Log } from 'ng2-logger';
+import { FiredevFileHelpers } from './firedev-file.helpers';
 import { crossPlatformPath, Helpers, path, _ } from 'tnp-core';
 import { FiredevDisplayMode } from '../firedev.models';
 import { FiredevFile } from './firedev-file';
@@ -18,20 +16,18 @@ import 'brace/mode/json';
 import 'brace/theme/twilight';
 import { firstValueFrom, Observable, Subject } from 'rxjs';
 import { DomSanitizer } from '@angular/platform-browser';
-
-const log = Log.create('firedev file component',
+import { Level, Log } from 'ng2-logger';
+import { DEFAULT_HEIGHT, DEFAULT_WIDTH } from './firedev-file.constants';
+const log = Log.create('firedev',
   Level.__NOTHING
-)
-
-const DEFAULT_WIDTH = 244;
-const DEFAULT_HEIGHT = 177;
+);
+//#endregion
 
 @Component({
   //#region component options
   selector: 'firedev-file',
   templateUrl: './firedev-file.component.html',
   styleUrls: ['./firedev-file.component.scss'],
-  providers: [FiredevFileService]
   //#endregion
 })
 export class FiredevFileComponent implements OnInit {
@@ -91,7 +87,6 @@ export class FiredevFileComponent implements OnInit {
 
   //#region constructor
   constructor(
-    protected service: FiredevFileService,
     private domSanitizer: DomSanitizer,
 
   ) {
@@ -210,7 +205,7 @@ export class FiredevFileComponent implements OnInit {
 
       if (FiredevFileComponent.filesToCache.includes(bloblessFile.type)) { // only cache blob of images
         const fileBlob = await this.FiredevFile.getBlobOnlyBy(bloblessFile.src);
-        bloblessFile.blob = fileBlob as any;
+        bloblessFile.blob = fileBlob as any; // @ts-ignore
         bloblessFile.file = new File([bloblessFile.blob], path.basename(_.first(bloblessFile.src.split('?'))));
         if (FiredevFileComponent.filesToCacheText.includes(bloblessFile.type)) {
           bloblessFile.text = await bloblessFile.file.text()
@@ -279,9 +274,9 @@ export class FiredevFileComponent implements OnInit {
     }
 
     if (this.viewAs === 'script-tag') {
-      this.service.loadScript(this.src, this)
+      FiredevFileHelpers.loadScript(this.src, this)
     } else if (this.viewAs === 'css-tag') {
-      this.service.loadStyle(this.src, this)
+      FiredevFileHelpers.loadStyle(this.src, this)
     } else {
       this.styleDisplay = 'inline-block';
     }
@@ -319,4 +314,3 @@ export class FiredevFileComponent implements OnInit {
   //#endregion
 
 }
-//#endregion

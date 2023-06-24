@@ -12,7 +12,9 @@ export const BrowserHeightOrWidth = ['auto', 'inherit'] as BrowserHeightOrWidth[
 
 @Firedev.Entity<Css>({
   className: 'Css',
+  //#region @websql
   createTable: false,
+  //#endregion
   defaultModelValues: {
     width: 100,
     widthUnit: '%',

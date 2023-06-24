@@ -68,7 +68,7 @@ export class FiredevFileController extends Firedev.Base.Controller<FiredevFile> 
     //#region @websqlFunc
     return async (req, res) => {
       const repo = this.repository;
-      src = decodeURI(src);
+      src = decodeURIComponent(src);
 
       let item = await repo.findOne({
         where: {
@@ -84,9 +84,9 @@ export class FiredevFileController extends Firedev.Base.Controller<FiredevFile> 
   @Firedev.Http.GET('/blobless/:src')
   getBloblessBy(@Firedev.Http.Param.Path('src') src: string): Firedev.Response<FiredevFile> {
     //#region @websqlFunc
+    src = decodeURIComponent(src);
     return async (req, res) => {
       const repo = this.repository;
-      src = decodeURI(src);
 
       let item = await repo.findOne({
         where: {
@@ -108,11 +108,12 @@ export class FiredevFileController extends Firedev.Base.Controller<FiredevFile> 
   })
   getBlobOnlyBy(@Firedev.Http.Param.Path('src') src: string): Firedev.Response<Blob> {
     //#region @websqlFunc
+    src = decodeURIComponent(src)
     return async (req, res) => {
       const repo = this.repository;
       let item = await repo.findOne({
         where: {
-          src: decodeURI(src),
+          src,
         }
       });
       item = await this.restoreBlob(item);

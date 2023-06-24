@@ -7,10 +7,6 @@ export * from './firedev-file.models';
 export * from './firedev-file.module';
 //#endregion
 
-//#region @browser
-export * from './firedev-file.service';
-//#endregion
-
 export * from './firedev-file';
 export * from './firedev-file-css';
 

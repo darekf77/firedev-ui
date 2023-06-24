@@ -1,13 +1,13 @@
-//#region @browser
-import { Injectable } from '@angular/core';
 import { Firedev } from 'firedev';
+//#region @browser
 import type { FiredevFileComponent } from './firedev-file.component';
+//#endregion
 import { FiredevFileDefaultAs, IFiredevFileType } from './firedev-file.models';
 
-@Injectable()
-export class FiredevFileService {
+export namespace FiredevFileHelpers {
 
-  loadScript(src: string, context: FiredevFileComponent) {
+  //#region @browser
+  export function loadScript(src: string, context: FiredevFileComponent) {
     return new Promise((resolve, reject) => {
       //resolve if already loaded
       if (context.scripts[src]) {
@@ -39,8 +39,10 @@ export class FiredevFileService {
       }
     });
   }
+  //#endregion
 
-  loadStyle(src: string, context: FiredevFileComponent) {
+  //#region @browser
+  export function loadStyle(src: string, context: FiredevFileComponent) {
     const styles = context.styles;
     return new Promise((resolve, reject) => {
       //resolve if already loaded
@@ -50,7 +52,7 @@ export class FiredevFileService {
       else {
         //load script
         let link = document.createElement('link') as any;
-        link.rel  = 'stylesheet';
+        link.rel = 'stylesheet';
         link.type = 'text/css';
         link.href = src;
 
@@ -74,9 +76,7 @@ export class FiredevFileService {
       }
     });
   }
+  //#endregion
 
 
 }
-
-//#endregion
-
