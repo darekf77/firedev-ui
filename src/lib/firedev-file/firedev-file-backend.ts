@@ -1,3 +1,4 @@
+//#region imports
 import axios from 'axios';
 import { Project } from 'firedev';
 import { _ } from 'tnp-core';
@@ -6,9 +7,10 @@ import { FiredevUIHelpers } from '../firedev-ui-helpers';
 import { FiredevFile } from './firedev-file';
 import type { FiredevFileController } from './firedev-file.controller';
 declare const ENV: any;
+//#endregion
 
 /**
- * Backend methods for MyEntity
+ * Backend (websql also) methods for MyEntity
  *
  * + use entites injected controllers to access other backends
  * + don't use controllers methods/properties here
@@ -22,7 +24,52 @@ export class FiredevFileBackend {
   private constructor(private ctrl: FiredevFileController) { }
   //#endregion
 
+  //#region restore blob for file
+  public async restoreBlob(file: FiredevFile) {
+    //#region @websqlFunc
+    const repo = this.ctrl.repository;
+    const shouldRestoreBlob = (file.isFromAssets || file.hasEmptyBlob) && _.isNil(file.blob);
+    // console.log({
+    //   shouldRestoreBlob
+    // })
+    if (shouldRestoreBlob) {
+
+      //#region @websqlOnly
+      if (Helpers.isWebSQL) {
+        // @ts-ignore
+        const basename = (window?.ENV?.basename ? (window.ENV.basename) : '') as string;
+
+        const realSrc = file.src.startsWith('http')
+          ? file.src //@ts-ignore
+          : `${window.location.origin}${basename.endsWith('/') ? '' : '/'}${file.src.startsWith('/') ? file.src.slice(1) : ''}`;
+
+        console.log({ basename, realSrc })
+        const blob = await FiredevUIHelpers.getBlobFrom(realSrc);
+        // console.log({
+        //   blob
+        // })
+        file.blob = await FiredevUIHelpers.blobToBase64(blob);
+        // console.log('blob update')
+        await repo.update(file.id, file);
+        // console.log('blob update')
+      }
+      //#endregion
+
+      //#region @backend
+      if (Helpers.isNode) {
+        const proj = Project.From(process.cwd()) as Project;  // TODO
+        // TODO
+      }
+      //#endregion
+    }
+    return file;
+    //#endregion
+  }
+  //#endregion
+
+  //#region init example data
   public async initExampleDbData() {
+    //#region @websql
     if (ENV.dontLoadAssets) {
       return;
     }
@@ -39,11 +86,14 @@ export class FiredevFileBackend {
       filesToSave.push(file);
     }
     await repo.save(filesToSave);
-    // const all = await repo.find();
-    // console.log('initing assets data done')
+    //#endregion
   }
+  //#endregion
 
+  //#region get assets
   private async getAssets() {
+    //#region websqlFunc
+
     //#region @backend
     if (Helpers.isNode) {
       const proj = Project.From(process.cwd()) as Project;  // TODO
@@ -53,6 +103,7 @@ export class FiredevFileBackend {
       return assetsList;
     }
     //#endregion
+
     // @ts-ignore
     const basename = (window?.ENV?.basename ? (window.ENV.basename) : '') as string;
     const data = await axios({
@@ -62,44 +113,8 @@ export class FiredevFileBackend {
       responseType: 'json'
     });
 
-    return data.data as string[]
+    return data.data as string[];
+    //#endregion
   }
-
-  public async restoreBlob(item: FiredevFile) {
-    const repo = this.ctrl.repository;
-    const shouldRestoreBlob = (item.isFromAssets || item.hasEmptyBlob) && _.isNil(item.blob);
-    // console.log({
-    //   shouldRestoreBlob
-    // })
-    if (shouldRestoreBlob) {
-      //#region @websqlOnly
-      if (Helpers.isWebSQL) {
-        // @ts-ignore
-        const basename = (window?.ENV?.basename ? (window.ENV.basename) : '') as string;
-
-        const realSrc = item.src.startsWith('http')
-          ? item.src //@ts-ignore
-          : `${window.location.origin}${basename.endsWith('/') ? '' : '/'}${item.src.startsWith('/') ? item.src.slice(1) : ''}`;
-
-        console.log({ basename, realSrc })
-        const blob = await FiredevUIHelpers.getBlobFrom(realSrc);
-        // console.log({
-        //   blob
-        // })
-        item.blob = await FiredevUIHelpers.blobToBase64(blob);
-        // console.log('blob update')
-        await repo.update(item.id, item);
-        // console.log('blob update')
-      }
-      //#endregion
-      //#region @backend
-      if (Helpers.isNode) {
-        const proj = Project.From(process.cwd()) as Project;  // TODO
-        // TODO
-      }
-      //#endregion
-    }
-    return item;
-  }
-
+  //#endregion
 }
