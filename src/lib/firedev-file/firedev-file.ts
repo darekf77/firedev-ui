@@ -57,7 +57,7 @@ export class FiredevFile extends Firedev.Base.Entity<any> {
       const formData = new FormData();
       const file = files[index];
       formData.append(`file${index + 1}`, file);
-      const resp = await this.ctrl.__upload(formData as any).received;
+      const resp = await this.ctrl.upload(formData as any).received;
       const firedevFile = resp.body.json;
       if (!dontRestoreBlob) {
         firedevFile.blob = await FiredevUIHelpers.fileToBlob(file);

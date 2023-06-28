@@ -26,7 +26,7 @@ export class FiredevFileController extends Firedev.Base.Controller<FiredevFile> 
   //#region methods
 
   //#region @websql
-  async restoreBlob(item: FiredevFile) {
+  private async restoreBlob(item: FiredevFile) {
     const repo = this.repository;
     const shouldRestoreBlob = (item.isFromAssets || item.hasEmptyBlob) && _.isNil(item.blob);
     // console.log({
@@ -55,6 +55,7 @@ export class FiredevFileController extends Firedev.Base.Controller<FiredevFile> 
       //#endregion
       //#region @backend
       if (Helpers.isNode) {
+        const proj = Project.From(process.cwd()) as Project;  // TODO
         // TODO
       }
       //#endregion
@@ -158,7 +159,7 @@ export class FiredevFileController extends Firedev.Base.Controller<FiredevFile> 
    * @returns
    */
   @Firedev.Http.POST({ overrideContentType: 'multipart/form-data' as any })
-  __upload(@Firedev.Http.Param.Body() formData: FormData): Firedev.Response<FiredevFile> {
+  upload(@Firedev.Http.Param.Body() formData: FormData): Firedev.Response<FiredevFile> {
     //#region @websqlFunc
     return async (req, res) => {
       //#region @backendFunc
