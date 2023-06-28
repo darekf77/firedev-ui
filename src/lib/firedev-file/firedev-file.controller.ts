@@ -11,6 +11,9 @@ import { FiredevUploadedFile } from '../firedev.models';
 const pathDest = path.join(process.cwd(), 'src/assets/private/uploaded');
 import { Blob } from 'buffer';
 //#endregion
+//#region @websql
+import { FiredevFileBackend } from './firedev-file.backend';
+//#endregion
 //#endregion
 
 declare const ENV: any;
@@ -22,48 +25,14 @@ declare const ENV: any;
   //#endregion
 })
 export class FiredevFileController extends Firedev.Base.Controller<FiredevFile> {
-
-  //#region methods
-
+  //#region fields
+  entity: typeof FiredevFile;
   //#region @websql
-  private async restoreBlob(item: FiredevFile) {
-    const repo = this.repository;
-    const shouldRestoreBlob = (item.isFromAssets || item.hasEmptyBlob) && _.isNil(item.blob);
-    // console.log({
-    //   shouldRestoreBlob
-    // })
-    if (shouldRestoreBlob) {
-      //#region @websqlOnly
-      if (Helpers.isWebSQL) {
-        // @ts-ignore
-        const basename = (window?.ENV?.basename ? (window.ENV.basename) : '') as string;
-
-        const realSrc = item.src.startsWith('http')
-          ? item.src //@ts-ignore
-          : `${window.location.origin}${basename.endsWith('/') ? '' : '/'}${item.src.startsWith('/') ? item.src.slice(1) : ''}`;
-
-        console.log({ basename, realSrc })
-        const blob = await FiredevUIHelpers.getBlobFrom(realSrc);
-        // console.log({
-        //   blob
-        // })
-        item.blob = await FiredevUIHelpers.blobToBase64(blob);
-        // console.log('blob update')
-        await repo.update(item.id, item);
-        // console.log('blob update')
-      }
-      //#endregion
-      //#region @backend
-      if (Helpers.isNode) {
-        const proj = Project.From(process.cwd()) as Project;  // TODO
-        // TODO
-      }
-      //#endregion
-    }
-    return item;
-  }
+  readonly backend = FiredevFileBackend.for(this);
+  //#endregion
   //#endregion
 
+  //#region get latest version by src
   @Firedev.Http.GET('/version/:src')
   getLatestVersion(@Firedev.Http.Param.Path('src') src: string): Firedev.Response<number> {
     //#region @websqlFunc
@@ -81,7 +50,9 @@ export class FiredevFileController extends Firedev.Base.Controller<FiredevFile> 
     }
     //#endregion
   }
+  //#endregion
 
+  //#region get blobless by src
   @Firedev.Http.GET('/blobless/:src')
   getBloblessBy(@Firedev.Http.Param.Path('src') src: string): Firedev.Response<FiredevFile> {
     //#region @websqlFunc
@@ -102,7 +73,9 @@ export class FiredevFileController extends Firedev.Base.Controller<FiredevFile> 
     }
     //#endregion
   }
+  //#endregion
 
+  //#region get blob only by src
   @Firedev.Http.GET({
     overridResponseType: 'blob',
     path: '/blobonly/:src'
@@ -117,14 +90,15 @@ export class FiredevFileController extends Firedev.Base.Controller<FiredevFile> 
           src,
         }
       });
-      item = await this.restoreBlob(item);
+      item = await this.backend.restoreBlob(item);
       const blob = FiredevUIHelpers.base64toBlob(item.blob as string);
       return blob;
     }
     //#endregion
   }
+  //#endregion
 
-
+  //#region delete by src
   @Firedev.Http.DELETE({
     overridResponseType: 'blob',
     path: '/blobonly/:src'
@@ -145,8 +119,9 @@ export class FiredevFileController extends Firedev.Base.Controller<FiredevFile> 
     }
     //#endregion
   }
+  //#endregion
 
-  //#region methods / __ upload
+  //#region upload form data
   /**
    * in angular:
    * const formData = new FormData();
@@ -205,65 +180,12 @@ export class FiredevFileController extends Firedev.Base.Controller<FiredevFile> 
   }
   //#endregion
 
-  //#region methods / init example data
+  //#region init example data
   //#region @websql
   async initExampleDbData() {
-    if (ENV.dontLoadAssets) {
-      return;
-    }
-    // console.log('initing assets data start')
-    const repo = this.repository;
-    const assets = await this.getAssets();
-    const filesToSave = [];
-    for (let index = 0; index < assets.length; index++) {
-      const src = assets[index];
-      const file = FiredevFile.from({
-        src: `/${src}`,
-        isFromAssets: true,
-      });
-      filesToSave.push(file);
-    }
-    await repo.save(filesToSave);
-    // const all = await repo.find();
-    // console.log('initing assets data done')
+    await this.backend.initExampleDbData()
   }
   //#endregion
   //#endregion
-
-  //#endregion
-
-  //#region private methods
-
-  //#region private methods / get assets
-  //#region @websql
-  private async getAssets() {
-    //#region @backend
-    if (Helpers.isNode) {
-      const proj = Project.From(process.cwd()) as Project;  // TODO
-      const assetsList = Helpers.readJson(proj.pathFor(`tmp-apps-for-dist/firedev-ui/src/assets/assets-list.json`)) as string[];
-
-      // console.log({ proj, env: global['ENV'], assetsList })
-      return assetsList;
-    }
-    //#endregion
-    // @ts-ignore
-    const basename = (window?.ENV?.basename ? (window.ENV.basename) : '') as string;
-    const data = await axios({
-      // @ts-ignore
-      url: `${basename}${basename.endsWith('/') ? '' : '/'}assets/assets-list.json`,
-      method: 'GET',
-      responseType: 'json'
-    });
-
-    return data.data as string[]
-  }
-  //#endregion
-  //#endregion
-
-  //#endregion
-
 }
 
-
-// const base64image1 = 'data:image/png;base64,R0lGODlhDAAMAKIFAF5LAP/zxAAAANyuAP/gaP///wAAAAAAACH5BAEAAAUALAAAAAAMAAwAAAMlWLPcGjDKFYi9lxKBOaGcF35DhWHamZUW0K4mAbiwWtuf0uxFAgA7'; // emoji
-// const bs64image2 = 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD/2wBDAAMCAgMCAgMDAwMEAwMEBQgFBQQEBQoHBwYIDAoMDAsKCwsNDhIQDQ4RDgsLEBYQERMUFRUVDA8XGBYUGBIUFRT/2wBDAQMEBAUEBQkFBQkUDQsNFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBT/wAARCAAUAB4DASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD9Dr/WrXS7Ke7ubhIbaBGlkkY8KqjJJ+gFeA6v+11LLfNH4e8OrqFsH2CS7ujC7j+8FCkAfU5+lQ/tAeMLXS/hfrsVxqEdnPNBiBZZArTNkEIo77sY49a4H9m1vC3xK0k2F8sdtqUUm7a58qRP7hUd88g/WvDhmdTFVfY01yux6ksDChD2k9T1bwT+1l/bkMw1XwpfadPDceSYo5FZyoOC4V9vHBOASSMEdcD36x1KHUrOG6t5RLBMgkjdehUjINfMXjj4C+GdQhsCSLjVtNuluopJ5vntJFYhH2bgO55PHtXc+GNUTRdFgtDOFZdzGON8qu5i2Ae/X0r0KmLlhY/vFdnNDDRr6wdkUPFmlWWoaXfC5s7ef9ySfMiVs8H1FeX+G/h/4av7wSS6FYiVSCrxwhGH4jFFFflOKlKnWg4Ox9lSSlTdzvrzTLSS4EkkAmkV1w8ruxG3pyT2ro7fQdPulDyWqFiOuT/jRRXdTr1ZTd5v72YShHlWh//Z'; // hammy

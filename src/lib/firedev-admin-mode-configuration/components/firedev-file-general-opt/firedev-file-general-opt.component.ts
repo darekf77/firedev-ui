@@ -3,7 +3,6 @@ import { Component, EventEmitter, HostBinding, Input, OnInit, Output } from '@an
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Subscription } from 'rxjs';
 import type { FiredevFile } from '../../../firedev-file';
-import type { FiredevFileCss } from '../../../firedev-file/firedev-file-css';
 import { _ } from 'tnp-core';
 
 @Component({

@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { FiredevAdminModeConfigurationComponent } from './firedev-admin-mode-configuration.component';
 import { FiredevFullMaterialModule } from '../firedev-full-material.module';
 import { StaticColumnsModule } from 'static-columns';
-import { FiredevFileComponent, FiredevFileModule } from '../firedev-file';
+import { FiredevFileComponent } from '../firedev-file';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FiredevAdminEditModeModule } from './components/firedev-admin-edit-mode';
 import { NgScrollbarModule } from 'ngx-scrollbar';
@@ -19,7 +19,7 @@ import { createCustomElement } from '@angular/elements';
     FormsModule,
     NgScrollbarModule,
     FiredevAdminEditModeModule,
-    FiredevFileModule,
+    FiredevFileComponent,
     FiredevProgressBarModule,
     FiredevNotificationsModule,
     FiredevFullMaterialModule, // TODO import only partial things

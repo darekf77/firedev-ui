@@ -49,13 +49,14 @@
      class="wrapper"
      [ngClass]="{ 'firedev-file-edit-mode' : (admin.filesEditMode) }">
   <ng-container *ngTemplateOutlet="mask"></ng-container>
-  <ace [mode]="'json'"
+  {{tempText}}
+  <!-- <ace [mode]="'json'"
        *ngIf="file && tempText"
        #json
        [(value)]="tempText"
        [theme]="'twilight'"
        [style.height.px]="height"
-       [style.width.px]="width"></ace>
+       [style.width.px]="width"></ace> -->
 </div>
 
 <div *ngIf="viewAs === 'audio-tag'"

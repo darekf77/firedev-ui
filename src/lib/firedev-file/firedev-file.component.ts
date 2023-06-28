@@ -5,19 +5,23 @@ import { FiredevFileHelpers } from './firedev-file.helpers';
 import { crossPlatformPath, Helpers, path, _ } from 'tnp-core';
 import { FiredevDisplayMode } from '../firedev.models';
 import { FiredevFile } from './firedev-file';
-import { FiredevFileDefaultAs, FiredevFileTypeArr, IFiredevFileType } from './firedev-file.models';
+import { FiredevFileDefaultAs, IFiredevFileType } from './firedev-file.models';
+import { FiredevFileTypeArr } from './firedev-file.constants';
 import type { FiredevAdmin } from '../firedev-admin-mode-configuration';
 import { FiredevUIHelpers } from '../firedev-ui-helpers';
-import { FiredevFileCss } from './firedev-file-css';
-import 'brace';
-import 'brace/mode/typescript';
-import 'brace/mode/json';
+// import 'brace';
+// import 'brace/mode/typescript';
+// import 'brace/mode/json';
 // import 'brace/theme/github';
-import 'brace/theme/twilight';
+// import 'brace/theme/twilight';
 import { firstValueFrom, Observable, Subject } from 'rxjs';
 import { DomSanitizer } from '@angular/platform-browser';
-import { Level, Log } from 'ng2-logger';
 import { DEFAULT_HEIGHT, DEFAULT_WIDTH } from './firedev-file.constants';
+import { FiredevFullMaterialModule } from '../firedev-full-material.module';
+import { StaticColumnsModule } from 'static-columns';
+import { FiredevInjectHTMLDirective } from '../firedev-inject-html.directive';
+import { Level, Log } from 'ng2-logger';
+import { CommonModule } from '@angular/common';
 const log = Log.create('firedev',
   Level.__NOTHING
 );
@@ -28,6 +32,13 @@ const log = Log.create('firedev',
   selector: 'firedev-file',
   templateUrl: './firedev-file.component.html',
   styleUrls: ['./firedev-file.component.scss'],
+  standalone: true,
+  imports: [
+    CommonModule,
+    FiredevFullMaterialModule,
+    StaticColumnsModule,
+    FiredevInjectHTMLDirective,
+  ],
   //#endregion
 })
 export class FiredevFileComponent implements OnInit {
@@ -37,6 +48,22 @@ export class FiredevFileComponent implements OnInit {
   static readonly styles = {}
   readonly scripts: any;
   readonly styles: any;
+
+  private static cachedFiles = {} as { [src in string]: { [version in number]: FiredevFile; } };
+  private static cachedFilesLastVer = {} as { [src in string]: number; };
+  private static currentProcessing = {} as { [src in string]: Subject<FiredevFile>; };
+  private static filesToCache = [
+    'image',
+    'html',
+    'json',
+    'js'
+  ] as IFiredevFileType[];
+
+  private static filesToCacheText = [
+    'html',
+    'json',
+    'js'
+  ] as IFiredevFileType[];
   //#endregion
 
   //#region fields & getters
@@ -147,22 +174,7 @@ export class FiredevFileComponent implements OnInit {
 
   //#region methods
 
-  private static cachedFiles = {} as { [src in string]: { [version in number]: FiredevFile; } };
-  private static cachedFilesLastVer = {} as { [src in string]: number; };
-  private static currentProcessing = {} as { [src in string]: Subject<FiredevFile>; };
-  private static filesToCache = [
-    'image',
-    'html',
-    'json',
-    'js'
-  ] as IFiredevFileType[];
-
-  private static filesToCacheText = [
-    'html',
-    'json',
-    'js'
-  ] as IFiredevFileType[];
-
+  //#region methods / get file
   async getFile(src: string) {
     // console.log({
     //   'cachedFilesLastVer': FiredevFileComponent.cachedFiles
@@ -225,6 +237,7 @@ export class FiredevFileComponent implements OnInit {
       return fromCache;
     }
   }
+  //#endregion
 
   //#region methods / init
   async init(firstTime: boolean) {

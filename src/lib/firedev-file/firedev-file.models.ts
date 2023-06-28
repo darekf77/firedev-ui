@@ -1,12 +1,9 @@
+//#region imports
 import type { FiredevFile } from "./firedev-file";
-import { FiredevFileCss } from "./firedev-file-css";
+//#endregion
 
+//#region models
 export type IFiredevFile = Partial<FiredevFile>;
-
-export const defaultModelValues: IFiredevFile = {
-  css: FiredevFileCss.from({ display: 'block' }),
-}
-
 
 export type IFiredevFileType = 'image'
   | 'video'
@@ -18,17 +15,6 @@ export type IFiredevFileType = 'image'
   | 'js'
   | 'css'
   ;
-export const FiredevFileTypeArr = [
-  'image',
-  'video',
-  'audio',
-  'html',
-  'text',
-  'md',
-  'json',
-  'js',
-  'css',
-] as IFiredevFileType[];
 
 export type FiredevFileDefaultAs = 'script-tag'
   | 'css-tag'
@@ -41,3 +27,4 @@ export type FiredevFileDefaultAs = 'script-tag'
   | 'html-rendered'
   | 'json-editor'
   ;
+//#endregion

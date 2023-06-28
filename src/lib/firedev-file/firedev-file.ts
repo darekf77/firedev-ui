@@ -2,8 +2,12 @@
 import { Firedev } from 'firedev';
 import { Helpers, path, _ } from 'tnp-core';
 import type { FiredevFileController } from './firedev-file.controller';
-import { defaultModelValues, FiredevFileDefaultAs, FiredevFileTypeArr, IFiredevFileType } from './firedev-file.models';
-import { FiredevFileCss } from './firedev-file-css';
+import { FiredevFileDefaultAs, IFiredevFileType } from './firedev-file.models';
+import { FiredevFileCss } from './firedev-file-css/firedev-file-css';
+import {
+  defaultModelValues,
+  FiredevFileTypeArr
+} from './firedev-file.constants';
 //#region @backend
 import * as FromData from 'form-data';
 import { Blob } from 'buffer';
