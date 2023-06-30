@@ -1,4 +1,3 @@
-//#region @websql
 /**
  * Isomorphic backend/frontend helpers
  */
@@ -9,4 +8,3 @@ export namespace FiredevFileCssHelpers {
   }
 
 }
-//#endregion
