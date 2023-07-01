@@ -1,8 +1,6 @@
 //#region imports
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { firstValueFrom, Subscription } from 'rxjs';
-import { FiredevFile, FiredevUIHelpers } from '../../../../lib';
 //#endregion
 
 @Component({

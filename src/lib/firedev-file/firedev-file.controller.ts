@@ -2,9 +2,9 @@
 import { Firedev, Project } from 'firedev';
 import { Repository } from 'firedev-typeorm'; // must be
 import { FiredevFile } from './firedev-file';
-import { crossPlatformPath, Helpers, path, _ } from 'tnp-core';
-import axios from 'axios';
-import { FiredevUIHelpers } from '../firedev-ui-helpers';
+import { crossPlatformPath, path, _ } from 'tnp-core';
+import { Helpers } from 'tnp-helpers';
+
 //#region @backend
 import * as FormData from 'form-data';
 import { FiredevUploadedFile } from '../firedev.models';
@@ -90,8 +90,8 @@ export class FiredevFileController extends Firedev.Base.Controller<FiredevFile> 
           src,
         }
       });
-      item = await this.backend.restoreBlob(item);
-      const blob = FiredevUIHelpers.base64toBlob(item.blob as string);
+      item = await this.backend.restoreBlobWhenFileFromAsset(item);
+      const blob = Helpers.binary.base64toBlob(item.blob as string);
       return blob;
     }
     //#endregion

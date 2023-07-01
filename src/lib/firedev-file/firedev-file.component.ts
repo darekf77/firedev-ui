@@ -8,7 +8,7 @@ import { FiredevFile } from './firedev-file';
 import { FiredevFileDefaultAs, IFiredevFileType } from './firedev-file.models';
 import { FiredevFileTypeArr } from './firedev-file.constants';
 import type { FiredevAdmin } from '../firedev-admin-mode-configuration';
-import { FiredevUIHelpers } from '../firedev-ui-helpers';
+
 // import 'brace';
 // import 'brace/mode/typescript';
 // import 'brace/mode/json';
@@ -19,7 +19,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { DEFAULT_HEIGHT, DEFAULT_WIDTH } from './firedev-file.constants';
 import { FiredevFullMaterialModule } from '../firedev-full-material.module';
 import { StaticColumnsModule } from 'static-columns';
-import { FiredevInjectHTMLDirective } from '../firedev-inject-html.directive';
+import { FiredevInjectHTMLDirective } from '../shared/firedev-inject-html.directive';
 import { Level, Log } from 'ng2-logger';
 import { CommonModule } from '@angular/common';
 const log = Log.create('firedev',

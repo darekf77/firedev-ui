@@ -3,7 +3,6 @@ import axios from 'axios';
 import { Project } from 'firedev';
 import { _ } from 'tnp-core';
 import { Helpers } from 'tnp-helpers';
-import { FiredevUIHelpers } from '../firedev-ui-helpers';
 import { FiredevFile } from './firedev-file';
 import type { FiredevFileController } from './firedev-file.controller';
 declare const ENV: any;
@@ -25,10 +24,10 @@ export class FiredevFileBackend {
   //#endregion
 
   //#region restore blob for file
-  public async restoreBlob(file: FiredevFile) {
+  public async restoreBlobWhenFileFromAsset(file: FiredevFile) {
     //#region @websqlFunc
     const repo = this.ctrl.repository;
-    const shouldRestoreBlob = (file.isFromAssets || file.hasEmptyBlob) && _.isNil(file.blob);
+    const shouldRestoreBlob = (file.isFromAssets && file.hasEmptyBlob);
     // console.log({
     //   shouldRestoreBlob
     // })
@@ -44,11 +43,11 @@ export class FiredevFileBackend {
           : `${window.location.origin}${basename.endsWith('/') ? '' : '/'}${file.src.startsWith('/') ? file.src.slice(1) : ''}`;
 
         console.log({ basename, realSrc })
-        const blob = await FiredevUIHelpers.getBlobFrom(realSrc);
+        const blob = await Helpers.binary.getBlobFrom(realSrc);
         // console.log({
         //   blob
         // })
-        file.blob = await FiredevUIHelpers.blobToBase64(blob);
+        file.blob = await Helpers.binary.blobToBase64(blob);
         // console.log('blob update')
         await repo.update(file.id, file);
         // console.log('blob update')

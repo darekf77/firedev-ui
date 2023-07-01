@@ -1,6 +1,7 @@
 //#region imports
 import { Firedev } from 'firedev';
-import { Helpers, path, _ } from 'tnp-core';
+import { path, _ } from 'tnp-core';
+import { Helpers } from 'tnp-helpers';
 import type { FiredevFileController } from './firedev-file.controller';
 import { FiredevFileDefaultAs, IFiredevFileType } from './firedev-file.models';
 import { FiredevFileCss } from './firedev-file-css/firedev-file-css';
@@ -12,8 +13,7 @@ import {
 import * as FromData from 'form-data';
 import { Blob } from 'buffer';
 //#endregion
-import { FiredevUIHelpers } from '../firedev-ui-helpers';
-import { firstValueFrom, Observable, Subject } from 'rxjs';
+
 //#endregion
 
 @Firedev.Entity<FiredevFile>({
@@ -64,7 +64,7 @@ export class FiredevFile extends Firedev.Base.Entity<any> {
       const resp = await this.ctrl.upload(formData as any).received;
       const firedevFile = resp.body.json;
       if (!dontRestoreBlob) {
-        firedevFile.blob = await FiredevUIHelpers.fileToBlob(file);
+        firedevFile.blob = await Helpers.binary.fileToBlob(file);
       }
       firedevFiles.push(firedevFile);
     }
@@ -72,6 +72,7 @@ export class FiredevFile extends Firedev.Base.Entity<any> {
   }
   //#endregion
 
+  //#region static / get blob-less by src
   static async getBloblessBy(src: string) {
     if (src.startsWith('http')) {
       return FiredevFile.from({
@@ -85,7 +86,9 @@ export class FiredevFile extends Firedev.Base.Entity<any> {
 
     return data.body.json;
   }
+  //#endregion
 
+  //#region static / get latest version by src
   static async getLatestVersion(src: string) {
     src = encodeURIComponent(src);
 
@@ -94,10 +97,12 @@ export class FiredevFile extends Firedev.Base.Entity<any> {
 
     return Number(data.body.text);
   }
+  //#endregion
 
+  //#region static / get blob-only by src
   static async getBlobOnlyBy(src: string) {
     if (src.startsWith('http')) {
-      const blob = await FiredevUIHelpers.getBlobFrom(src);
+      const blob = await Helpers.binary.getBlobFrom(src);
       return FiredevFile.from({
         src,
         blob,
@@ -109,6 +114,7 @@ export class FiredevFile extends Firedev.Base.Entity<any> {
     const data = await this.ctrl.getBlobOnlyBy(src).received;
     return data.body.blob;
   }
+  //#endregion
 
   //#region static / is
   private static is(extensionOrContentType: string, isWhat: IFiredevFileType): boolean {
@@ -151,6 +157,9 @@ export class FiredevFile extends Firedev.Base.Entity<any> {
   //#endregion
 
   //#region fields & getters
+  get hasEmptyBlob() {
+    return _.isNil(this.blob);
+  }
 
   //#region fields & getters / ctrl
   ctrl: FiredevFileController;
@@ -224,16 +233,6 @@ export class FiredevFile extends Firedev.Base.Entity<any> {
 
   //#region fields & getters / version
   /**
-   * Field is create by user with uniqu name
-   */
-  //#region @websql
-  @Firedev.Orm.Column.Boolean(false)
-  //#endregion
-  hasEmptyBlob: boolean;
-  //#endregion
-
-  //#region fields & getters / version
-  /**
   * Field is create when initing assets
   */
   //#region @websql
@@ -260,13 +259,13 @@ export class FiredevFile extends Firedev.Base.Entity<any> {
         // console.log('TO', value)
         // if (value instanceof Blob) {
         //   console.log(`TO (BLOB IS BLOB):`, value)
-        //   return await FiredevUIHelpers.blobToBase64(value)
+        //   return await Helpers.binary.blobToBase64(value)
         // }
         // console.log(`TO (BLOB IS NOT BLOB):`, value)
         // return
 
         // if (value instanceof Blob) {
-        //   FiredevUIHelpers.arrayBufferToBlob
+        //   Helpers.binary.arrayBufferToBlob
         // }
 
         // return Buffer.from(value);
@@ -281,7 +280,7 @@ export class FiredevFile extends Firedev.Base.Entity<any> {
         // console.log('FROM', value)
         // if (_.isString(value)) {
         //   console.log(`FROM (value is string):`, value)
-        //   return await FiredevUIHelpers.base64toBlob(value);
+        //   return await Helpers.binary.base64toBlob(value);
         // }
         // console.log(`FROM (value is not string):`, value)
         // return value.toString();
