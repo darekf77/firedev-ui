@@ -12,7 +12,7 @@ const pathDest = path.join(process.cwd(), 'src/assets/private/uploaded');
 import { Blob } from 'buffer';
 //#endregion
 //#region @websql
-import { FiredevFileBackend } from './firedev-file-backend';
+import { FiredevFileBackend } from './backend/firedev-file-backend';
 //#endregion
 //#endregion
 

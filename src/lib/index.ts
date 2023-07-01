@@ -12,6 +12,7 @@ export * from './firedev-table';
 export * from './firedev-full-material.module';
 //#endregion
 export * from './firedev.models';
+
 //#region @browser
 export * from './shared';
 //#endregion

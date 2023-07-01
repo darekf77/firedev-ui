@@ -3,8 +3,8 @@ import axios from 'axios';
 import { Project } from 'firedev';
 import { _ } from 'tnp-core';
 import { Helpers } from 'tnp-helpers';
-import { FiredevFile } from './firedev-file';
-import type { FiredevFileController } from './firedev-file.controller';
+import { FiredevFile } from '../firedev-file';
+import type { FiredevFileController } from '../firedev-file.controller';
 declare const ENV: any;
 //#endregion
 
