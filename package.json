@@ -30,10 +30,10 @@
     "type": "isomorphic-lib"
   },
   "name": "firedev-ui",
-  "version": "16.0.8",
+  "version": "16.0.9",
   "dependencies": {
     "static-columns": "~16.0.7",
-    "tnp-helpers": "~16.0.8"
+    "tnp-helpers": "~16.0.9"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~16.0.5",
@@ -90,7 +90,6 @@
     "@types/glob": "5.0.35",
     "@types/http-proxy": "1.16.0",
     "@types/http-proxy-middleware": "0.19.2",
-    "@types/inquirer": "7.3.1",
     "@types/jest": "29.5.2",
     "@types/json-stringify-safe": "5.0.0",
     "@types/json5": "0.0.29",
@@ -214,7 +213,7 @@
     "mkdirp": "0.5.1",
     "mocha": "10.2.0",
     "moment": "2.29.3",
-    "morphi": "~16.2.1",
+    "morphi": "~16.2.3",
     "ng-for-track-by-property": "16.0.1",
     "ng-in-viewport": "15.0.2",
     "ng-lock": "16.0.1",
@@ -273,7 +272,7 @@
     "task.js": "0.1.5",
     "threads": "1.7.0",
     "tnp-cli": "~16.0.6",
-    "tnp-config": "~16.0.12",
+    "tnp-config": "~16.0.13",
     "tnp-core": "~16.0.14",
     "tnp-db": "~16.0.27",
     "tnp-models": "~16.0.36",
