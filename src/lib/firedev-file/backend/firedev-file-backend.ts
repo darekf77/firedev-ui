@@ -1,4 +1,7 @@
 //#region imports
+//#region @backend
+import { fse } from 'tnp-core';
+//#endregion
 import axios from 'axios';
 import { Project } from 'firedev';
 import { _ } from 'tnp-core';
@@ -57,7 +60,15 @@ export class FiredevFileBackend {
       //#region @backend
       if (Helpers.isNode) {
         const proj = Project.From(process.cwd()) as Project;  // TODO
-        // TODO
+        // '/assets/assets-for/firedev-ui/cutsmall.jpg'
+        let relativeFilePath = file.src.replace(`/assets-for/${proj.name}/`, '/');
+        if (proj.isSmartContainerTarget) {
+
+        } else if (proj.isStandaloneProject) {
+          const absFilePath = `${proj.location}/src${relativeFilePath}`;
+          const buffer = fse.readFileSync(absFilePath).buffer;
+          file.blob = Helpers.binary.arrayBufferToBlob(buffer, 'text/plain',)
+        }
       }
       //#endregion
     }
