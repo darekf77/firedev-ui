@@ -1,4 +1,5 @@
 import { Morphi as Firedev } from 'morphi'
+import { ContentType } from 'tnp-core';
 
 // export type FiredevModeSimple = 'view' | 'edit' | 'add';
 
@@ -10,7 +11,7 @@ export interface FiredevUploadedFile {
   data: Buffer
   encoding: string;
   md5: string;
-  mimetype: Firedev.Http.ContentType;
+  mimetype: ContentType;
   mv: (path, callback) => any;
   name: string;
   truncated: boolean;

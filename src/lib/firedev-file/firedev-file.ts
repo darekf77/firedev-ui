@@ -1,6 +1,6 @@
 //#region imports
 import { Firedev } from 'firedev';
-import { path, _ } from 'tnp-core';
+import { path, _, Utils, Files, ContentType } from 'tnp-core';
 import { Helpers } from 'tnp-helpers';
 import type { FiredevFileController } from './firedev-file.controller';
 import { FiredevFileDefaultAs, IFiredevFileType } from './firedev-file.models';
@@ -64,7 +64,7 @@ export class FiredevFile extends Firedev.Base.Entity<any> {
       const resp = await this.ctrl.upload(formData as any).received;
       const firedevFile = resp.body.json;
       if (!dontRestoreBlob) {
-        firedevFile.blob = await Helpers.binary.fileToBlob(file);
+        firedevFile.blob = await Utils.binary.fileToBlob(file);
       }
       firedevFiles.push(firedevFile);
     }
@@ -102,7 +102,7 @@ export class FiredevFile extends Firedev.Base.Entity<any> {
   //#region static / get blob-only by src
   static async getBlobOnlyBy(src: string) {
     if (src.startsWith('http')) {
-      const blob = await Helpers.binary.getBlobFrom(src);
+      const blob = await Utils.binary.getBlobFrom(src);
       return FiredevFile.from({
         src,
         blob,
@@ -141,7 +141,7 @@ export class FiredevFile extends Firedev.Base.Entity<any> {
 
     const isExt = extensionOrContentType.startsWith('.');
     if (isExt) {
-      const contentType = Firedev.Files.MimeTypesObj[extensionOrContentType];
+      const contentType = Files.MimeTypesObj[extensionOrContentType];
       return contentType?.startsWith(`${isWhat}`);
     }
     return extensionOrContentType.startsWith(`${isWhat}`);
@@ -218,7 +218,7 @@ export class FiredevFile extends Firedev.Base.Entity<any> {
     default: null,
   })
   //#endregion
-  contentType: Firedev.Http.ContentType;
+  contentType: ContentType;
   //#endregion
 
   //#region fields & getters / version
@@ -351,8 +351,8 @@ export class FiredevFile extends Firedev.Base.Entity<any> {
   //#endregion
 
   //#region methods / get content type
-  getContentType(): Firedev.Http.ContentType {
-    return Firedev.Files.MimeTypesObj[this.ext] as Firedev.Http.ContentType;
+  getContentType(): ContentType {
+    return Files.MimeTypesObj[this.ext] as ContentType;
   }
   //#endregion
 

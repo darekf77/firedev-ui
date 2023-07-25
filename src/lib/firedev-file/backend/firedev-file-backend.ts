@@ -2,6 +2,7 @@
 //#region @backend
 import { fse } from 'tnp-core';
 //#endregion
+import { Utils } from 'tnp-core';
 import axios from 'axios';
 import { Project } from 'firedev';
 import { _ } from 'tnp-core';
@@ -46,11 +47,11 @@ export class FiredevFileBackend {
           : `${window.location.origin}${basename.endsWith('/') ? '' : '/'}${file.src.startsWith('/') ? file.src.slice(1) : ''}`;
 
         console.log({ basename, realSrc })
-        const blob = await Helpers.binary.getBlobFrom(realSrc);
+        const blob = await Utils.binary.getBlobFrom(realSrc);
         // console.log({
         //   blob
         // })
-        file.blob = await Helpers.binary.blobToBase64(blob);
+        file.blob = await Utils.binary.blobToBase64(blob);
         // console.log('blob update')
         await repo.update(file.id, file);
         // console.log('blob update')
@@ -67,7 +68,7 @@ export class FiredevFileBackend {
         } else if (proj.isStandaloneProject) {
           const absFilePath = `${proj.location}/src${relativeFilePath}`;
           const buffer = fse.readFileSync(absFilePath).buffer;
-          file.blob = Helpers.binary.arrayBufferToBlob(buffer, 'text/plain',)
+          file.blob = Utils.binary.arrayBufferToBlob(buffer, 'text/plain',)
         }
       }
       //#endregion

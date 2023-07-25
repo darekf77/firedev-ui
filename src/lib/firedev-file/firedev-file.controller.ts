@@ -2,7 +2,7 @@
 import { Firedev, Project } from 'firedev';
 import { Repository } from 'firedev-typeorm'; // must be
 import { FiredevFile } from './firedev-file';
-import { crossPlatformPath, path, _ } from 'tnp-core';
+import { crossPlatformPath, path, _, Utils } from 'tnp-core';
 import { Helpers } from 'tnp-helpers';
 
 //#region @backend
@@ -91,7 +91,7 @@ export class FiredevFileController extends Firedev.Base.Controller<FiredevFile> 
         }
       });
       item = await this.backend.restoreBlobWhenFileFromAsset(item);
-      const blob = Helpers.binary.base64toBlob(item.blob as string);
+      const blob = await Utils.binary.base64toBlob(item.blob as string);
       return blob;
     }
     //#endregion
