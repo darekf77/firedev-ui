@@ -1,0 +1,62 @@
+<p>
+  files containers works!
+</p>
+
+
+<mat-form-field class="example-full-width">
+  <mat-label>filename</mat-label>
+  <input matInput
+         value="text-files/my-file.txt"
+         [(ngModel)]="filename"
+         placeholder="my-file">
+</mat-form-field>
+
+
+<mat-form-field class="example-full-width"
+                *ngIf="is('text')">
+  <mat-label>File text content</mat-label>
+  <textarea matInput
+            [(ngModel)]="text"
+            style="height: 200px;">
+    such a amaizng shit
+  </textarea>
+</mat-form-field>
+
+<div class="example-full-width"
+     *ngIf="is('image')">
+  <mat-label>File image content</mat-label>
+  <br>
+  <input style="display: none;"
+         id="input-file-id-{{generalHash}}"
+         multiple
+         (change)="upload($event)"
+         type="file" />
+  <label for="input-file-id-{{generalHash}}"
+         mat-raised-button
+         class="mat-raised-button mat-button-base mat-primary">Upload</label>
+
+  <img [src]="url"
+       alt="your image"
+       style="height: 100px; width: 200px; border: 1px solid red; display: inline-block;">
+
+</div>
+
+<button mat-raised-button
+        (click)="save()">save</button>
+<br>
+<hr>
+<br>
+<mat-form-field class="example-full-width">
+  <mat-label>filename to read</mat-label>
+  <input matInput
+         [(ngModel)]="filename">
+</mat-form-field>
+<button mat-raised-button
+        (click)="read()">read</button>
+<br>
+
+
+<ng-template #cms>
+
+  hello from cms
+</ng-template>

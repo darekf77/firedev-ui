@@ -2,7 +2,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { firstValueFrom, Subscription } from 'rxjs';
-import { FiredevFile, FiredevUIHelpers } from '../../../../lib';
+import { FiredevFile } from '../../../../lib';
 import * as localForge from 'localforage';
 import axios from 'axios';
 import hlsj from 'highlight.js/lib/core'

@@ -5,11 +5,12 @@ import { Stor } from 'firedev-storage';
 import type { FiredevFile } from '../firedev-file';
 import { _ } from 'tnp-core';
 import { Subject, take, takeUntil, tap } from 'rxjs';
+import type { FiredevAdminModeConfigurationComponent } from './firedev-admin-mode-configuration.component';
 //#endregion
 
 export class FiredevAdmin {
   //#region fields & getters
-
+  public cmp: FiredevAdminModeConfigurationComponent;
   private onEditMode = new Subject()
   onEditMode$ = this.onEditMode.asObservable();
   private onRegisterFileChange = new Subject<void>()

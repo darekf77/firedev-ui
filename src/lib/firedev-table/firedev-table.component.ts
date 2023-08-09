@@ -3,8 +3,6 @@ import { Component, OnInit, Input, Output, TemplateRef, EventEmitter } from '@an
 import * as _ from 'lodash';
 import { Morphi } from 'morphi';
 import { Log, Level } from 'ng2-logger';
-import { Router } from '@angular/router';
-import { Stor } from 'firedev-storage';
 import { Firedev } from 'firedev';
 import { CLASS } from 'typescript-class-helpers';
 

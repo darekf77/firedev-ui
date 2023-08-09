@@ -2,6 +2,7 @@
 export * from './firedev-admin-mode-configuration';
 //#endregion
 export * from './firedev-file';
+export * from './firedev-binary-file';
 //#region @browser
 export * from './firedev-formly';
 export * from './firedev-github-fork-me-corner';

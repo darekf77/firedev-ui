@@ -9,6 +9,7 @@ import { BreakpointsService } from 'static-columns';
 import { Subject, takeUntil, tap } from 'rxjs';
 import { createCustomElement } from '@angular/elements';
 import { FiredevFileComponent } from '../firedev-file/firedev-file.component';
+import { FiredevAdminModeTab } from './models/firedev-admin-mode-tabs';
 //#endregion
 
 @Component({
@@ -21,12 +22,12 @@ import { FiredevFileComponent } from '../firedev-file/firedev-file.component';
 export class FiredevAdminModeConfigurationComponent implements OnInit {
   //#region fields & getters
   $destroy = new Subject();
-  isDesktop: boolean;
-  isWebsql = Helpers.isWebSQL;
-  admin = (window['firedev'] as FiredevAdmin);
-  isWebSQLMode = Helpers.isWebSQL;
+  public readonly isDesktop: boolean;
+  public tabs: FiredevAdminModeTab[] = [];
+  public admin: FiredevAdmin = (window['firedev'] as FiredevAdmin);
+  public isWebSQLMode: boolean = Helpers.isWebSQL;
   height: number = 100;
-  openedOnce = false;
+  public openedOnce = false;
 
   @Stor.property.in.localstorage.for(FiredevAdminModeConfigurationComponent).withDefaultValue(0)
   dragPositionX: number;
@@ -65,11 +66,12 @@ export class FiredevAdminModeConfigurationComponent implements OnInit {
   //#region constructor
   constructor(
     private breakpointsService: BreakpointsService,
-    private injector: Injector,
   ) {
+    this.admin.cmp = this;
     this.breakpointsService.listenTo().pipe(
       takeUntil(this.$destroy),
     ).subscribe(breakpoint => {
+      // @ts-ignore
       this.isDesktop = (breakpoint === 'desktop');
     })
 
@@ -79,10 +81,16 @@ export class FiredevAdminModeConfigurationComponent implements OnInit {
 
   //#region hooks
   async ngOnInit() {
+    await Stor.awaitPendingOperatios();
+    console.log('PENDING OPERATION AWAITED ')
 
-    // console.log('ONINIT')
     this.dragPosition = { x: this.dragPositionX, y: this.dragPositionY };
     this.openedOnce = this.opened;
+    console.log('ONINIT',{
+      'this.openedOnce': this.openedOnce,
+      'this.dragPosition': this.dragPosition,
+      this: this
+    })
   }
 
 

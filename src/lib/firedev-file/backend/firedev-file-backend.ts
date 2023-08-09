@@ -68,7 +68,7 @@ export class FiredevFileBackend {
         } else if (proj.isStandaloneProject) {
           const absFilePath = `${proj.location}/src${relativeFilePath}`;
           const buffer = fse.readFileSync(absFilePath).buffer;
-          file.blob = Utils.binary.arrayBufferToBlob(buffer, 'text/plain',)
+          file.blob = await Utils.binary.arrayBufferToBlob(buffer, 'text/plain',)
         }
       }
       //#endregion

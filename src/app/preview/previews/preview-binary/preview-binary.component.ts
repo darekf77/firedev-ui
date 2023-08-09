@@ -1,0 +1,93 @@
+//#region imports
+import { Component, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { MediaType, Utils, _, mimeTypes, path } from 'tnp-core';
+import { FiredevBinaryFile } from '../../../../lib/firedev-binary-file';
+import { DomSanitizer } from '@angular/platform-browser';
+import { FiredevAdminService } from '../../../../lib/firedev-admin-mode-configuration/firedev-admin-control.service';
+//#endregion
+
+@Component({
+  //#region component options
+  selector: 'app-preview-binary',
+  templateUrl: './preview-binary.component.html',
+  styleUrls: ['./preview-binary.component.scss']
+  //#endregion
+})
+export class PreviewBinaryComponent {
+  @ViewChild('cms') cms: TemplateRef<any>;
+  handlers: Subscription[] = [];
+
+  ngOnDestroy(): void {
+    this.handlers.forEach(h => h.unsubscribe());
+  }
+
+  filename = 'myfile.txt';
+  url: string;
+  file: File;
+  generalHash = (new Date()).getTime();
+  text = '';
+  // @Input() Files = Files;
+  // files$ = this.Files.$getAll().pipe(map(data => {
+  //   return data.body.json;
+  // }))
+
+  is(type: MediaType) {
+    return (mimeTypes[path.extname(this.filename)] as string)?.startsWith(type);
+  }
+
+  myId: number;
+
+  @Input({
+    required: false
+  })
+  set id(v: string) {
+    this.myId = Number(v);
+  }
+
+  constructor(
+    private domSanitizer: DomSanitizer,
+
+    private firedevAdminService: FiredevAdminService,
+  ) { }
+
+  ngOnInit() {
+  }
+
+  ngAfterViewInit(): void {
+    this.firedevAdminService.addTab('CMS', this.cms);
+  }
+
+  async upload(event: Event) {
+    const elem = (<HTMLInputElement>event.target);
+    let files = elem.files;
+    this.file = files.item(0);
+    const blob = await Utils.binary.fileToBlob(this.file);
+    this.url = this.domSanitizer.bypassSecurityTrustUrl(window.URL.createObjectURL(blob as Blob)) as string;
+    console.log(this.url)
+  }
+
+  async read() {
+
+    if (this.is('text')) {
+      const data = await FiredevBinaryFile.ctrl.getText(this.filename);
+      this.text = data;
+    }
+    if (this.is('image')) {
+      const blob = await FiredevBinaryFile.ctrl.getBlob(this.filename);
+      this.url = this.domSanitizer.bypassSecurityTrustUrl(window.URL.createObjectURL(blob as Blob)) as string;
+      console.log(this.url)
+    }
+  }
+
+  async save() {
+    if (this.is('text')) {
+      await FiredevBinaryFile.ctrl.saveText(this.text, this.filename);
+    }
+    if (this.is('image')) {
+      await FiredevBinaryFile.ctrl.saveFile(this.file, this.filename);
+    }
+
+  }
+
+}

@@ -4,7 +4,7 @@
         class="fab-button"
         color="accent"
         aria-label="Firedev Admin Mode"
-        *ngIf="!admin.draggablePopupMode && isDesktop && isWebsql"
+        *ngIf="!admin.draggablePopupMode && isDesktop"
         (click)="toogle()">
   <mat-icon>build</mat-icon>
 </button>
@@ -129,6 +129,11 @@
             <button mat-raised-button>[TODO] Import whole database (from zip) </button><br>
           </section> -->
         </mat-tab>
+        <mat-tab *ngFor="let tab of tabs"
+                 label="{{tab.name}}">
+          <ng-container *ngTemplateOutlet="tab.template"></ng-container>
+        </mat-tab>
+
         <!-- <mat-tab label="Portal">
           <section>
             <mat-checkbox>[TODO] Maintenance Mode for whole portal</mat-checkbox>

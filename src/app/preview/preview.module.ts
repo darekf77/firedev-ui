@@ -19,6 +19,11 @@ const routes: Routes = [
     loadChildren: () => import('./previews/preview-form/preview-form.module')
       .then(m => m.PreviewFormModule),
   },
+  {
+    path: 'binary',
+    loadChildren: () => import('./previews/preview-binary/preview-binary.module')
+      .then(m => m.PreviewBinaryModule),
+  },
 ];
 
 @NgModule({
