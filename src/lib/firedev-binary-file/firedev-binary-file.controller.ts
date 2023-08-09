@@ -71,10 +71,12 @@ export class FiredevBinaryFileController extends Firedev.Base.Controller<any> {
     const file = await Utils.binary.textToFile(text, filename);
     const formData = new FormData();
     formData.append(FORM_DATA_FILENAME, file);
-    await this.saveFormData(formData, (crossPlatformPath([
+    const data = await this.saveFormData(formData, (crossPlatformPath([
       // 'text',
       filename,
-    ]))).received;
+    ])));
+    debugger
+    await data.received;
     //#endregion
     return void 0;
   }
