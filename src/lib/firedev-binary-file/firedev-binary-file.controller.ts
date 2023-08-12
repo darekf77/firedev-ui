@@ -40,6 +40,17 @@ export class FiredevBinaryFileController extends Firedev.Base.Controller<any> {
   //#endregion
   //#endregion
 
+  @Firedev.Http.GET()
+  helloWorld(): Firedev.Response<string> {
+    console.log('pizda')
+    //#region @websqlFunc
+    console.log('kurwa')
+    return async (req, res) => {
+      return 'hello world from here';
+    }
+    //#endregion
+  }
+
   async saveFile(file: File, relativePathOnServer?: string): Promise<FiredevBinaryFile> {
     //#region @browser
     const formData = new FormData();
@@ -71,7 +82,7 @@ export class FiredevBinaryFileController extends Firedev.Base.Controller<any> {
     const file = await Utils.binary.textToFile(text, filename);
     const formData = new FormData();
     formData.append(FORM_DATA_FILENAME, file);
-    const data = await this.saveFormData(formData, (crossPlatformPath([
+    const data = this.saveFormData(formData, (crossPlatformPath([
       // 'text',
       filename,
     ])));
@@ -85,7 +96,7 @@ export class FiredevBinaryFileController extends Firedev.Base.Controller<any> {
     overrideContentType: 'multipart/form-data',
     path: '/blob/read'
   })
-  private saveFormData(
+  saveFormData(
     @Firedev.Http.Param.Body() formData: any, // FormData & { getAll(name: string): File[]; },
     @Firedev.Http.Param.Query('filepath') relativePathOnServer: string): Firedev.Response<void> {
     //#region @websqlFunc

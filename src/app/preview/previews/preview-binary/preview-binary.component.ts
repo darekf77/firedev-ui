@@ -2,9 +2,11 @@
 import { Component, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { MediaType, Utils, _, mimeTypes, path } from 'tnp-core';
-import { FiredevBinaryFile } from '../../../../lib/firedev-binary-file';
+import { FiredevBinaryFile } from 'firedev-ui';
+import { FiredevBinaryFile as FiredevBinaryFile2 } from 'firedev-ui';
 import { DomSanitizer } from '@angular/platform-browser';
-import { FiredevAdminService } from '../../../../lib/firedev-admin-mode-configuration/firedev-admin-control.service';
+import { FiredevAdminService } from 'firedev-ui';
+import { CLASS } from 'typescript-class-helpers';
 //#endregion
 
 @Component({
@@ -81,6 +83,17 @@ export class PreviewBinaryComponent {
   }
 
   async save() {
+    const classes = await CLASS.getAllClasses();
+
+    console.log({
+      classes,
+      FiredevBinaryFile,
+      FiredevBinaryFile2,
+    })
+    const data = await FiredevBinaryFile.ctrl.helloWorld().received;
+    console.log({
+      data
+    })
     if (this.is('text')) {
       await FiredevBinaryFile.ctrl.saveText(this.text, this.filename);
     }

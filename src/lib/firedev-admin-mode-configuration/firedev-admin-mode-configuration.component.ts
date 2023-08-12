@@ -82,15 +82,15 @@ export class FiredevAdminModeConfigurationComponent implements OnInit {
   //#region hooks
   async ngOnInit() {
     await Stor.awaitPendingOperatios();
-    console.log('PENDING OPERATION AWAITED ')
+    // console.log('PENDING OPERATION AWAITED ')
 
     this.dragPosition = { x: this.dragPositionX, y: this.dragPositionY };
     this.openedOnce = this.opened;
-    console.log('ONINIT',{
-      'this.openedOnce': this.openedOnce,
-      'this.dragPosition': this.dragPosition,
-      this: this
-    })
+    // console.log('ONINIT',{
+    //   'this.openedOnce': this.openedOnce,
+    //   'this.dragPosition': this.dragPosition,
+    //   this: this
+    // })
   }
 
 

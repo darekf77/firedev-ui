@@ -3,8 +3,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { PreviewFileComponent } from './preview-file.component';
-import { FiredevFileComponent } from '../../../../lib/firedev-file';
-import { FiredevFullMaterialModule } from '../../../../lib';
+import { FiredevFileComponent } from 'firedev-ui';
+import { FiredevFullMaterialModule } from 'firedev-ui';
 //#endregion
 
 const routes: Routes = [
