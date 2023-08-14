@@ -4,7 +4,7 @@
         class="fab-button"
         color="accent"
         aria-label="Firedev Admin Mode"
-        *ngIf="!admin.draggablePopupMode && isDesktop"
+        *ngIf="!admin.draggablePopupMode && isDesktop && !isIframe"
         (click)="toogle()">
   <mat-icon>build</mat-icon>
 </button>
@@ -176,7 +176,7 @@
 </ng-template>
 
 <div class="draggable-popup-mode-window"
-     *ngIf="admin.draggablePopupMode && !admin.draggablePopupModeFullScreen"
+     *ngIf="admin.draggablePopupMode && !admin.draggablePopupModeFullScreen && !isIframe"
      cdkDrag
      [cdkDragFreeDragPosition]="dragPosition"
      (cdkDragEnded)="moved($event)">
@@ -186,19 +186,19 @@
 </div>
 
 <div class="draggable-popup-mode-window-full"
-     *ngIf="admin.draggablePopupModeFullScreen"
+     *ngIf="admin.draggablePopupModeFullScreen && !isIframe"
      cdkDrag
      [cdkDragFreeDragPosition]="dragPositionZero">
   <ng-container [ngTemplateOutlet]="adminTabs"></ng-container>
 </div>
 
 <div [style.height.px]="height"
-     *ngIf="!isDesktop || admin.draggablePopupMode || admin.draggablePopupModeFullScreen"
+     *ngIf="isIframe || !isDesktop || admin.draggablePopupMode || admin.draggablePopupModeFullScreen"
      style="width: 100%;display: block;">
   <ng-container [ngTemplateOutlet]="content"></ng-container>
 </div>
 
-<mat-drawer-container *ngIf="!admin.draggablePopupMode && isDesktop"
+<mat-drawer-container *ngIf="!admin.draggablePopupMode && isDesktop && !isIframe"
                       class="example-container"
                       [style.height.px]="height"
                       style="background-color: transparent;"

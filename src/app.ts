@@ -33,6 +33,11 @@ const routes: Routes = [
     loadChildren: () => import('./app/preview/preview.module')
       .then(m => m.PreviewModule),
   },
+  {
+    path: 'cms',
+    loadChildren: () => import('./lib/firedev-cms/firedev-cms.container.module')
+      .then(m => m.FiredevCmsContainerModule),
+  },
 ];
 //#endregion
 

@@ -26,7 +26,8 @@ export class FiredevAdminModeConfigurationComponent implements OnInit {
   public tabs: FiredevAdminModeTab[] = [];
   public admin: FiredevAdmin = (window['firedev'] as FiredevAdmin);
   public isWebSQLMode: boolean = Helpers.isWebSQL;
-  height: number = 100;
+  public isIframe: boolean = (window.location !== window.parent.location);
+  public height: number = 100;
   public openedOnce = false;
 
   @Stor.property.in.localstorage.for(FiredevAdminModeConfigurationComponent).withDefaultValue(0)
@@ -49,7 +50,7 @@ export class FiredevAdminModeConfigurationComponent implements OnInit {
   @Output() firedevAdminModeConfigurationDataChanged = new EventEmitter();
   @Input() firedevAdminModeConfigurationData: any = {};
   public get opened() {
-    return this.admin.adminPanelIsOpen;
+    return !this.isIframe && this.admin.adminPanelIsOpen;
   }
   public set opened(v) {
     if (v && !this.openedOnce) {

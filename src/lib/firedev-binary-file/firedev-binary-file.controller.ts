@@ -40,18 +40,10 @@ export class FiredevBinaryFileController extends Firedev.Base.Controller<any> {
   //#endregion
   //#endregion
 
-  @Firedev.Http.GET()
-  helloWorld(): Firedev.Response<string> {
-    console.log('pizda')
-    //#region @websqlFunc
-    console.log('kurwa')
-    return async (req, res) => {
-      return 'hello world from here';
-    }
-    //#endregion
-  }
+  //#region methods
 
-  async saveFile(file: File, relativePathOnServer?: string): Promise<FiredevBinaryFile> {
+  //#region methods / save file
+  public async saveFile(file: File, relativePathOnServer?: string): Promise<FiredevBinaryFile> {
     //#region @browser
     const formData = new FormData();
     formData.append(FORM_DATA_FILENAME, file);
@@ -62,9 +54,11 @@ export class FiredevBinaryFileController extends Firedev.Base.Controller<any> {
     //#endregion
     return void 0;
   }
+  //#endregion
 
-  async saveBlob(blob: Blob, relativePathOnServer: string): Promise<FiredevBinaryFile> {
-    //#region @browser
+  //#region methods / save blob
+  //#region @browser
+  public async saveBlob(blob: Blob, relativePathOnServer: string): Promise<FiredevBinaryFile> {
     const formData = new FormData();
     const file = await Utils.binary.blobToFile(blob, path.basename(relativePathOnServer));
     formData.append(FORM_DATA_FILENAME, file);
@@ -72,13 +66,14 @@ export class FiredevBinaryFileController extends Firedev.Base.Controller<any> {
       // 'blobs',
       relativePathOnServer
     ]))).received;
-    //#endregion
-
     return void 0;
   }
+  //#endregion
+  //#endregion
 
-  async saveText(text: string, filename: string): Promise<FiredevBinaryFile> {
-    //#region @browser
+  //#region methods / save text
+  //#region @browser
+  async saveText(text: string, filename: string): Promise<void> {
     const file = await Utils.binary.textToFile(text, filename);
     const formData = new FormData();
     formData.append(FORM_DATA_FILENAME, file);
@@ -86,17 +81,81 @@ export class FiredevBinaryFileController extends Firedev.Base.Controller<any> {
       // 'text',
       filename,
     ])));
-    debugger
     await data.received;
-    //#endregion
-    return void 0;
   }
+  //#endregion
+  //#endregion
 
+  //#region methods / get text
+  //#region @browser
+  public async getText(relativePathOnServer: string): Promise<string> {
+    const data = await this._getBlob((relativePathOnServer)).received;
+    return await data.body.blob.text();
+  }
+  //#endregion
+  //#endregion
+
+  //#region methods / get blob
+  //#region @browser
+  public async getBlob(relativePathOnServer: string): Promise<Blob> {
+    const data = await this._getBlob((relativePathOnServer)).received;
+    return data.body.blob;
+  }
+  //#endregion
+  //#endregion
+
+  //#region methods / get file
+  //#region @browser
+  public async getFile(relativePathOnServer: string): Promise<File> {
+    const data = await this._getBlob((relativePathOnServer)).received;
+    const blob = data.body.blob;
+    const file = await Utils.binary.blobToFile(blob, relativePathOnServer);
+    return file;
+  }
+  //#endregion
+  //#endregion
+
+  //#endregion
+
+  //#region private methods
+
+  //#region private methods / _ get blob
+  @Firedev.Http.GET({
+    overridResponseType: 'blob',
+    path: '/blob/save'
+  })
+  private _getBlob(@Firedev.Http.Param.Query('filepath') relativePathOnServer: string): Firedev.Response<Blob> {
+    //#region @websqlFunc
+    return async (req, res) => {
+      relativePathOnServer = (relativePathOnServer);
+      //#region @websqlOnly
+      if (Helpers.isWebSQL) {
+        const restoreFileFromIndexeDb = await this.backend.getFileWebsql(relativePathOnServer);
+        return restoreFileFromIndexeDb;
+      }
+      //#endregion
+
+      //#region @backend
+      if (Helpers.isNode) {
+        const restoreFileFromFileSystem = await this.backend.getFileNodejs(relativePathOnServer);
+        let blob = await Utils.binary.bufferToBlob(restoreFileFromFileSystem);
+        blob = blob.slice(0, blob.size, mimeTypes[path.extname(relativePathOnServer)])
+        return blob;
+        // return restoreFileFromFileSystem as any;
+      }
+      //#endregion
+      return void 0;
+    };
+    //#endregion
+  }
+  //#endregion
+
+  //#region private methods / save form data
   @Firedev.Http.POST({
     overrideContentType: 'multipart/form-data',
     path: '/blob/read'
   })
-  saveFormData(
+  private saveFormData(
     @Firedev.Http.Param.Body() formData: any, // FormData & { getAll(name: string): File[]; },
     @Firedev.Http.Param.Query('filepath') relativePathOnServer: string): Firedev.Response<void> {
     //#region @websqlFunc
@@ -126,51 +185,8 @@ export class FiredevBinaryFileController extends Firedev.Base.Controller<any> {
     };
     //#endregion
   }
+  //#endregion
 
-  public async getText(relativePathOnServer: string): Promise<string> {
-    const data = await this._getBlob((relativePathOnServer)).received;
-    return await data.body.blob.text()
-  }
-
-  public async getBlob(relativePathOnServer: string): Promise<Blob> {
-    const data = await this._getBlob((relativePathOnServer)).received;
-    return data.body.blob;
-  }
-
-  public async getFile(relativePathOnServer: string): Promise<File> {
-    const data = await this._getBlob((relativePathOnServer)).received;
-    const blob = data.body.blob;
-    const file = await Utils.binary.blobToFile(blob, relativePathOnServer);
-    return file;
-  }
-
-  @Firedev.Http.GET({
-    overridResponseType: 'blob',
-    path: '/blob/save'
-  })
-  private _getBlob(@Firedev.Http.Param.Query('filepath') relativePathOnServer: string): Firedev.Response<Blob> {
-    //#region @websqlFunc
-    return async (req, res) => {
-      relativePathOnServer = (relativePathOnServer);
-      //#region @websqlOnly
-      if (Helpers.isWebSQL) {
-        const restoreFileFromIndexeDb = await this.backend.getFileWebsql(relativePathOnServer);
-        return restoreFileFromIndexeDb;
-      }
-      //#endregion
-
-      //#region @backend
-      if (Helpers.isNode) {
-        const restoreFileFromFileSystem = await this.backend.getFileNodejs(relativePathOnServer);
-        let blob = await Utils.binary.bufferToBlob(restoreFileFromFileSystem);
-        blob = blob.slice(0, blob.size, mimeTypes[path.extname(relativePathOnServer)])
-        return blob;
-        // return restoreFileFromFileSystem as any;
-      }
-      //#endregion
-      return void 0;
-    };
-    //#endregion
-  }
+  //#endregion
 
 }

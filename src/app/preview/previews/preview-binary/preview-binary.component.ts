@@ -47,6 +47,8 @@ export class PreviewBinaryComponent {
     this.myId = Number(v);
   }
 
+  cmsUrl =  this.domSanitizer.bypassSecurityTrustResourceUrl(`${location.origin}/#/cms`);
+
   constructor(
     private domSanitizer: DomSanitizer,
 
@@ -54,6 +56,7 @@ export class PreviewBinaryComponent {
   ) { }
 
   ngOnInit() {
+
   }
 
   ngAfterViewInit(): void {
@@ -78,22 +81,10 @@ export class PreviewBinaryComponent {
     if (this.is('image')) {
       const blob = await FiredevBinaryFile.ctrl.getBlob(this.filename);
       this.url = this.domSanitizer.bypassSecurityTrustUrl(window.URL.createObjectURL(blob as Blob)) as string;
-      console.log(this.url)
     }
   }
 
   async save() {
-    const classes = await CLASS.getAllClasses();
-
-    console.log({
-      classes,
-      FiredevBinaryFile,
-      FiredevBinaryFile2,
-    })
-    const data = await FiredevBinaryFile.ctrl.helloWorld().received;
-    console.log({
-      data
-    })
     if (this.is('text')) {
       await FiredevBinaryFile.ctrl.saveText(this.text, this.filename);
     }
