@@ -1,0 +1,68 @@
+<header>
+  <mat-card class="header-wrapper" >
+    <columns-container>
+      <column [width]="elementsLeftPanelWidth" class="portal-logo" >
+        <!-- <app-logo></app-logo> TODO -->
+        <span showDesktop>Admin Panel</span>
+        <span hideDesktop>
+          <mat-icon>menu</mat-icon>
+        </span>
+      </column>
+      <!-- <column [width]="100" class="hamburger" >
+        <mat-icon>keyboard_arrow_left</mat-icon>
+      </column> -->
+      <column grow>
+        <mat-tab-group (selectedIndexChange)="selectedTopMenu($event)">
+          <mat-tab label="{{item.name}}"
+                   *ngFor="let item of menu.top.items"></mat-tab>
+        </mat-tab-group>
+      </column>
+      <column [width]="150"  >
+        <ng-content select="[profile]"></ng-content>
+      </column>
+      <column [width]="50">
+        <ng-content select="[hamburger]"></ng-content>
+      </column>
+    </columns-container>
+
+  </mat-card>
+</header>
+<columns-container class="middle-content"
+                   [style.height.px]="elementsContentHeight">
+  <column [width]="elementsLeftPanelWidth">
+    <br>
+    <br>
+    <mat-accordion>
+      <mat-expansion-panel *ngFor="let item of menuLeft.items" [expanded]="menu.top.items.length === 1" >
+        <mat-expansion-panel-header>
+          <mat-panel-title (click)="open(item)" >
+            {{item.name}}
+          </mat-panel-title>
+          <mat-panel-description *ngIf="item.description">
+            {{item.description}}
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <mat-list>
+          <mat-list-item *ngFor="let subitem of item.subitems" class="admin-left-menu-item"
+
+          >
+            <button mat-button (click)="open(subitem)" [ngClass]="{'active': isActive(subitem) }" >{{subitem.name}}</button>
+          </mat-list-item>
+        </mat-list>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </column>
+
+  <column grow
+          class="content-wrapper">
+    <br>
+    <br>
+    <ng-content select="[body]"></ng-content>
+    <br>
+    <br>
+  </column>
+
+</columns-container>
+<footer>
+  <ng-content select="[footer]"></ng-content>
+</footer>
