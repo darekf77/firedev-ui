@@ -47,7 +47,7 @@ export class PreviewBinaryComponent {
     this.myId = Number(v);
   }
 
-  cmsUrl =  this.domSanitizer.bypassSecurityTrustResourceUrl(`${location.origin}/#/cms`);
+  cmsUrl =  this.domSanitizer.bypassSecurityTrustResourceUrl(`${location.origin}/#/cms/list`);
 
   constructor(
     private domSanitizer: DomSanitizer,

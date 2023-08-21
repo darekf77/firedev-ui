@@ -2,23 +2,23 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
-import { FiredevCmsContainer } from './firedev-cms.container';
-import { FiredevLayoutMaterialModule } from '../firedev-layout-material/firedev-layout-material.module';
+import { FiredevCmsListContainer } from './firedev-cms-list.container';
+import { FiredevTableModule } from '../../firedev-table';
+import { StaticColumnsModule } from 'static-columns';
 //#endregion
 
 const routes: Routes = [
   //#region routes
   {
     path: '',
-    component: FiredevCmsContainer,
-    // redirectTo: './list',
+    component: FiredevCmsListContainer,
     pathMatch: 'full' // => when using variables in other routers
   },
-  {
-    path: 'list',
-    loadChildren: () => import('./firedev-cms-list/firedev-cms-list.container.module')
-      .then(m => m.FiredevCmsListContainerModule),
-  },
+  // {
+  //   path: 'anothermodulepath',
+  //   loadChildren: () => import('anothermodule')
+  //     .then(m => m.AnotherLazyModule),
+  // },
   // {
   //   path: 'other/:otherId',
   //   loadChildren: () => import('othermodule')
@@ -31,10 +31,11 @@ const routes: Routes = [
   //#region container module options
   imports: [
     CommonModule,
-    FiredevLayoutMaterialModule,
+    FiredevTableModule,
+    StaticColumnsModule,
     RouterModule.forChild(routes),
   ],
-  declarations: [FiredevCmsContainer],
+  declarations: [FiredevCmsListContainer],
   //#endregion
 })
-export class FiredevCmsContainerModule { }
+export class FiredevCmsListContainerModule { }

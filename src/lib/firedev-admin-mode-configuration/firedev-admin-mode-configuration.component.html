@@ -131,7 +131,13 @@
         </mat-tab>
         <mat-tab *ngFor="let tab of tabs"
                  label="{{tab.name}}">
-          <ng-container *ngTemplateOutlet="tab.template"></ng-container>
+          <div class="full-tabs" [style.height.px]="height - 150"
+               *ngIf="!isIframe">
+            <ng-container *ngTemplateOutlet="tab.template"></ng-container>
+          </div>
+          <ng-container *ngIf="isIframe">
+            <ng-container *ngTemplateOutlet="tab.template"></ng-container>
+          </ng-container>
         </mat-tab>
 
         <!-- <mat-tab label="Portal">
@@ -192,9 +198,11 @@
   <ng-container [ngTemplateOutlet]="adminTabs"></ng-container>
 </div>
 
+<!-- height: {{ height }} -->
 <div [style.height.px]="height"
      *ngIf="isIframe || !isDesktop || admin.draggablePopupMode || admin.draggablePopupModeFullScreen"
-     style="width: 100%;display: block;">
+     style="width: 100%;display: block;"
+     class="content">
   <ng-container [ngTemplateOutlet]="content"></ng-container>
 </div>
 

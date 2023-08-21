@@ -1,0 +1,12 @@
+<firedev-table [entity]="entity"
+               [allowedColumns]="['src','contentType']"
+               [columns]="columns"
+               [expansionTemplate]="expansionTpl"
+               (expansionChange)="expansionRow($event)">
+
+</firedev-table>
+
+<ng-template #expansionTpl
+             let-row>
+  hello from expansion {{row.src}}
+</ng-template>
