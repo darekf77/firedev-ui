@@ -1,14 +1,16 @@
-//#region @browser
-import { Component, OnInit, Input, Output, TemplateRef, EventEmitter } from '@angular/core';
+//#region imports
+import { Component, OnInit, Input, Output, TemplateRef, EventEmitter, ViewChild, ElementRef } from '@angular/core';
 import * as _ from 'lodash';
 import { Morphi } from 'morphi';
 import { Log, Level } from 'ng2-logger';
 import { Firedev } from 'firedev';
 import { CLASS } from 'typescript-class-helpers';
-
 import { PageEvent } from '@angular/material/paginator';
 import { MtxGridColumn } from '@ng-matero/extensions/grid';
+import { Subscription, debounceTime, defer, distinctUntilChanged, fromEvent, map, share, tap } from 'rxjs';
+//#endregion
 
+//#region constants
 const log = Log.create('Table wrapper',
   Level.__NOTHING
 );
@@ -22,46 +24,58 @@ const defaultColums = [
     field: 'name',
   }
 ] as MtxGridColumn[];
+//#endregion
 
 @Component({
+  //#region component options
   selector: 'firedev-table',
   templateUrl: './firedev-table.component.html',
   styleUrls: ['./firedev-table.component.scss']
 })
 export class FiredevTableComponent {
-  showPaginator = true;
-  isLoading = false;
-  @Input() pageNumber: number = 1;
-  @Input() pageSize: number = 5;
-  @Input() allowedColumns: string[] = [];
-  @Input() entity: typeof Firedev.Base.Entity;
-  expandable: boolean = false;
-  @Input() expansionTemplate: TemplateRef<any>;
-  @Output() expansionChange = new EventEmitter();
-  totalElements: number = 100;
 
-  @Input() rows = _.times(20, (id) => {
+  //#region fields
+  @Input() public pageNumber: number = 1;
+  @Input() public pageSize: number = 5;
+  @Input() public allowedColumns: string[] = [];
+  @Input() public entity: typeof Firedev.Base.Entity;
+  @Input() public expansionTemplate: TemplateRef<any>;
+  @Output() public expansionChange = new EventEmitter();
+  @Input() public rows = _.times(20, (id) => {
     return {
       id,
       name: `Amazing ${id} row `
     };
   });
+  @Input() public columns: MtxGridColumn[] = defaultColums as MtxGridColumn[];
+  @Input() public pageSizeOptions: number[] = [5, 10, 20];
 
+  @ViewChild('search', { static: true }) search?: ElementRef<HTMLElement>;
+  private searchInputChange$ = defer(() => fromEvent<KeyboardEvent>(this.search?.nativeElement as any, 'keyup'))
+    .pipe(
+      map(c => c.target['value']),
+      debounceTime(500),
+      distinctUntilChanged(),
+      share(),
+      tap((data) => {
+        console.log({ data })
+      })
+    );
 
-  @Input() columns = defaultColums as MtxGridColumn[];
+  public expandable: boolean = false;
+  public showPaginator = true;
+  public isLoading = false;
+  public totalElements: number = 100;
+  private sub: Subscription = new Subscription();
+  //#endregion
 
   constructor() { }
 
-  async getNextPage(e: PageEvent) {
-    // console.log({
-    //   e
-    // });
-    this.pageNumber = e.pageIndex + 1;
-    this.pageSize = e.pageSize;
-    await this.retriveData();
-  }
+  //#region hooks
 
+  //#region hooks / on init
   async ngOnInit() {
+    this.sub.add(this.searchInputChange$.subscribe());
     if (!!this.entity) {
       this.rows = [];
     }
@@ -117,6 +131,30 @@ export class FiredevTableComponent {
 
     await this.retriveData();
   }
+  //#endregion
+
+  //#region hooks / on destroy
+  ngOnDestroy(): void {
+    this.sub.unsubscribe();
+  }
+  //#endregion
+
+  //#endregion
+
+  //#region methods
+
+  //#region methods / get next page
+  async getNextPage(e: PageEvent) {
+    // console.log({
+    //   e
+    // });
+    this.pageNumber = e.pageIndex + 1;
+    this.pageSize = e.pageSize;
+    await this.retriveData();
+  }
+  //#endregion
+
+  //#region methods / retrive data
   async retriveData() { // @ts-ignore
     if (!this.entity) {
       return;
@@ -138,17 +176,23 @@ export class FiredevTableComponent {
     this.rows = rows;
     this.isLoading = false;
   }
+  //#endregion
 
+  //#region methods / expansion row
   expansionRow(e) {
     this.expansionChange.next(e);
   }
+  //#endregion
 
+  //#region methods / on table context menu
   onTableContextMenu(e) {
     // if (this.rowHref) {
     //   this.router.navigateByUrl(this.rowHref)
     // }
     log.i('context menu event', e);
   }
+  //#endregion
+
+  //#endregion
 
 }
-//#endregion
