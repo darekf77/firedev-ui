@@ -13,6 +13,6 @@ export const FIREDEV_BINARY_FILE_NON_COL_KEY_ARR = [
 ] as FiredevBinaryFileNonColumnsKeys[];
 
 export const DEF_MODEL_VALUE_FIREDEV_BINARY_FILE: Omit<IFiredevBinaryFile, FiredevBinaryFileNonColumnsKeys> = {
-  description: 'FiredevBinaryFile example description',
+  src: 'FiredevBinaryFile example description',
 }
 //#endregion

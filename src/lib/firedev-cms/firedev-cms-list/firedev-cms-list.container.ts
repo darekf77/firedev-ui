@@ -2,7 +2,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { _ } from 'tnp-core';
-import { FiredevFile } from 'firedev-ui';
+import { FiredevBinaryFile, FiredevFile } from 'firedev-ui';
 import { MtxGridColumn } from '@ng-matero/extensions/grid';
 //#endregion
 
@@ -15,7 +15,8 @@ import { MtxGridColumn } from '@ng-matero/extensions/grid';
 })
 export class FiredevCmsListContainer {
 
-  public entity: typeof FiredevFile = FiredevFile;
+  public FiredevFile: typeof FiredevFile = FiredevFile;
+  public FiredevBinaryFile: typeof FiredevBinaryFile = FiredevBinaryFile;
   public columns: MtxGridColumn[] = [
     {
       header: 'ID',
@@ -28,11 +29,6 @@ export class FiredevCmsListContainer {
       field: 'src',
       maxWidth: 250
     },
-    {
-      header: 'Content Type',
-      field: 'contentType',
-      maxWidth: 120
-    }
   ] as MtxGridColumn[];
 
   expansionRow(e) {

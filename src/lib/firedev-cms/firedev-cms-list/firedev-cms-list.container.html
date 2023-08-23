@@ -1,4 +1,4 @@
-<firedev-table [entity]="entity"
+<firedev-table [entity]="FiredevFile"
                [allowedColumns]="['src','contentType']"
                [columns]="columns"
                [expansionTemplate]="expansionTpl"
@@ -10,3 +10,14 @@
              let-row>
   hello from expansion {{row.src}}
 </ng-template>
+
+<br>
+<hr>
+Binart file
+<br>
+
+<firedev-table [entity]="FiredevBinaryFile"
+               [allowedColumns]="['src']"
+               [columns]="columns">
+</firedev-table>
+

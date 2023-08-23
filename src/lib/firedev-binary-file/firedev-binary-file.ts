@@ -10,7 +10,9 @@ import {
   FIREDEV_BINARY_FILE_NON_COL_KEY_ARR,
   DEF_MODEL_VALUE_FIREDEV_BINARY_FILE as defaultModelValues
 } from './firedev-binary-file.constants';
-
+//#region @backend
+import { Blob } from 'buffer';
+//#endregion
 //#endregion
 
 /**
@@ -22,9 +24,6 @@ import {
   //#region entity options
   className: 'FiredevBinaryFile',
   defaultModelValues,
-  //#region @websql
-  createTable: false,
-  //#endregion
   //#endregion
 })
 export class FiredevBinaryFile extends Firedev.Base.Entity<any> {
@@ -67,11 +66,20 @@ export class FiredevBinaryFile extends Firedev.Base.Entity<any> {
   //#region @websql
   @Firedev.Orm.Column.Custom({
     type: 'varchar',
-    length: 100,
-    default: defaultModelValues.description
+    length: 250,
+    default: '',
   })
   //#endregion
-  description?: string;
+  src?: string;
+  //#endregion
+
+
+  //#region @websql
+  @Firedev.Orm.Column.Custom({
+    type: 'blob',
+  })
+  //#endregion
+  blob?: Blob | Buffer;
   //#endregion
 
   //#region methods

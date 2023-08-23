@@ -3,7 +3,7 @@ import type { FiredevBinaryFile } from "./firedev-binary-file";
 import { _ } from 'tnp-core';
 import { FIREDEV_BINARY_FILE_TABLE_NAME, DEF_MODEL_VALUE_FIREDEV_BINARY_FILE } from "./firedev-binary-file.constants";
 //#region @websql
-import { NumberColumn, PropsEntitySQL, QueryTable, StringColumn } from "firedev-type-sql";
+import { NumberColumn, PropsEntitySQL, QueryTable, StringColumn, BasicColumn } from "firedev-type-sql";
 //#endregion
 //#endregion
 
@@ -23,7 +23,8 @@ export type IFiredevBinaryFileTable = PropsEntitySQL<typeof DEF_MODEL_VALUE_FIRE
 
 export class FiredevBinaryFileTable extends QueryTable<FiredevBinaryFile, number> implements IFiredevBinaryFileTable {
   id = new NumberColumn(this, 'id');
-  description = new StringColumn(this, 'description');
+  src = new StringColumn(this, 'src');
+  blob = new BasicColumn(this, 'blob');
 }
 
 export const FIREDEV_BINARY_FILE = new FiredevBinaryFileTable(FIREDEV_BINARY_FILE_TABLE_NAME);
