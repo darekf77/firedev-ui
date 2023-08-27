@@ -10,6 +10,7 @@ import { NumberColumn, PropsEntitySQL, QueryTable, StringColumn, BasicColumn } f
 //#region firedev binary file non columns key type
 export type FiredevBinaryFileNonColumnsKeys =
   'ctrl' |
+  'blob' |
   'clone';
 //#endregion
 
@@ -24,7 +25,12 @@ export type IFiredevBinaryFileTable = PropsEntitySQL<typeof DEF_MODEL_VALUE_FIRE
 export class FiredevBinaryFileTable extends QueryTable<FiredevBinaryFile, number> implements IFiredevBinaryFileTable {
   id = new NumberColumn(this, 'id');
   src = new StringColumn(this, 'src');
-  blob = new BasicColumn(this, 'blob');
+
+  /**
+   * dont use as column
+   * @deprecated
+   */
+  binaryData = new BasicColumn(this, 'binaryData');
 }
 
 export const FIREDEV_BINARY_FILE = new FiredevBinaryFileTable(FIREDEV_BINARY_FILE_TABLE_NAME);

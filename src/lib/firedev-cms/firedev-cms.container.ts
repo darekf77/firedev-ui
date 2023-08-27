@@ -32,6 +32,7 @@ export class FiredevCmsContainer {
   constructor() { }
 
   ngOnInit() {
+
   }
 
 }

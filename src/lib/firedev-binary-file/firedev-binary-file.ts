@@ -1,6 +1,6 @@
 //#region imports
 import { Firedev } from 'firedev';
-import { _ } from 'tnp-core';
+import { Utils, _ } from 'tnp-core';
 import { map } from 'rxjs';
 import type { FiredevBinaryFileController } from './firedev-binary-file.controller';
 import {
@@ -26,7 +26,7 @@ import { Blob } from 'buffer';
   defaultModelValues,
   //#endregion
 })
-export class FiredevBinaryFile extends Firedev.Base.Entity<any> {
+export class FiredevBinaryFile<T = Utils.DbBinaryFormat> extends Firedev.Base.Entity<any> {
   //#region static
   static ctrl: FiredevBinaryFileController;
   static from(obj: Omit<Partial<FiredevBinaryFile>, FiredevBinaryFileNonColumnsKeys>) {
@@ -37,6 +37,13 @@ export class FiredevBinaryFile extends Firedev.Base.Entity<any> {
     return this.ctrl.getAll().received?.observable.pipe(
       map(data => data.body?.json || [])
     );
+  }
+
+  public static async save(
+    binaryData: Utils.DbBinaryFormatForBrowser,
+    relativePathOnServer: string,
+  ): Promise<void> {
+    await this.ctrl.save(binaryData, relativePathOnServer);
   }
 
   static async getAll() {
@@ -68,18 +75,13 @@ export class FiredevBinaryFile extends Firedev.Base.Entity<any> {
     type: 'varchar',
     length: 250,
     default: '',
+    unique: true,
   })
   //#endregion
   src?: string;
   //#endregion
 
-
-  //#region @websql
-  @Firedev.Orm.Column.Custom({
-    type: 'blob',
-  })
-  //#endregion
-  blob?: Blob | Buffer;
+  binaryData?: T;
   //#endregion
 
   //#region methods

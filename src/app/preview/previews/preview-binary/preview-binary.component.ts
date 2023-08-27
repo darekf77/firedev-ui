@@ -47,7 +47,7 @@ export class PreviewBinaryComponent {
     this.myId = Number(v);
   }
 
-  cmsUrl =  this.domSanitizer.bypassSecurityTrustResourceUrl(`${location.origin}/#/cms/list`);
+  cmsUrl = this.domSanitizer.bypassSecurityTrustResourceUrl(`${location.origin}/#/cms/list`);
 
   constructor(
     private domSanitizer: DomSanitizer,
@@ -75,23 +75,22 @@ export class PreviewBinaryComponent {
   async read() {
 
     if (this.is('text')) {
-      const data = await FiredevBinaryFile.ctrl.getText(this.filename);
+      const data = await FiredevBinaryFile.ctrl.load<string>(this.filename, Utils.DbBinaryFormatEnum.string);
       this.text = data;
     }
     if (this.is('image')) {
-      const blob = await FiredevBinaryFile.ctrl.getBlob(this.filename);
+      const blob = await FiredevBinaryFile.ctrl.load<Blob>(this.filename, Utils.DbBinaryFormatEnum.Blob);
       this.url = this.domSanitizer.bypassSecurityTrustUrl(window.URL.createObjectURL(blob as Blob)) as string;
     }
   }
 
   async save() {
     if (this.is('text')) {
-      await FiredevBinaryFile.ctrl.saveText(this.text, this.filename);
+      await FiredevBinaryFile.ctrl.save(this.text, this.filename);
     }
     if (this.is('image')) {
-      await FiredevBinaryFile.ctrl.saveFile(this.file, this.filename);
+      await FiredevBinaryFile.ctrl.save(this.file, this.filename);
     }
-
   }
 
 }

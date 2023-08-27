@@ -35,4 +35,9 @@ export class FiredevCmsListContainer {
     console.log(e)
   }
 
+  async ngOnInit(): Promise<void> {
+    // const data = await FiredevBinaryFile.ctrl.getAll().received;
+    // console.log({ data: data.body.json })
+  }
+
 }

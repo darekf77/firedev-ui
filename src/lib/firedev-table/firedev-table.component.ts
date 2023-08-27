@@ -162,18 +162,20 @@ export class FiredevTableComponent {
     this.isLoading = true;
     // console.log('PAGINTION FETCH DATA START!')
     const controller = (this.entity.ctrl as Firedev.CRUD.Base<any>);
-    const data = await controller.pagination(this.pageNumber, this.pageSize).received;
-    // console.log('PAGINTION DATA', {
-    //   data,
-    // })
-    const totalElements = Number(data.headers.get(Morphi.SYMBOL.X_TOTAL_COUNT));
-    const rows = data.body.json;
-    // console.log('PAGINTION DATA', {
-    //   rows,
-    //   totalElements,
-    // })
-    this.totalElements = totalElements;
-    this.rows = rows;
+    if (controller) {
+      const data = await controller.pagination(this.pageNumber, this.pageSize).received;
+      // console.log('PAGINTION DATA', {
+      //   data,
+      // })
+      const totalElements = Number(data.headers.get(Morphi.SYMBOL.X_TOTAL_COUNT));
+      const rows = data.body.json;
+      // console.log('PAGINTION DATA', {
+      //   rows,
+      //   totalElements,
+      // })
+      this.totalElements = totalElements;
+      this.rows = rows;
+    }
     this.isLoading = false;
   }
   //#endregion
