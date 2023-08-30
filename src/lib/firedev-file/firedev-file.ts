@@ -93,7 +93,6 @@ export class FiredevFile extends Firedev.Base.Entity<any> {
     src = encodeURIComponent(src);
 
     const data = await this.ctrl.getLatestVersion(src).received;
-    // @LAST blob is not blob
 
     return Number(data.body.text);
   }
