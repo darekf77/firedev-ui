@@ -86,45 +86,54 @@ export class FiredevTableComponent {
     // console.log({
     //   columnsConfigSameAsDefault
     // })
-    setTimeout(() => {
-      const entityClass = this.entity;
-      if (entityClass && columnsConfigSameAsDefault) {
-        log.i('this.crud.entity', CLASS.describeProperites(entityClass));
 
-        try {
-          const props = CLASS.describeProperites(entityClass)
-          let columns = props
-            .filter(prop => this.allowedColumns.length > 0 ? this.allowedColumns.includes(prop) : true)
-            .map(prop => {
-              return {
-                header: _.upperCase(prop),
-                field: prop,
-              } as MtxGridColumn;
-            });
+    const entityClass = this.entity;
+    if (entityClass && columnsConfigSameAsDefault) {
+      log.i('this.crud.entity', CLASS.describeProperites(entityClass));
 
-          const extra = this.allowedColumns.filter(f => !props.includes(f));
-          columns = [
-            ...columns,
-            ...extra.map((prop) => {
-              return {
-                header: _.upperCase(prop),
-                field: prop,
-              } as MtxGridColumn;
-            })
-          ];
+      try {
+        const props = CLASS.describeProperites(entityClass)
+        let columns = props
+          .filter(prop => this.allowedColumns.length > 0 ? this.allowedColumns.includes(prop) : true)
+          .map(prop => {
+            return {
+              header: _.upperCase(prop),
+              field: prop,
+            } as MtxGridColumn;
+          });
 
-          // console.log({
-          //   extra
-          // });
-          this.columns = columns;
-        } catch (error) {
-          console.error(error)
+        const extra = this.allowedColumns.filter(f => !props.includes(f));
+        columns = [
+          ...columns,
+          ...extra.map((prop) => {
+            return {
+              header: _.upperCase(prop),
+              field: prop,
+            } as MtxGridColumn;
+          })
+        ];
+
+        // console.log({
+        //   extra
+        // });
+
+        if (!this.expandable) {
+          for (let index = 0; index < columns.length; index++) {
+            const col = columns[index];
+            delete col.showExpand;
+          }
         }
-      } else {
-
+        this.columns = columns;
+      } catch (error) {
+        console.error(error)
       }
 
-    })
+
+
+    } else {
+
+    }
+
     if (!this.entity) {
       this.showPaginator = false;
     }

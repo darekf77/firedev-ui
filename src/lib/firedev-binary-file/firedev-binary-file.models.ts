@@ -25,6 +25,7 @@ export type IFiredevBinaryFileTable = PropsEntitySQL<typeof DEF_MODEL_VALUE_FIRE
 export class FiredevBinaryFileTable extends QueryTable<FiredevBinaryFile, number> implements IFiredevBinaryFileTable {
   id = new NumberColumn(this, 'id');
   src = new StringColumn(this, 'src');
+  loadAs = new StringColumn(this, 'loadAs');
 
   /**
    * dont use as column

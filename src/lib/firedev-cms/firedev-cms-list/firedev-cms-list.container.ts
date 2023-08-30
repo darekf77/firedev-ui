@@ -22,7 +22,7 @@ export class FiredevCmsListContainer {
       header: 'ID',
       field: 'id',
       maxWidth: 100,
-      showExpand: true
+      // showExpand: true
     },
     {
       header: 'src',

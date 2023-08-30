@@ -1,6 +1,6 @@
 //#region imports
 import { Firedev } from 'firedev';
-import { Utils, _ } from 'tnp-core';
+import { Helpers, Utils, _ } from 'tnp-core';
 import { map } from 'rxjs';
 import type { FiredevBinaryFileController } from './firedev-binary-file.controller';
 import {
@@ -40,11 +40,37 @@ export class FiredevBinaryFile<T = Utils.DbBinaryFormat> extends Firedev.Base.En
   }
 
   public static async save(
-    binaryData: Utils.DbBinaryFormatForBrowser,
-    relativePathOnServer: string,
+    file: FiredevBinaryFile,
   ): Promise<void> {
-    await this.ctrl.save(binaryData, relativePathOnServer);
+    //#region @websql
+    const repo = this.ctrl.repository;
+    const fileForSave = _.merge(new FiredevBinaryFile(), _.cloneDeep(file));
+    delete fileForSave.binaryData
+    await repo.save(fileForSave);
+    await this.ctrl.save(file.binaryData as Blob, file.src);
+    //#endregion
   }
+
+  public static async loadBy(
+    src: string,
+  ): Promise<FiredevBinaryFile> {
+    //#region @websql
+    const repo = this.ctrl.repository;
+    const file = await repo.findOne({
+      where: {
+        src
+      }
+    });
+    if (!src) {
+      return;
+    }
+    const binaryData = await this.ctrl.load(src, file.loadAs);
+    file.binaryData = binaryData;
+    return file;
+    //#endregion
+    return void 0;
+  }
+
 
   static async getAll() {
     const data = await this.ctrl.getAll().received;
@@ -80,6 +106,16 @@ export class FiredevBinaryFile<T = Utils.DbBinaryFormat> extends Firedev.Base.En
   //#endregion
   src?: string;
   //#endregion
+
+
+  //#region @websql
+  @Firedev.Orm.Column.Custom({
+    type: 'varchar',
+    length: 10,
+    default: Utils.DbBinaryFormatEnum.Blob,
+  })
+  //#endregion
+  loadAs: Utils.DbBinaryFormatEnum;
 
   binaryData?: T;
   //#endregion

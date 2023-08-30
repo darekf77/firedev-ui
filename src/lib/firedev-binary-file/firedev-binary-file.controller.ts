@@ -33,7 +33,7 @@ import { blob } from 'stream/consumers';
   entity: FiredevBinaryFile,
   //#endregion
 })
-export class FiredevBinaryFileController extends Firedev.Base.Controller<any> {
+export class FiredevBinaryFileController extends Firedev.Base.Controller<FiredevBinaryFile> {
   //#region fields
   entity: typeof FiredevBinaryFile;
   //#region @websql
@@ -67,6 +67,7 @@ export class FiredevBinaryFileController extends Firedev.Base.Controller<any> {
     relativePathOnServer: string,
     loadAs: Utils.DbBinaryFormatEnum,
   ): Promise<T> {
+    //#region @browser
     if (loadAs === Utils.DbBinaryFormatEnum.Blob) {
       const blob = await this.getBlob(relativePathOnServer);
       return blob as any;
@@ -81,6 +82,8 @@ export class FiredevBinaryFileController extends Firedev.Base.Controller<any> {
       const text = await this.getText(relativePathOnServer);
       return text as any;
     }
+    //#endregion
+    return void 0;
   }
   //#endregion
 
@@ -172,10 +175,10 @@ export class FiredevBinaryFileController extends Firedev.Base.Controller<any> {
     const hammyBlob = await Utils.binary.base64toDbBinaryFormat(blobStringHamster);;
 
     const hammyFile = FiredevBinaryFile.from({
-      src: '/hamsters/my-hammy.jpeg'
+      src: '/hamsters/my-hammy.jpeg',
+      binaryData: hammyBlob as Blob,
     });
-    await repo.save(hammyFile);
-    await FiredevBinaryFile.save(hammyBlob as Blob, hammyFile.src);
+    await FiredevBinaryFile.save(hammyFile);
     //#endregion
 
 
@@ -183,10 +186,10 @@ export class FiredevBinaryFileController extends Firedev.Base.Controller<any> {
     const myniggaHtml = `Hell my niga <strong>html</strong>`;
 
     const myNiggaFile = FiredevBinaryFile.from({
-      src: '/post-templates/post.html'
+      src: '/post-templates/post.html',
+      binaryData: myniggaHtml
     })
-    await repo.save(myNiggaFile);
-    await FiredevBinaryFile.save(myniggaHtml as string, hammyFile.src);
+    await FiredevBinaryFile.save(myNiggaFile);
     //#endregion
 
   }
