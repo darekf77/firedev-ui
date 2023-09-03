@@ -7,12 +7,20 @@
              #search>
     </mat-form-field>
   </column>
-  <column [width]="80" *ngIf="search.value" >
-    <button mat-fab class="undo-button"
-            color="primary"
-            (click)="search.value = ''"
-            >
+  <column [width]="80">
+    <button mat-fab [ngClass]="{'half-opacity': !search.value }"
+            class="undo-button"
+            color="secondary"
+            (click)="search.value = ''">
       <mat-icon>close </mat-icon>
+    </button>
+  </column>
+
+  <column [width]="80">
+    <button mat-fab
+            class="undo-button"
+            color="primary">
+      <mat-icon>add</mat-icon>
     </button>
   </column>
 
