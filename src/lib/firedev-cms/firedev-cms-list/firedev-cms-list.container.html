@@ -3,18 +3,12 @@
                [columns]="columns"
                [expansionTemplate]="expansionTpl"
                (expansionChange)="expansionRow($event)">
-
 </firedev-table> -->
 
 <ng-template #expansionTpl
              let-row>
   hello from expansion {{row.src}}
 </ng-template>
-
-<br>
-<hr>
-Binart file
-<br>
 
 <firedev-table [entity]="FiredevBinaryFile"
                [allowedColumns]="['src']"

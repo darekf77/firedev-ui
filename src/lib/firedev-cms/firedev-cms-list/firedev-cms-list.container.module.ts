@@ -5,6 +5,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { FiredevCmsListContainer } from './firedev-cms-list.container';
 import { FiredevTableModule } from '../../firedev-table';
 import { StaticColumnsModule } from 'static-columns';
+import { FiredevFullMaterialModule } from 'firedev-ui';
+import { FiredevCmsEditComponent } from '../firedev-cms-edit';
 //#endregion
 
 const routes: Routes = [
@@ -33,7 +35,9 @@ const routes: Routes = [
     CommonModule,
     FiredevTableModule,
     StaticColumnsModule,
+    FiredevFullMaterialModule,
     RouterModule.forChild(routes),
+    FiredevCmsEditComponent,
   ],
   declarations: [FiredevCmsListContainer],
   //#endregion

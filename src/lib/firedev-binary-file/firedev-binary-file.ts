@@ -89,8 +89,8 @@ export class FiredevBinaryFile<T = Utils.DbBinaryFormat> extends Firedev.Base.En
   //#endregion
 
   //#region fields & getters
-  ctrl: FiredevBinaryFileController;
 
+  //#region fields & getters / table fields
   //#region @websql
   @Firedev.Orm.Column.Generated()
   //#endregion
@@ -105,8 +105,6 @@ export class FiredevBinaryFile<T = Utils.DbBinaryFormat> extends Firedev.Base.En
   })
   //#endregion
   src?: string;
-  //#endregion
-
 
   //#region @websql
   @Firedev.Orm.Column.Custom({
@@ -116,7 +114,9 @@ export class FiredevBinaryFile<T = Utils.DbBinaryFormat> extends Firedev.Base.En
   })
   //#endregion
   loadAs: Utils.DbBinaryFormatEnum;
+  //#endregion
 
+  ctrl: FiredevBinaryFileController;
   binaryData?: T;
   //#endregion
 

@@ -48,6 +48,18 @@ export class FiredevBinaryFileController extends Firedev.Base.Controller<Firedev
     binaryData: Utils.DbBinaryFormatForBrowser,
     relativePathOnServer: string,
   ): Promise<void> {
+    console.log('SAVING', binaryData)
+    //#region @backend
+    if (Helpers.isBuffer(binaryData)) {
+      this.backend.saveFileNodejs(binaryData, relativePathOnServer)
+    }
+    if (_.isString(binaryData)) {
+      this.backend.saveFileNodejs(binaryData, relativePathOnServer)
+    }
+    if (Helpers.isBlob(binaryData)) {
+      this.backend.saveFileNodejs(binaryData, relativePathOnServer)
+    }
+    //#endregion
     //#region @browser
     if (binaryData instanceof File) {
       await this.saveFile(binaryData as File, relativePathOnServer);
@@ -65,7 +77,7 @@ export class FiredevBinaryFileController extends Firedev.Base.Controller<Firedev
   //#region methods / load
   public async load<T = Utils.DbBinaryFormat>(
     relativePathOnServer: string,
-    loadAs: Utils.DbBinaryFormatEnum,
+    loadAs: Utils.DbBinaryFormatEnum = Utils.DbBinaryFormatEnum.Blob,
   ): Promise<T> {
     //#region @browser
     if (loadAs === Utils.DbBinaryFormatEnum.Blob) {
@@ -175,7 +187,7 @@ export class FiredevBinaryFileController extends Firedev.Base.Controller<Firedev
     const hammyBlob = await Utils.binary.base64toDbBinaryFormat(blobStringHamster);;
 
     const hammyFile = FiredevBinaryFile.from({
-      src: '/hamsters/my-hammy.jpeg',
+      src: '/src/assets/upload/hamsters/my-hammy.jpeg',
       binaryData: hammyBlob as Blob,
     });
     await FiredevBinaryFile.save(hammyFile);
@@ -186,7 +198,7 @@ export class FiredevBinaryFileController extends Firedev.Base.Controller<Firedev
     const myniggaHtml = `Hell my niga <strong>html</strong>`;
 
     const myNiggaFile = FiredevBinaryFile.from({
-      src: '/post-templates/post.html',
+      src: '/src/assets/upload/post-templates/post.html',
       binaryData: myniggaHtml
     })
     await FiredevBinaryFile.save(myNiggaFile);

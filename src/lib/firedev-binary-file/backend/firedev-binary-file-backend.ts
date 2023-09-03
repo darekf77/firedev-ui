@@ -62,11 +62,7 @@ export class FiredevBinaryFileBackend {
   private constructor(private ctrl: FiredevBinaryFileController) {
     //#region @backend
     this.project = Project.nearestTo(process.cwd()) as Project;
-    this.assetsPath = crossPlatformPath([
-      this.project.location,
-      '_upload_',
-      'files',
-    ]);
+    this.assetsPath = this.project.location;
     //#endregion
   }
   //#endregion
@@ -78,19 +74,29 @@ export class FiredevBinaryFileBackend {
   //#endregion
 
   //#region @backend
-  async saveFileNodejs(data: ConfigModels.UploadedBackendFile, relativePath: string) {
+  async saveFileNodejs(data: ConfigModels.UploadedBackendFile | Buffer | string | Blob, relativePath: string) {
     const destinationFilePath = crossPlatformPath([this.assetsPath, relativePath]);
     console.log('UPLOADING FILE', {
       destinationFilePath, data
     })
-    if(!Helpers.exists(path.dirname(destinationFilePath))) {
+    if (!Helpers.exists(path.dirname(destinationFilePath))) {
       Helpers.mkdirp(path.dirname(destinationFilePath));
     }
-    return await new Promise<void>((resolve) => {
-      data.mv(destinationFilePath, () => {
-        resolve();
+
+    if (Helpers.isBlob(data)) {
+      const buffer = await Utils.binary.blobToBuffer(data);
+      Helpers.writeFile(destinationFilePath, buffer);
+    } else if (_.isString(data) || Helpers.isBuffer(data)) {
+      Helpers.writeFile(destinationFilePath, data);
+    } else {
+      return await new Promise<void>((resolve) => {
+        data.mv(destinationFilePath, () => {
+          resolve();
+        })
       })
-    })
+    }
+
+
   }
   //#endregion
 
