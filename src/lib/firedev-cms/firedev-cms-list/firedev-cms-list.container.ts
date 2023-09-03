@@ -48,7 +48,7 @@ export class FiredevCmsListContainer {
           tooltip: 'Edit',
           click: async (model: FiredevBinaryFile) => {
 
-            const entity = await FiredevBinaryFile.ctrl.load(model.src, model.loadAs);
+            const entity = await FiredevBinaryFile.loadBy(model.src);
 
             this.dialog.open(FiredevCmsEditComponent, {
               maxWidth: '100vw',

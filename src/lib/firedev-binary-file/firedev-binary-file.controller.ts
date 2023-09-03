@@ -155,7 +155,7 @@ export class FiredevBinaryFileController extends Firedev.Base.Controller<Firedev
   //#region methods / get blob
   //#region @browser
   protected async getBlob(relativePathOnServer: string): Promise<Blob> {
-    const data = await this._getBlob((relativePathOnServer)).received;
+    const data = await this._getBlob((relativePathOnServer)).received; // @ts-ignore
     return data.body.blob;
   }
   //#endregion
@@ -165,7 +165,7 @@ export class FiredevBinaryFileController extends Firedev.Base.Controller<Firedev
   //#region @browser
   protected async getFile(relativePathOnServer: string): Promise<File> {
     const data = await this._getBlob((relativePathOnServer)).received;
-    const blob = data.body.blob;
+    const blob = data.body.blob; // @ts-ignore
     const file = await Utils.binary.blobToFile(blob, relativePathOnServer);
     return file;
   }
@@ -183,8 +183,10 @@ export class FiredevBinaryFileController extends Firedev.Base.Controller<Firedev
 
 
     //#region hamster image
-    const blobStringHamster = 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD/2wBDAAMCAgMCAgMDAwMEAwMEBQgFBQQEBQoHBwYIDAoMDAsKCwsNDhIQDQ4RDgsLEBYQERMUFRUVDA8XGBYUGBIUFRT/2wBDAQMEBAUEBQkFBQkUDQsNFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBT/wAARCAAUAB4DASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD9Dr/WrXS7Ke7ubhIbaBGlkkY8KqjJJ+gFeA6v+11LLfNH4e8OrqFsH2CS7ujC7j+8FCkAfU5+lQ/tAeMLXS/hfrsVxqEdnPNBiBZZArTNkEIo77sY49a4H9m1vC3xK0k2F8sdtqUUm7a58qRP7hUd88g/WvDhmdTFVfY01yux6ksDChD2k9T1bwT+1l/bkMw1XwpfadPDceSYo5FZyoOC4V9vHBOASSMEdcD36x1KHUrOG6t5RLBMgkjdehUjINfMXjj4C+GdQhsCSLjVtNuluopJ5vntJFYhH2bgO55PHtXc+GNUTRdFgtDOFZdzGON8qu5i2Ae/X0r0KmLlhY/vFdnNDDRr6wdkUPFmlWWoaXfC5s7ef9ySfMiVs8H1FeX+G/h/4av7wSS6FYiVSCrxwhGH4jFFFflOKlKnWg4Ox9lSSlTdzvrzTLSS4EkkAmkV1w8ruxG3pyT2ro7fQdPulDyWqFiOuT/jRRXdTr1ZTd5v72YShHlWh//Z'; // hammy
-    const hammyBlob = await Utils.binary.base64toDbBinaryFormat(blobStringHamster);;
+
+
+    const blobStringHamster = (await import('./media-examples/hamster-image')).default;
+    const hammyBlob = await Utils.binary.base64toDbBinaryFormat(blobStringHamster);
 
     const hammyFile = FiredevBinaryFile.from({
       src: '/src/assets/upload/hamsters/my-hammy.jpeg',
@@ -202,6 +204,17 @@ export class FiredevBinaryFileController extends Firedev.Base.Controller<Firedev
       binaryData: myniggaHtml
     })
     await FiredevBinaryFile.save(myNiggaFile);
+    //#endregion
+
+
+    //#region samble sound
+    const sound =  (await import('./media-examples/binary-sound')).default;
+    const soundBlob = await Utils.binary.base64toDbBinaryFormat(sound);
+    const soundFile = FiredevBinaryFile.from({
+      src: '/src/assets/upload/sounds/sound1.ogg',
+      binaryData: soundBlob as Blob,
+    });
+    await FiredevBinaryFile.save(soundFile);
     //#endregion
 
   }
@@ -271,6 +284,25 @@ export class FiredevBinaryFileController extends Firedev.Base.Controller<Firedev
       //#endregion
 
       return void 0;
+    };
+    //#endregion
+  }
+  //#endregion
+
+  //#region methods / get entity by url
+  @Firedev.Http.GET({
+    path: '/get/blobless/by'
+  })
+  getByUrl(
+    @Firedev.Http.Param.Query('url') relativePathOnServer: string): Firedev.Response<FiredevBinaryFile> {
+    //#region @websqlFunc
+    return async (req, res) => {
+      const model = await this.repository.findOne({
+        where: {
+          src: relativePathOnServer,
+        }
+      });
+      return model;
     };
     //#endregion
   }

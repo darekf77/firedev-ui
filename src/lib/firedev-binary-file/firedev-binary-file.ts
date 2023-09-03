@@ -54,20 +54,14 @@ export class FiredevBinaryFile<T = Utils.DbBinaryFormat> extends Firedev.Base.En
   public static async loadBy(
     src: string,
   ): Promise<FiredevBinaryFile> {
-    //#region @websql
-    const repo = this.ctrl.repository;
-    const file = await repo.findOne({
-      where: {
-        src
-      }
-    });
-    if (!src) {
-      return;
-    }
+    //#region @browser
+
+    const file = (await this.ctrl.getByUrl(src).received).body.json;
     const binaryData = await this.ctrl.load(src, file.loadAs);
     file.binaryData = binaryData;
     return file;
     //#endregion
+    // TODO  backend thing
     return void 0;
   }
 
