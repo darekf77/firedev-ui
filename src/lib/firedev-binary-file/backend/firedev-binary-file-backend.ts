@@ -4,6 +4,7 @@ import { FiredevBinaryFile } from '../firedev-binary-file';
 import type { FiredevBinaryFileController } from '../firedev-binary-file.controller';
 import { Project } from 'tnp';
 import { ConfigModels, config } from 'tnp-config';
+import axios from 'axios';
 //#region @browser
 import * as localForge from 'localforage';
 //#endregion
@@ -11,6 +12,7 @@ import * as localForge from 'localforage';
 import { fse } from 'tnp-core';
 import { Blob } from 'buffer';
 //#endregion
+
 //#endregion
 
 //#region constants
@@ -23,6 +25,8 @@ environment = global['ENV'];
 // @ts-ignore
 environment = window['ENV'];
 //#endregion
+
+
 
 //#region @websqlOnly
 const storIndexdDb = localForge.createInstance({
@@ -128,10 +132,31 @@ export class FiredevBinaryFileBackend {
   }
   //#endregion
 
-  //#region init example data
-  async initExampleDbData() {
-    // await this.repo.save(FiredevBinaryFile.from({ description: 'hello world' }))
-    // const all = await this.repo.find()
+  public async getAssets() {
+    //#region websqlFunc
+
+    //#region @backend
+    if (Helpers.isNode) {
+      const proj = this.project;
+
+      const assetsListDist = proj.pathFor(`tmp-apps-for-dist/firedev-ui/src/assets/assets-list.json`);
+      const assetsListBundle = proj.pathFor(`tmp-apps-for-bundle/firedev-ui/src/assets/assets-list.json`);
+
+      // console.log({ proj, env: global['ENV'], assetsList })
+      return Helpers.readJson(Helpers.exists(assetsListDist) ? assetsListDist : assetsListBundle, []) || [];
+    }
+    //#endregion
+
+    // @ts-ignore
+    const basename = (window?.ENV?.basename ? (window.ENV.basename) : '') as string;
+    const data = await axios({
+      // @ts-ignore
+      url: `${basename}${basename.endsWith('/') ? '' : '/'}assets/assets-list.json`,
+      method: 'GET',
+      responseType: 'json'
+    });
+
+    return data.data as string[];
+    //#endregion
   }
-  //#endregion
 }

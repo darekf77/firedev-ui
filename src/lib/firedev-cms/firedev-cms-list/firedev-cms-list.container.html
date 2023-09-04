@@ -12,6 +12,8 @@
 
 <firedev-table [entity]="FiredevBinaryFile"
                [allowedColumns]="['src']"
-               [columns]="columns">
+               [columns]="columns"
+               (addingItem)="add()"
+               >
 </firedev-table>
 

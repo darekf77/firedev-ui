@@ -8,6 +8,7 @@ import { FiredevCmsEditComponent } from '../firedev-cms-edit';
 import { FiredevFile } from 'firedev-ui';
 import { FiredevBinaryFile } from 'firedev-ui';
 import { FiredevCmsEditDialogData } from '../firedev-cms.models';
+import { ViewMode } from '../../shared/view-mode';
 //#endregion
 
 @Component({
@@ -57,7 +58,8 @@ export class FiredevCmsListContainer {
               width: '100%',
               data: {
                 entity,
-              }
+                mode: ViewMode.Edit,
+              } as FiredevCmsEditDialogData
             })
           },
         },
@@ -69,14 +71,31 @@ export class FiredevCmsListContainer {
 
   }
 
-
-  expansionRow(e) {
-    console.log(e)
-  }
-
+  //#region hooks
   async ngOnInit(): Promise<void> {
     // const data = await FiredevBinaryFile.ctrl.getAll().received;
     // console.log({ data: data.body.json })
   }
+  //#endregion
+
+  //#region methods
+  public add(): void {
+    this.dialog.open(FiredevCmsEditComponent, {
+      maxWidth: '100vw',
+      maxHeight: '100vh',
+      height: '100%',
+      width: '100%',
+      data: {
+        mode: ViewMode.Add,
+      } as FiredevCmsEditDialogData
+    })
+  }
+
+  expansionRow(e) {
+    console.log(e)
+  }
+  //#endregion
+
+
 
 }

@@ -40,7 +40,6 @@ export class FiredevTableComponent {
   @Input() public allowedColumns: string[] = [];
   @Input() public entity: typeof Firedev.Base.Entity;
   @Input() public expansionTemplate: TemplateRef<any>;
-  @Output() public expansionChange = new EventEmitter();
   @Input() public rows = _.times(20, (id) => {
     return {
       id,
@@ -49,7 +48,9 @@ export class FiredevTableComponent {
   });
   @Input() public columns: MtxGridColumn[] = defaultColums as MtxGridColumn[];
   @Input() public pageSizeOptions: number[] = [5, 10, 20];
+  @Output() public expansionChange = new EventEmitter();
 
+  @Output() public addingItem = new EventEmitter<void>();
   @ViewChild('search', { static: true }) search?: ElementRef<HTMLElement>;
   private searchInputChange$ = defer(() => fromEvent<KeyboardEvent>(this.search?.nativeElement as any, 'keyup'))
     .pipe(

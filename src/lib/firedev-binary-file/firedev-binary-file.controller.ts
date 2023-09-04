@@ -21,6 +21,10 @@ import { blob } from 'stream/consumers';
 //#endregion
 //#endregion
 
+//#region consts
+declare const ENV: any;
+//#endregion
+
 /**
  * Isomorphic Controller for FiredevBinaryFile
  *
@@ -182,9 +186,8 @@ export class FiredevBinaryFileController extends Firedev.Base.Controller<Firedev
     // - save entity (with binary data)
 
 
+    /* tests
     //#region hamster image
-
-
     const blobStringHamster = (await import('./media-examples/hamster-image')).default;
     const hammyBlob = await Utils.binary.base64toDbBinaryFormat(blobStringHamster);
 
@@ -215,6 +218,23 @@ export class FiredevBinaryFileController extends Firedev.Base.Controller<Firedev
       binaryData: soundBlob as Blob,
     });
     await FiredevBinaryFile.save(soundFile);
+    //#endregion
+*/
+    //#region @websql
+    if (ENV.dontLoadAssets) {
+      return;
+    }
+
+    const assets = await this.backend.getAssets();
+    const filesToSave = [];
+    for (let index = 0; index < assets.length; index++) {
+      const src = assets[index];
+      const file = FiredevBinaryFile.from({
+        src: `/${src}`,
+      });
+      filesToSave.push(file);
+    }
+    await repo.save(filesToSave);
     //#endregion
 
   }

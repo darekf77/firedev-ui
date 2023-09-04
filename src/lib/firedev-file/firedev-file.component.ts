@@ -27,6 +27,9 @@ const log = Log.create('firedev',
 );
 //#endregion
 
+/**
+ * @deprecated
+ */
 @Component({
   //#region component options
   selector: 'firedev-file',

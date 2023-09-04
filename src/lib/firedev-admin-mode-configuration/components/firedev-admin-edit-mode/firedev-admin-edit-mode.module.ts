@@ -8,7 +8,6 @@ import { StaticColumnsModule } from 'static-columns';
 import { FormsModule } from '@angular/forms';
 import { NgScrollbarModule } from 'ngx-scrollbar';
 import { NgArrayPipesModule } from 'ngx-pipes';
-import { AceModule } from 'ngx-ace-wrapper';
 import { FiredevFileGeneralOptModule } from '../firedev-file-general-opt';
 import { FiredevTableModule } from '../../../firedev-table';
 
@@ -19,7 +18,6 @@ import { FiredevTableModule } from '../../../firedev-table';
     NgScrollbarModule,
     FiredevFileGeneralOptModule,
     FormsModule,
-    AceModule,
     FiredevFileComponent,
     NgArrayPipesModule,
     FiredevTableModule,

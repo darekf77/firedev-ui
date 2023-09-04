@@ -16,6 +16,9 @@ import { Blob } from 'buffer';
 
 //#endregion
 
+/**
+ * @deprecated
+ */
 @Firedev.Entity<FiredevFile>({
   //#region entity config
   className: 'FiredevFile',

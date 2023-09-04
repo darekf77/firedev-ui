@@ -18,6 +18,9 @@ import { FiredevFileBackend } from './backend/firedev-file-backend';
 
 declare const ENV: any;
 
+/**
+ * @deprecated
+ */
 @Firedev.Controller({
   //#region controller config
   className: 'FiredevFileController',

@@ -13,6 +13,8 @@ declare const ENV: any;
 //#endregion
 
 /**
+ * @deprecated
+ *
  * Backend (websql also) methods for MyEntity
  *
  * + use entites injected controllers to access other backends
