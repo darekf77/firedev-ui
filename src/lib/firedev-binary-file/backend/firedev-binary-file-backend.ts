@@ -50,7 +50,6 @@ const storIndexdDb = localForge.createInstance({
 //#endregion
 export class FiredevBinaryFileBackend {
   //#region initialization
-
   //#region @backend
   private readonly project: Project;
   //#endregion
@@ -63,6 +62,9 @@ export class FiredevBinaryFileBackend {
   private get repo() {
     return this.ctrl.repository;
   }
+  private get repository() {
+    return this.ctrl.repository;
+  }
   private constructor(private ctrl: FiredevBinaryFileController) {
     //#region @backend
     this.project = Project.nearestTo(process.cwd()) as Project;
@@ -71,14 +73,30 @@ export class FiredevBinaryFileBackend {
   }
   //#endregion
 
-  //#region count entities
+  //#region public methods / get by url
+  //#region @websql
+  public async getByUrl(relativePathOnServer) {
+    const model = await this.repository.findOne({
+      where: {
+        src: relativePathOnServer,
+      }
+    });
+    return model;
+  }
+  //#endregion
+  //#endregion
+
+  //#region public methods / count entities
+  //#region @websql
   async countEntities() {
     await this.ctrl.repository.count();
   }
   //#endregion
+  //#endregion
 
+  //#region public methods / save file in nodejs
   //#region @backend
-  async saveFileNodejs(data: ConfigModels.UploadedBackendFile | Buffer | string | Blob, relativePath: string) {
+  async saveFileNodejs(data: ConfigModels.UploadedBackendFile | Buffer | string | Blob, relativePath: string): Promise<void> {
     const destinationFilePath = crossPlatformPath([this.assetsPath, relativePath]);
     console.log('UPLOADING FILE', {
       destinationFilePath, data
@@ -99,11 +117,11 @@ export class FiredevBinaryFileBackend {
         })
       })
     }
-
-
   }
   //#endregion
+  //#endregion
 
+  //#region public methods / get file from filesystem in nodejs
   //#region @backend
   async getFileNodejs(relativePath: string): Promise<Buffer> {
     const destinationFilePath = crossPlatformPath([this.assetsPath, relativePath]);
@@ -111,16 +129,20 @@ export class FiredevBinaryFileBackend {
     return buffer;
   }
   //#endregion
+  //#endregion
 
+  //#region public methods / save file in websql mode
   //#region @websql
-  async saveFileWebsql(file: File, relativePath: string): Promise<void> {
-    const blob = await Utils.binary.fileToBlob(file)
+  async saveFileWebsql(file: File | Blob, relativePath: string): Promise<void> {
+    const blob = Helpers.isBlob(file) ? file : await Utils.binary.fileToBlob(file)
     //#region @websqlOnly
     await storIndexdDb.setItem(relativePath, await Utils.binary.blobToBase64(blob))
     //#endregion
   }
   //#endregion
+  //#endregion
 
+  //#region public methods / get file from websql mode filesystem
   //#region @websql
   async getFileWebsql(relativePath: string): Promise<Blob> {
     //#region @websqlOnly
@@ -131,7 +153,9 @@ export class FiredevBinaryFileBackend {
     return void 0;
   }
   //#endregion
+  //#endregion
 
+  //#region public methods / get asset for (websql/nodejs) mode
   public async getAssets() {
     //#region websqlFunc
 
@@ -147,11 +171,16 @@ export class FiredevBinaryFileBackend {
     }
     //#endregion
 
+
+    //#region @browser
     // @ts-ignore
     const basename = (window?.ENV?.basename ? (window.ENV.basename) : '') as string;
+    const urlStart = `${basename}${basename.endsWith('/') ? '' : '/'}`;
+    //#endregion
+
     const data = await axios({
       // @ts-ignore
-      url: `${basename}${basename.endsWith('/') ? '' : '/'}assets/assets-list.json`,
+      url: `${urlStart}assets/assets-list.json`,
       method: 'GET',
       responseType: 'json'
     });
@@ -159,4 +188,30 @@ export class FiredevBinaryFileBackend {
     return data.data as string[];
     //#endregion
   }
+  //#endregion
+
+  //#region public methods / get asset for (websql/nodejs) mode
+  public async getAssetFromWebsqlMode(assetPath: string): Promise<Blob> {
+
+    //#region @browser
+    // @ts-ignore
+    const basename = (window?.ENV?.basename ? (window.ENV.basename) : '') as string;
+    const urlStart = `${basename}${basename.endsWith('/') ? '' : '/'}`;
+    //#endregion
+
+    //#region websqlFunc
+    const data = await axios({
+      // @ts-ignore
+      url: `${urlStart}${assetPath}`, // TODO @LAST window location is
+      method: 'GET',
+      responseType: 'blob'
+    });
+
+    return data.data;
+    //#endregion
+  }
+  //#endregion
+
+
+
 }

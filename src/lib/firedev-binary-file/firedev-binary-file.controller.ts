@@ -170,8 +170,8 @@ export class FiredevBinaryFileController extends Firedev.Base.Controller<Firedev
   protected async getFile(relativePathOnServer: string): Promise<File> {
     const data = await this._getBlob((relativePathOnServer)).received;
     const blob = data.body.blob; // @ts-ignore
-    const file = await Utils.binary.blobToFile(blob, relativePathOnServer);
-    return file;
+    const binaryData = await Utils.binary.blobToFile(blob, relativePathOnServer);
+    return binaryData;
   }
   //#endregion
   //#endregion
@@ -225,16 +225,23 @@ export class FiredevBinaryFileController extends Firedev.Base.Controller<Firedev
       return;
     }
 
+    console.log('getting asset start')
     const assets = await this.backend.getAssets();
+    console.log('getting asset done')
+    console.log('saving asset start')
     const filesToSave = [];
     for (let index = 0; index < assets.length; index++) {
       const src = assets[index];
       const file = FiredevBinaryFile.from({
-        src: `/${src}`,
+        src: `/src/${src}`,
+        //#region @websqlOnly
+        isInIndexedDbCache: false,
+        //#endregion
       });
       filesToSave.push(file);
     }
     await repo.save(filesToSave);
+    console.log('saving asset done')
     //#endregion
 
   }
@@ -252,6 +259,19 @@ export class FiredevBinaryFileController extends Firedev.Base.Controller<Firedev
       relativePathOnServer = (relativePathOnServer);
       //#region @websqlOnly
       if (Helpers.isWebSQL) {
+        const file = await this.backend.getByUrl(relativePathOnServer);
+        debugger
+        if (!file.isInIndexedDbCache) {
+          let assetBlob: Blob;
+          try {
+            assetBlob = await this.backend.getAssetFromWebsqlMode(relativePathOnServer);
+            debugger
+          } catch (error) {
+            debugger
+          }
+          await this.backend.saveFileWebsql(assetBlob, relativePathOnServer);
+          return assetBlob;
+        }
         const restoreFileFromIndexeDb = await this.backend.getFileWebsql(relativePathOnServer);
         return restoreFileFromIndexeDb;
       }
@@ -317,12 +337,7 @@ export class FiredevBinaryFileController extends Firedev.Base.Controller<Firedev
     @Firedev.Http.Param.Query('url') relativePathOnServer: string): Firedev.Response<FiredevBinaryFile> {
     //#region @websqlFunc
     return async (req, res) => {
-      const model = await this.repository.findOne({
-        where: {
-          src: relativePathOnServer,
-        }
-      });
-      return model;
+      return await this.backend.getByUrl(relativePathOnServer);
     };
     //#endregion
   }

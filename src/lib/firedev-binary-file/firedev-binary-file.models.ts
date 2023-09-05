@@ -27,6 +27,10 @@ export class FiredevBinaryFileTable extends QueryTable<FiredevBinaryFile, number
   src = new StringColumn(this, 'src');
   loadAs = new StringColumn(this, 'loadAs');
 
+  //#region @websqlOnly
+  isInIndexedDbCache = new BasicColumn(this, 'isInIndexedDbCache');
+  //#endregion
+
   /**
    * dont use as column
    * @deprecated

@@ -100,6 +100,13 @@ export class FiredevBinaryFile<T = Utils.DbBinaryFormat> extends Firedev.Base.En
   //#endregion
   src?: string;
 
+  //#region @websqlOnly
+  //#region @websql
+  @Firedev.Orm.Column.Boolean(true)
+  //#endregion
+  isInIndexedDbCache?: boolean;
+  //#endregion
+
   //#region @websql
   @Firedev.Orm.Column.Custom({
     type: 'varchar',
