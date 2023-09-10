@@ -267,7 +267,7 @@ export class FiredevBinaryFileController extends Firedev.Base.Controller<Firedev
             assetBlob = await this.backend.getAssetFromWebsqlMode(relativePathOnServer);
             debugger
           } catch (error) {
-            debugger
+            debugger // TODO @LAST
           }
           await this.backend.saveFileWebsql(assetBlob, relativePathOnServer);
           return assetBlob;

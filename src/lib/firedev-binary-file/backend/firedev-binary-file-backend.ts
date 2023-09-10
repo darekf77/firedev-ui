@@ -176,6 +176,7 @@ export class FiredevBinaryFileBackend {
     // @ts-ignore
     const basename = (window?.ENV?.basename ? (window.ENV.basename) : '') as string;
     const urlStart = `${basename}${basename.endsWith('/') ? '' : '/'}`;
+    // TODO @LAST FIX LOADING
     //#endregion
 
     const data = await axios({
