@@ -279,6 +279,8 @@ export class FiredevBinaryFileController extends Firedev.Base.Controller<Firedev
 
       //#region @backend
       if (Helpers.isNode) {
+        // TODO @LAST reading form filesystem does not work... in bd should be
+        // sparate browser and backend path
         const restoreFileFromFileSystem = await this.backend.getFileNodejs(relativePathOnServer);
         let blob = await Utils.binary.bufferToBlob(restoreFileFromFileSystem);
         blob = blob.slice(0, blob.size, mimeTypes[path.extname(relativePathOnServer)])
