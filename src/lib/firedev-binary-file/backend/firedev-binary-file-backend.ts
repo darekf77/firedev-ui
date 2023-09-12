@@ -124,6 +124,16 @@ export class FiredevBinaryFileBackend {
   //#region public methods / get file from filesystem in nodejs
   //#region @backend
   async getFileNodejs(relativePath: string): Promise<Buffer> {
+    const browserPathStart = '/assets/assets-for/'
+    if (relativePath.startsWith(browserPathStart)) {
+      relativePath = relativePath.replace(/^\//, '')
+      const packageName = _.first(relativePath.split('/').slice(2));
+      if (packageName === this.project.name) {
+        relativePath = 'src/assets/' + relativePath.split('/').slice(3).join('/');
+      } else {
+        relativePath = `${config.folder.node_modules}/` + relativePath.split('/').slice(3).join('/');
+      }
+    }
     const destinationFilePath = crossPlatformPath([this.assetsPath, relativePath]);
     const buffer = await fse.readFile(destinationFilePath);
     return buffer;
