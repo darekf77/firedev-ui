@@ -256,6 +256,7 @@ export class FiredevBinaryFileController extends Firedev.Base.Controller<Firedev
   private _getBlob(@Firedev.Http.Param.Query('filepath') relativePathOnServer: string): Firedev.Response<Blob> {
     //#region @websqlFunc
     return async (req, res) => {
+      debugger
       relativePathOnServer = (relativePathOnServer);
       //#region @websqlOnly
       if (Helpers.isWebSQL) {

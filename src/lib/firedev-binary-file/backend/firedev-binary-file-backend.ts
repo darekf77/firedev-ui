@@ -203,7 +203,7 @@ export class FiredevBinaryFileBackend {
 
   //#region public methods / get asset for (websql/nodejs) mode
   public async getAssetFromWebsqlMode(assetPath: string): Promise<Blob> {
-
+    debugger
     //#region @browser
     // @ts-ignore
     const basename = (window?.ENV?.basename ? (window.ENV.basename) : '') as string;
