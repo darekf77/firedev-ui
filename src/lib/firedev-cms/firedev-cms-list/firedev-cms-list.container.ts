@@ -58,7 +58,7 @@ export class FiredevCmsListContainer {
               width: '100%',
               data: {
                 entity,
-                mode: ViewMode.Edit,
+                mode: ViewMode.Preview,
               } as FiredevCmsEditDialogData
             })
           },

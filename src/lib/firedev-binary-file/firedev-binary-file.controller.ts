@@ -256,17 +256,16 @@ export class FiredevBinaryFileController extends Firedev.Base.Controller<Firedev
   private _getBlob(@Firedev.Http.Param.Query('filepath') relativePathOnServer: string): Firedev.Response<Blob> {
     //#region @websqlFunc
     return async (req, res) => {
-      debugger
+
       relativePathOnServer = (relativePathOnServer);
       //#region @websqlOnly
       if (Helpers.isWebSQL) {
         const file = await this.backend.getByUrl(relativePathOnServer);
-        debugger
+
         if (!file.isInIndexedDbCache) {
           let assetBlob: Blob;
           try {
             assetBlob = await this.backend.getAssetFromWebsqlMode(relativePathOnServer);
-            debugger
           } catch (error) {
             debugger // TODO @LAST
           }

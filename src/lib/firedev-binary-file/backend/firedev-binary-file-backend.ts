@@ -124,17 +124,38 @@ export class FiredevBinaryFileBackend {
   //#region public methods / get file from filesystem in nodejs
   //#region @backend
   async getFileNodejs(relativePath: string): Promise<Buffer> {
-    const browserPathStart = '/assets/assets-for/'
-    if (relativePath.startsWith(browserPathStart)) {
-      relativePath = relativePath.replace(/^\//, '')
-      const packageName = _.first(relativePath.split('/').slice(2));
-      if (packageName === this.project.name) {
-        relativePath = 'src/assets/' + relativePath.split('/').slice(3).join('/');
-      } else {
-        relativePath = `${config.folder.node_modules}/` + relativePath.split('/').slice(3).join('/');
+    //#region prepare proper path
+    (() => {
+      const browserPathStart = '/assets/assets-for/'
+      if (relativePath.startsWith(browserPathStart)) {
+        relativePath = relativePath.replace(/^\//, '')
+        const packageName = _.first(relativePath.split('/').slice(2));
+        if (packageName === this.project.name) {
+          relativePath = 'src/assets/' + relativePath.split('/').slice(3).join('/');
+        } else {
+          relativePath = `${config.folder.node_modules}/` + relativePath.split('/').slice(3).join('/');
+        }
       }
-    }
+    })();
+
+    (() => {
+      const browserPathStart = '/src/assets/assets-for/'
+      if (relativePath.startsWith(browserPathStart)) {
+        relativePath = relativePath.replace(/^\//, '')
+        const packageName = _.first(relativePath.split('/').slice(3));
+        if (packageName === this.project.name) {
+          relativePath = 'src/assets/' + relativePath.split('/').slice(4).join('/');
+        } else {
+          relativePath = `${config.folder.node_modules}/` + relativePath.split('/').slice(4).join('/');
+        }
+      }
+    })();
+    //#endregion
+
     const destinationFilePath = crossPlatformPath([this.assetsPath, relativePath]);
+    console.log({
+      destinationFilePath
+    })
     const buffer = await fse.readFile(destinationFilePath);
     return buffer;
   }
@@ -203,7 +224,7 @@ export class FiredevBinaryFileBackend {
 
   //#region public methods / get asset for (websql/nodejs) mode
   public async getAssetFromWebsqlMode(assetPath: string): Promise<Blob> {
-    debugger
+
     //#region @browser
     // @ts-ignore
     const basename = (window?.ENV?.basename ? (window.ENV.basename) : '') as string;

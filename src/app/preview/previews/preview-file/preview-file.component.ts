@@ -2,7 +2,6 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { firstValueFrom, Subscription } from 'rxjs';
-import { FiredevFile } from '../../../../lib';
 import * as localForge from 'localforage';
 import axios from 'axios';
 import hlsj from 'highlight.js/lib/core'
@@ -180,8 +179,8 @@ export class PreviewFileComponent implements OnInit {
 
   async sendFile() {
 
-    const resp = await FiredevFile.uploadFiles(this.files);
-    console.log('response firedevfile', resp)
+    // const resp = await FiredevFile.uploadFiles(this.files);
+    // console.log('response firedevfile', resp)
   }
 
 }
