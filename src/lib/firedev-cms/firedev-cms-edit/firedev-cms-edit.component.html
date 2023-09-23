@@ -4,7 +4,7 @@
   <mat-icon>close</mat-icon>
 </button>
 <h1>
-  File Editor <mat-slide-toggle (change)="toogleMode()" >Preview mode</mat-slide-toggle>
+  File Editor <mat-slide-toggle (change)="toogleMode()">Preview mode</mat-slide-toggle>
 </h1>
 <div class="split-demo"
      [style.height.px]="height">
@@ -15,6 +15,7 @@
       <mtx-split direction="vertical"
                  [restrictMove]="true">
         <mtx-split-pane [size]="30"
+                        #panel
                         style="overflow: hidden;">
           <table width="100%"
                  height="100%"
@@ -24,6 +25,8 @@
               <td style="text-align: center;"
                   *ngIf="mode === ViewMode.Preview">
                 <img [src]="url | safe:'url'"
+                     #imagePreview
+                     [style.height.px]="panel.offsetHeight"
                      *ngIf="mediaType === 'image'" />
                 <div *ngIf="mediaType === 'text'"
                      [innerHtml]="text | safe:'html'"></div>

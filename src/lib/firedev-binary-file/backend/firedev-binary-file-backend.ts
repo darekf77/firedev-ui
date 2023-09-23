@@ -154,7 +154,8 @@ export class FiredevBinaryFileBackend {
 
     const destinationFilePath = crossPlatformPath([this.assetsPath, relativePath]);
     console.log({
-      destinationFilePath
+      destinationFilePath,
+      'asdas': 'asdasd'
     })
     const buffer = await fse.readFile(destinationFilePath);
     return buffer;

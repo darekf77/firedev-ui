@@ -257,6 +257,7 @@
     "pica": "9.0.1",
     "portfinder": "1.0.21",
     "prettier": "3.0.0",
+    "pretty-error": "4.0.0",
     "progress": "2.0.3",
     "prompts": "0.1.8",
     "ps-list": "6.1.0",
