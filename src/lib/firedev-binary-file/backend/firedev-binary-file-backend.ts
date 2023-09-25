@@ -188,7 +188,7 @@ export class FiredevBinaryFileBackend {
   //#endregion
 
   //#region public methods / get asset for (websql/nodejs) mode
-  public async getAssets() {
+  public async getAssets(): Promise<string[]> {
     //#region websqlFunc
 
     //#region @backend
@@ -197,9 +197,10 @@ export class FiredevBinaryFileBackend {
 
       const assetsListDist = proj.pathFor(`tmp-apps-for-dist/firedev-ui/src/assets/assets-list.json`);
       const assetsListBundle = proj.pathFor(`tmp-apps-for-bundle/firedev-ui/src/assets/assets-list.json`);
+      const readAssetsFrom = Helpers.exists(assetsListDist) ? assetsListDist : assetsListBundle;
 
-      // console.log({ proj, env: global['ENV'], assetsList })
-      return Helpers.readJson(Helpers.exists(assetsListDist) ? assetsListDist : assetsListBundle, []) || [];
+      console.log({ readAssetsFrom })
+      return Helpers.readJson(readAssetsFrom) || [];
     }
     //#endregion
 

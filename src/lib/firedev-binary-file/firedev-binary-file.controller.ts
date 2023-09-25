@@ -227,7 +227,7 @@ export class FiredevBinaryFileController extends Firedev.Base.Controller<Firedev
 
     console.log('getting asset start')
     const assets = await this.backend.getAssets();
-    console.log('getting asset done')
+    console.log(`getting asset done, length = ${assets.length}`)
     console.log('saving asset start')
     const filesToSave = [];
     for (let index = 0; index < assets.length; index++) {
@@ -251,9 +251,9 @@ export class FiredevBinaryFileController extends Firedev.Base.Controller<Firedev
   //#region methods / _ get blob
   @Firedev.Http.GET({
     overridResponseType: 'blob',
-    path: '/blob/save'
+    path: '/get/blob'
   })
-  private _getBlob(@Firedev.Http.Param.Query('filepath') relativePathOnServer: string): Firedev.Response<Blob> {
+  private _getBlob(@Firedev.Http.Param.Query('by-path') relativePathOnServer: string): Firedev.Response<Blob> {
     //#region @websqlFunc
     return async (req, res) => {
 
@@ -333,10 +333,10 @@ export class FiredevBinaryFileController extends Firedev.Base.Controller<Firedev
 
   //#region methods / get entity by url
   @Firedev.Http.GET({
-    path: '/get/blobless/by'
+    path: '/get/blobless/enitiy/by'
   })
   getByUrl(
-    @Firedev.Http.Param.Query('url') relativePathOnServer: string): Firedev.Response<FiredevBinaryFile> {
+    @Firedev.Http.Param.Query('by-path') relativePathOnServer: string): Firedev.Response<FiredevBinaryFile> {
     //#region @websqlFunc
     return async (req, res) => {
       return await this.backend.getByUrl(relativePathOnServer);
