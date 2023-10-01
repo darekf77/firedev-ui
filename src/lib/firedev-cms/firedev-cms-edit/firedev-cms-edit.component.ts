@@ -1,4 +1,3 @@
-//#region @browser
 import { Component, EventEmitter, HostBinding, Inject, Input, OnInit, Output } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { CommonModule } from '@angular/common';
@@ -13,6 +12,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SafePipe } from '../../shared/safe.pipe';
 import { ViewMode } from '../../shared/view-mode';
 import { AceModule } from 'ngx-ace-wrapper';
+
 
 @Component({
   selector: 'firedev-cms-edit',
@@ -85,4 +85,3 @@ export class FiredevCmsEditComponent implements OnInit {
   }
   //#endregion
 }
-//#endregion
