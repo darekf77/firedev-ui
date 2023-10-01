@@ -228,7 +228,10 @@ export class FiredevBinaryFileBackend {
     //#region @browser
     // @ts-ignore
     const basename = (window?.ENV?.basename ? (window.ENV.basename) : '') as string;
-    const urlStart = `${basename}${basename.endsWith('/') ? '' : '/'}`;
+    const urlStart = `${window.location.origin}${basename}${basename.endsWith('/') ? '' : '/'}`;
+    if (assetPath.startsWith('/src/')) {
+      assetPath = assetPath.replace(/^\/src\//, '');
+    }
     //#endregion
 
     //#region websqlFunc

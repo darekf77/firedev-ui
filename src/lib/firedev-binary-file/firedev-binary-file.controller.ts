@@ -264,14 +264,13 @@ export class FiredevBinaryFileController extends Firedev.Base.Controller<Firedev
 
         if (!file.isInIndexedDbCache) {
           let assetBlob: Blob;
-          try {
-            assetBlob = await this.backend.getAssetFromWebsqlMode(relativePathOnServer);
-          } catch (error) {
-            debugger // TODO @LAST
-          }
+          assetBlob = await this.backend.getAssetFromWebsqlMode(relativePathOnServer);
           await this.backend.saveFileWebsql(assetBlob, relativePathOnServer);
+          file.isInIndexedDbCache = true;
+          await this.repository.update(file.id, file);
           return assetBlob;
         }
+        // console.log('restored file')
         const restoreFileFromIndexeDb = await this.backend.getFileWebsql(relativePathOnServer);
         return restoreFileFromIndexeDb;
       }
