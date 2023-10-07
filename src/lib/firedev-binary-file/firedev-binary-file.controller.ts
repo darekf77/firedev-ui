@@ -9,6 +9,7 @@ import {
 } from '@ngneat/falso'; // faking data
 import { IFiredevBinaryFile } from './firedev-binary-file.models';
 import { FORM_DATA_FILENAME } from './firedev-binary-file.constants';
+import { FiredevDbEntity } from './firedev-db-entity';
 //#region @websql
 import { FIREDEV_BINARY_FILE } from './firedev-binary-file.models';
 import { FiredevBinaryFileBackend } from './backend/firedev-binary-file-backend';
@@ -347,4 +348,57 @@ export class FiredevBinaryFileController extends Firedev.Base.Controller<Firedev
   //#endregion
 
 
+  //#region get all db entities
+  @Firedev.Http.GET()
+  public getAllEntities(): Firedev.Response<FiredevDbEntity[]> {
+    //#region @websqlFunc
+    return async (req, res) => {
+
+      let tables: FiredevDbEntity[]
+
+      //#region @websqlOnly
+      if (Helpers.isWebSQL) {
+        tables = await this.connection.query(`
+        SELECT
+        name
+    FROM
+        sqlite_schema
+    WHERE
+        type ='table' AND
+        name NOT LIKE 'sqlite_%';
+           `);
+      }
+      //#endregion
+
+      //#region @backend
+      if (Helpers.isNode) {
+        tables = await this.connection.query(`
+        SELECT
+        name
+    FROM
+        sqlite_schema
+    WHERE
+        type ='table' AND
+        name NOT LIKE 'sqlite_%';
+           `);
+      }
+      //#endregion
+
+
+      tables = (tables || []).map(c => FiredevDbEntity.from(c));
+
+
+      for (let index = 0; index < tables.length; index++) {
+        const table = tables[index];
+        table.columns = (await this.connection.query(`
+        SELECT c.name FROM pragma_table_info('${table.name}') c;
+        `)).map( c => c.name );
+      }
+
+
+      return tables;
+    }
+    //#endregion
+  }
+  //#endregion
 }

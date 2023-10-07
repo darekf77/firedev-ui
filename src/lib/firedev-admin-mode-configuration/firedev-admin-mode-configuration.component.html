@@ -112,6 +112,12 @@
           </section>
         </mat-tab>
 
+        <mat-tab label="Database">
+          <section>
+            <firedev-db-admin />
+          </section>
+        </mat-tab>
+
         <mat-tab label="Files"
                  *ngIf="admin.enabledTabs.includes('files')">
           <section>
@@ -131,7 +137,8 @@
         </mat-tab>
         <mat-tab *ngFor="let tab of tabs"
                  label="{{tab.name}}">
-          <div class="full-tabs" [style.height.px]="height - 150"
+          <div class="full-tabs"
+               [style.height.px]="height - 150"
                *ngIf="!isIframe">
             <ng-container *ngTemplateOutlet="tab.template"></ng-container>
           </div>

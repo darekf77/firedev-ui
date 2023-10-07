@@ -11,6 +11,7 @@ import { NgScrollbarModule } from 'ngx-scrollbar';
 import { FiredevProgressBarModule } from '../firedev-progress-bar';
 import { FiredevNotificationsModule } from '../firedev-notifications';
 import { createCustomElement } from '@angular/elements';
+import { FiredevDbAdminComponent } from './components/firedev-db-admin/firedev-db-admin.component';
 
 @NgModule({
   imports: [
@@ -23,8 +24,10 @@ import { createCustomElement } from '@angular/elements';
     FiredevProgressBarModule,
     FiredevNotificationsModule,
     FiredevFullMaterialModule, // TODO import only partial things
+    FiredevDbAdminComponent,
   ],
-  declarations: [FiredevAdminModeConfigurationComponent],
+  declarations: [
+    FiredevAdminModeConfigurationComponent,],
   exports: [FiredevAdminModeConfigurationComponent],
 })
 export class FiredevAdminModeConfigurationModule {

@@ -8,6 +8,7 @@ import { CLASS } from 'typescript-class-helpers';
 import { PageEvent } from '@angular/material/paginator';
 import { MtxGridColumn } from '@ng-matero/extensions/grid';
 import { Subscription, debounceTime, defer, distinctUntilChanged, fromEvent, map, share, tap } from 'rxjs';
+import { json5 } from 'tnp-core';
 //#endregion
 
 //#region constants
@@ -38,7 +39,7 @@ export class FiredevTableComponent {
   @Input() public pageNumber: number = 1;
   @Input() public pageSize: number = 5;
   @Input() public allowedColumns: string[] = [];
-  @Input() public entity: typeof Firedev.Base.Entity;
+  @Input() public entity: typeof Firedev.Base.Entity | string;
   @Input() public expansionTemplate: TemplateRef<any>;
   @Input() public rows = _.times(20, (id) => {
     return {
@@ -76,6 +77,10 @@ export class FiredevTableComponent {
 
   //#region hooks / on init
   async ngOnInit() {
+    if (_.isString(this.entity)) {
+      this.entity = CLASS.getBy(this.entity) as any;
+    }
+
     this.sub.add(this.searchInputChange$.subscribe());
     if (!!this.entity) {
       this.rows = [];
@@ -90,10 +95,10 @@ export class FiredevTableComponent {
 
     const entityClass = this.entity;
     if (entityClass && columnsConfigSameAsDefault) {
-      log.i('this.crud.entity', CLASS.describeProperites(entityClass));
+      log.i('this.crud.entity', CLASS.describeProperites(entityClass as Function));
 
       try {
-        const props = CLASS.describeProperites(entityClass)
+        const props = CLASS.describeProperites(entityClass as Function)
         let columns = props
           .filter(prop => this.allowedColumns.length > 0 ? this.allowedColumns.includes(prop) : true)
           .map(prop => {
@@ -171,7 +176,7 @@ export class FiredevTableComponent {
     }
     this.isLoading = true;
     // console.log('PAGINTION FETCH DATA START!')
-    const controller = (this.entity.ctrl as Firedev.CRUD.Base<any>);
+    const controller = ((this.entity as any).ctrl as Firedev.CRUD.Base<any>);
     if (controller) {
       const data = await controller.pagination(this.pageNumber, this.pageSize).received;
       // console.log('PAGINTION DATA', {
@@ -184,7 +189,18 @@ export class FiredevTableComponent {
       //   totalElements,
       // })
       this.totalElements = totalElements;
-      this.rows = rows;
+      this.rows = rows.map(d => {
+        for (const key in d) {
+          if (Object.prototype.hasOwnProperty.call(d, key)) {
+            const elem = d[key];
+            if (_.isObject(elem)) {
+              d[key] = json5.stringify(d);
+            }
+          }
+        }
+        // console.log({ d })
+        return d;
+      })
     }
     this.isLoading = false;
   }
