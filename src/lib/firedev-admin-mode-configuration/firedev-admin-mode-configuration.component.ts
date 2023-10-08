@@ -128,7 +128,9 @@ export class FiredevAdminModeConfigurationComponent implements OnInit {
 
 
   async toogleFullScreen() {
+    this.admin.draggablePopupMode = true;
     this.admin.draggablePopupModeFullScreen = !this.admin.draggablePopupModeFullScreen
+    this.resetDrag();
   }
 
   resetDrag() {

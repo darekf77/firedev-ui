@@ -1,0 +1,22 @@
+<header>
+  <columns-container>
+    <column width="200">
+      <img src="/layout/src/assets/shared/logo-header-admin-mode.png">
+    </column>
+    <column grow
+            showDesktop
+            class="menus">
+      <button mat-button>menu</button>
+    </column>
+    <column grow
+            hideDesktop
+            class="menus">
+      <button mat-icon-button>
+        <mat-icon>menu</mat-icon>
+      </button>
+    </column>
+  </columns-container>
+  <div class="box-shadow-line"></div>
+</header>
+
+<ng-content></ng-content>

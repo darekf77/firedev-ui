@@ -12,7 +12,7 @@
       "includeAsDev": [],
       "includeOnly": [
         "static-columns",
-        "tnp-helpers"
+        "firedev"
       ],
       "dependencies": {},
       "npmFixes": []
@@ -32,8 +32,8 @@
   "name": "firedev-ui",
   "version": "16.0.10",
   "dependencies": {
-    "static-columns": "~16.0.8",
-    "tnp-helpers": "~16.0.11"
+    "firedev": "^16",
+    "static-columns": "~16.0.8"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~16.0.5",
@@ -165,7 +165,6 @@
     "file-loader": "1.1.5",
     "file-saver": "2.0.5",
     "file-type": "18.5.0",
-    "firedev": "^16",
     "firedev-crud": "~16.0.56",
     "firedev-crud-deamon": "~16.0.45",
     "firedev-ports": "~16.0.51",
@@ -289,6 +288,7 @@
     "tnp-config": "~16.0.20",
     "tnp-core": "~16.0.26",
     "tnp-db": "~16.0.29",
+    "tnp-helpers": "~16.0.11",
     "tnp-models": "~16.0.38",
     "ts-debug": "1.3.0",
     "ts-loader": "2.3.1",

@@ -11,7 +11,7 @@
 
     "includeOnly": [
       'static-columns',
-      'tnp-helpers'
+      'firedev'
     ],
 
     "dependencies": {},

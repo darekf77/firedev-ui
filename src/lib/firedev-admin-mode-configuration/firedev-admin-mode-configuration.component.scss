@@ -7,7 +7,7 @@
 }
 
 $background-admin: rgba(220, 220, 220);
-$draggablezindex : 50;
+$draggablezindex : 105;
 
 .draggable-column {
   display: block !important;
@@ -123,4 +123,8 @@ mat-drawer {
 
 .full-tabs {
   padding: 10px;
+}
+
+.mat-drawer-container-full-screen {
+  background-color: red;
 }

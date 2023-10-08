@@ -194,7 +194,7 @@ export class FiredevTableComponent {
           if (Object.prototype.hasOwnProperty.call(d, key)) {
             const elem = d[key];
             if (_.isObject(elem)) {
-              d[key] = json5.stringify(d);
+              d[key] = json5.stringify(d[key]);
             }
           }
         }

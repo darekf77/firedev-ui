@@ -1,3 +1,4 @@
+<!-- #region basic global components  -->
 <firedev-progress-bar [isDesktop]="isDesktop"></firedev-progress-bar>
 <firedev-notifications></firedev-notifications>
 <button mat-fab
@@ -8,18 +9,20 @@
         (click)="toogle()">
   <mat-icon>build</mat-icon>
 </button>
+<!-- #endregion -->
 
-<!-- small hidden button -->
+<!-- #region small hidden button -->
 <!-- <button class="admin-show-button"
         *ngIf="!admin.draggablePopupMode && isDesktop"
         (click)="toogle()"> Admin </button> -->
+<!-- #endregion -->
 
 <ng-template #content>
   <ng-content>
   </ng-content>
 </ng-template>
 
-
+<!-- #region admin tabs -->
 <ng-template #adminTabs>
   <div class="firedev-header-admin-wrapper">
     <columns-container class="firedev-header-admin"
@@ -52,16 +55,20 @@
         </button>
       </column>
 
-      <!-- <column width="40"
-              *ngIf="admin.draggablePopupMode">
+      <column width="40">
         <button mat-icon-button
-                class="admin-close-button">
-          <mat-icon *ngIf="!admin.draggablePopupModeFullScreen"
-                    (click)="toogleFullScreen();">fullscreen</mat-icon>
-          <mat-icon *ngIf="admin.draggablePopupModeFullScreen"
-                    (click)="toogleFullScreen();">close_fullscreen</mat-icon>
+                *ngIf="!admin.draggablePopupModeFullScreen"
+                class="admin-close-button"
+                (click)="toogleFullScreen();">
+          <mat-icon>fullscreen</mat-icon>
         </button>
-      </column> -->
+        <button mat-icon-button
+                *ngIf="admin.draggablePopupModeFullScreen"
+                class="admin-close-button"
+                (click)="toogleFullScreen();">
+          <mat-icon>close_fullscreen</mat-icon>
+        </button>
+      </column>
 
       <column width="40"
               *ngIf="!admin.draggablePopupModeFullScreen">
@@ -105,16 +112,6 @@
                 </mat-checkbox>
               </mat-card-content>
             </mat-card>
-            <!-- <button mat-raised-button
-                    [disabled]="!isWebSQLMode"> [TODO] Reinit db with default values and reload </button> <br>
-            <button mat-raised-button>[TODO] Start database export </button> <br>
-            <button mat-raised-button>[TODO] Import whole database </button><br> -->
-          </section>
-        </mat-tab>
-
-        <mat-tab label="Database">
-          <section>
-            <firedev-db-admin />
           </section>
         </mat-tab>
 
@@ -187,7 +184,9 @@
 
   </columns-container>
 </ng-template>
+<!-- #endregion -->
 
+<!-- #region small/mobile draggable popup windows -->
 <div class="draggable-popup-mode-window"
      *ngIf="admin.draggablePopupMode && !admin.draggablePopupModeFullScreen && !isIframe"
      cdkDrag
@@ -197,28 +196,34 @@
     <ng-container [ngTemplateOutlet]="adminTabs"></ng-container>
   </ng-scrollbar>
 </div>
+<!-- #endregion -->
 
+<!-- #region fullscreen draggable popup window -->
 <div class="draggable-popup-mode-window-full"
-     *ngIf="admin.draggablePopupModeFullScreen && !isIframe"
+     *ngIf="admin.draggablePopupMode && admin.draggablePopupModeFullScreen && !isIframe"
      cdkDrag
      [cdkDragFreeDragPosition]="dragPositionZero">
   <ng-container [ngTemplateOutlet]="adminTabs"></ng-container>
 </div>
+<!-- #endregion -->
 
-<!-- height: {{ height }} -->
+<!-- #region content when not in draggable (or fullscreen draggable) popup -->
 <div [style.height.px]="height"
      *ngIf="isIframe || !isDesktop || admin.draggablePopupMode || admin.draggablePopupModeFullScreen"
      style="width: 100%;display: block;"
      class="content">
   <ng-container [ngTemplateOutlet]="content"></ng-container>
 </div>
+<!-- #endregion -->
 
+<!-- #region draggable popup window -->
 <mat-drawer-container *ngIf="!admin.draggablePopupMode && isDesktop && !isIframe"
                       class="example-container"
                       [style.height.px]="height"
                       style="background-color: transparent;"
                       (backdropClick)="opened = false"
                       [hasBackdrop]="false">
+
   <mat-drawer #drawer
               style="width: 580px;"
               [opened]="opened"
@@ -233,3 +238,4 @@
 
   </mat-drawer-content>
 </mat-drawer-container>
+<!-- #endregion -->
