@@ -1,5 +1,6 @@
 //#region @browser
 export * from './firedev-admin-mode-configuration';
+export * from './firedev-cms';
 //#endregion
 export * from './firedev-file';
 export * from './firedev-binary-file';

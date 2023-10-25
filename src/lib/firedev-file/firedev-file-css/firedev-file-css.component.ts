@@ -2,8 +2,6 @@
 //#region imports
 import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FiredevFullMaterialModule } from 'firedev-ui';
-import { StaticColumnsModule } from 'static-columns';
 import { FiredevFileCssHelpers } from './firedev-file-css.helpers';
 import { FiredevFileCss } from './firedev-file-css';
 //#endregion

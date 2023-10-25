@@ -31,9 +31,6 @@ export class LayoutProjNgRelatedChildComponent implements OnInit {
 
   recalculateHeight() {
     const hasContent = (this.contentWrapper.nativeElement as HTMLElement).childNodes.length > 0;
-    console.log({
-      hasContent
-    })
     if (this.fullScreen) {
       this.height = window.outerHeight;
     } else {
