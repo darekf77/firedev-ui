@@ -104,13 +104,17 @@ export class FiredevFileBackend {
   //#endregion
 
   //#region get assets
+  /**
+   *
+   * @deprecated
+   */
   private async getAssets() {
     //#region websqlFunc
 
     //#region @backend
     if (Helpers.isNode) {
       const proj = Project.From(process.cwd()) as Project;  // TODO
-      const assetsList = Helpers.readJson(proj.pathFor(`tmp-apps-for-dist/firedev-ui/src/assets/assets-list.json`)) as string[];
+      const assetsList = Helpers.readJson(proj.pathFor(`tmp-apps-for-dist/${proj.name}/src/assets/assets-list.json`)) as string[];
 
       // console.log({ proj, env: global['ENV'], assetsList })
       return assetsList;

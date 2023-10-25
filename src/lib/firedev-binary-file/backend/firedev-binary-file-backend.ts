@@ -67,7 +67,12 @@ export class FiredevBinaryFileBackend {
   }
   private constructor(private ctrl: FiredevBinaryFileController) {
     //#region @backend
+
     this.project = Project.nearestTo(process.cwd()) as Project;
+    console.log({
+      'CWD': process.cwd(),
+      nearestTo: this.project.genericName
+    })
     this.assetsPath = this.project.location;
     //#endregion
   }
@@ -195,8 +200,8 @@ export class FiredevBinaryFileBackend {
     if (Helpers.isNode) {
       const proj = this.project;
 
-      const assetsListDist = proj.pathFor(`tmp-apps-for-dist/firedev-ui/src/assets/assets-list.json`);
-      const assetsListBundle = proj.pathFor(`tmp-apps-for-bundle/firedev-ui/src/assets/assets-list.json`);
+      const assetsListDist = proj.pathFor(`tmp-apps-for-dist/${this.project.name}/src/assets/assets-list.json`);
+      const assetsListBundle = proj.pathFor(`tmp-apps-for-bundle/${this.project.name}/src/assets/assets-list.json`);
       const readAssetsFrom = Helpers.exists(assetsListDist) ? assetsListDist : assetsListBundle;
       return Helpers.readJson(readAssetsFrom) || [];
     }

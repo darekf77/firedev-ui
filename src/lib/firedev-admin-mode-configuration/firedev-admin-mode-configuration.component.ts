@@ -29,6 +29,7 @@ export class FiredevAdminModeConfigurationComponent implements OnInit {
   public isIframe: boolean = (window.location !== window.parent.location);
   public height: number = 100;
   public openedOnce = false;
+  public reloading: boolean = false;
 
   @Stor.property.in.localstorage.for(FiredevAdminModeConfigurationComponent).withDefaultValue(0)
   dragPositionX: number;
@@ -80,10 +81,19 @@ export class FiredevAdminModeConfigurationComponent implements OnInit {
   }
   //#endregion
 
+  reloadTabs() {
+    this.reloading = true;
+    setTimeout(() => {
+      this.reloading = false;
+      console.log('reloading done')
+    })
+  }
+
   //#region hooks
   async ngOnInit() {
     await Stor.awaitPendingOperatios();
-    // console.log('PENDING OPERATION AWAITED ')
+    // console.log('PENDING OPERATION AWAITED ', this.selectedIndex)
+    // console.log('draggablePopupModeFullScreen ', this.admin.draggablePopupModeFullScreen)
 
     this.dragPosition = { x: this.dragPositionX, y: this.dragPositionY };
     this.openedOnce = this.opened;
@@ -100,6 +110,11 @@ export class FiredevAdminModeConfigurationComponent implements OnInit {
     //Add 'implements AfterViewInit' to the class.
     setTimeout(() => {
       this.height = window.innerHeight;
+
+      // TODO QUICK_FIX for draggble popup proper first index load on tabs
+      if (this.admin.draggablePopupMode) {
+        this.reloadTabs()
+      }
 
       // const tablist = (this.tabGroup?._tabHeader?._elementRef?.nativeElement as HTMLElement).querySelector('.mat-tab-list') as HTMLElement;
       // if (tablist) {
@@ -146,16 +161,16 @@ export class FiredevAdminModeConfigurationComponent implements OnInit {
 
   scrollTabs(event) {
     return;
-    event?.stopPropagation();
-    event?.stopImmediatePropagation(); // TODO not working
-    const children = this.tabGroup._tabHeader._elementRef.nativeElement.children;
-    const back = children[0];
-    const forward = children[2];
-    if (event.deltaY > 0) {
-      forward.click();
-    } else {
-      back.click();
-    }
+    // event?.stopPropagation();
+    // event?.stopImmediatePropagation(); // TODO not working
+    // const children = this.tabGroup._tabHeader._elementRef.nativeElement.children;
+    // const back = children[0];
+    // const forward = children[2];
+    // if (event.deltaY > 0) {
+    //   forward.click();
+    // } else {
+    //   back.click();
+    // }
   }
 
 

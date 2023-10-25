@@ -114,6 +114,9 @@
               </mat-card-content>
             </mat-card>
           </section>
+          <br>
+          <firedev-db-admin />
+
         </mat-tab>
 
         <mat-tab label="Files"
@@ -201,7 +204,7 @@
 
 <!-- #region fullscreen draggable popup window -->
 <div class="draggable-popup-mode-window-full"
-     *ngIf="admin.draggablePopupMode && admin.draggablePopupModeFullScreen && !isIframe"
+     *ngIf="(admin.draggablePopupMode && admin.draggablePopupModeFullScreen && !isIframe) && !reloading"
      cdkDrag
      [cdkDragFreeDragPosition]="dragPositionZero">
   <ng-container [ngTemplateOutlet]="adminTabs"></ng-container>
@@ -210,7 +213,7 @@
 
 <!-- #region content when not in draggable (or fullscreen draggable) popup -->
 <div [style.height.px]="height"
-     *ngIf="isIframe || !isDesktop || admin.draggablePopupMode || admin.draggablePopupModeFullScreen"
+     *ngIf="(isIframe || !isDesktop || admin.draggablePopupMode || admin.draggablePopupModeFullScreen) && !reloading"
      style="width: 100%;display: block;"
      class="content">
   <ng-container [ngTemplateOutlet]="content"></ng-container>
@@ -234,7 +237,7 @@
 
   </mat-drawer>
   <mat-drawer-content>
-    <ng-container *ngIf="!admin.draggablePopupMode"
+    <ng-container *ngIf="!admin.draggablePopupMode && !reloading"
                   [ngTemplateOutlet]="content"></ng-container>
 
   </mat-drawer-content>
