@@ -1,6 +1,7 @@
 //#region @browser
 export * from './firedev-admin-mode-configuration';
 export * from './firedev-cms';
+export * from './layout-proj-ng-related'; // TODO refactor name
 //#endregion
 export * from './firedev-file';
 export * from './firedev-binary-file';

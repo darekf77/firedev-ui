@@ -1,7 +1,8 @@
 <header>
-  <mat-card class="header-wrapper" >
+  <mat-card class="header-wrapper">
     <columns-container>
-      <column [width]="elementsLeftPanelWidth" class="portal-logo" >
+      <column [width]="elementsLeftPanelWidth"
+              class="portal-logo">
         <!-- <app-logo></app-logo> TODO -->
         <span showDesktop>Admin Panel</span>
         <span hideDesktop>
@@ -17,7 +18,7 @@
                    *ngFor="let item of menu.top.items"></mat-tab>
         </mat-tab-group>
       </column>
-      <column [width]="150"  >
+      <column [width]="150">
         <ng-content select="[profile]"></ng-content>
       </column>
       <column [width]="50">
@@ -33,9 +34,10 @@
     <br>
     <br>
     <mat-accordion>
-      <mat-expansion-panel *ngFor="let item of menuLeft.items" [expanded]="menu.top.items.length === 1" >
+      <mat-expansion-panel *ngFor="let item of menuLeft.items"
+                           [expanded]="menu.top.items.length === 1">
         <mat-expansion-panel-header>
-          <mat-panel-title (click)="open(item)" >
+          <mat-panel-title (click)="open(item)">
             {{item.name}}
           </mat-panel-title>
           <mat-panel-description *ngIf="item.description">
@@ -43,10 +45,11 @@
           </mat-panel-description>
         </mat-expansion-panel-header>
         <mat-list>
-          <mat-list-item *ngFor="let subitem of item.subitems" class="admin-left-menu-item"
-
-          >
-            <button mat-button (click)="open(subitem)" [ngClass]="{'active': isActive(subitem) }" >{{subitem.name}}</button>
+          <mat-list-item *ngFor="let subitem of item.subitems"
+                         class="admin-left-menu-item">
+            <button mat-button
+                    (click)="open(subitem)"
+                    [ngClass]="{'active': isActive(subitem) }">{{subitem.name}}</button>
           </mat-list-item>
         </mat-list>
       </mat-expansion-panel>

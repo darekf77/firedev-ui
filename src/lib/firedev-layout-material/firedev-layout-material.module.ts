@@ -1,12 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-// third part
 import { StaticColumnsModule } from 'static-columns';
-// local
 import { FiredevLayoutMaterialComponent } from './firedev-layout-material.component';
 import { FiredevFullMaterialModule } from '../firedev-full-material.module';
-import { LayoutProjNgRelatedModule, LayoutProjNgRelatedChildComponent } from './layout-proj-ng-related';
-// import { LogoModule } from 'ss-components/components/logo'; // TODO
 
 const modules = [
   CommonModule,

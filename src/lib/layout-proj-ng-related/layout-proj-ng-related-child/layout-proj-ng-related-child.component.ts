@@ -16,6 +16,7 @@ import { randColor } from '@ngneat/falso';
 })
 export class LayoutProjNgRelatedChildComponent implements OnInit {
   @Input() title: string;
+  @Input() link: string;
   @HostBinding('style.height.px') height: number;
   @Input() @HostBinding('style.backgroundColor') backgroundColor;
   @ViewChild('contentWrapper') contentWrapper;
@@ -46,6 +47,7 @@ export class LayoutProjNgRelatedChildComponent implements OnInit {
 
     setTimeout(() => {
       this.recalculateHeight()
+
     })
 
   }
