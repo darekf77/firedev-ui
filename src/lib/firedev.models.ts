@@ -1,4 +1,3 @@
-import { Morphi as Firedev } from 'morphi'
 import { ContentType } from 'tnp-core';
 
 // export type FiredevModeSimple = 'view' | 'edit' | 'add';
