@@ -1,14 +1,16 @@
 import { Component, EventEmitter, HostBinding, Input, OnInit, Output } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { CommonModule } from '@angular/common';
+import { FiredevLayoutNgLikeProjectMenuComponent } from './firedev-layout-ng-like-project-menu/firedev-layout-ng-like-project-menu.component';
 // import { _ } from 'tnp-core';
 
 @Component({
   selector: 'app-firedev-layout-ng-like-project',
   templateUrl: './firedev-layout-ng-like-project.component.html',
   styleUrls: ['./firedev-layout-ng-like-project.component.scss'],
-  imports:[
+  imports: [
     CommonModule,
+    FiredevLayoutNgLikeProjectMenuComponent,
   ],
   standalone: true,
 })
