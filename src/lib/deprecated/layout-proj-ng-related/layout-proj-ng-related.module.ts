@@ -7,6 +7,9 @@ import { FiredevFullMaterialModule } from '../firedev-full-material.module';
 import { StaticColumnsModule } from "static-columns";
 import { MtxDrawerModule } from '@ng-matero/extensions/drawer';
 
+/**
+ * @deprecated
+ */
 @NgModule({
   imports: [
     CommonModule,

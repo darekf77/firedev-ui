@@ -5,6 +5,9 @@ import { CommonModule } from '@angular/common';
 import { _ } from 'tnp-core';
 import { randColor } from '@ngneat/falso';
 
+/**
+ * @deprecated
+ */
 @Component({
   selector: 'layout-proj-ng-related-child',
   templateUrl: './layout-proj-ng-related-child.component.html',

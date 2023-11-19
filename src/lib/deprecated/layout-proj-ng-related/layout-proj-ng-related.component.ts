@@ -6,6 +6,9 @@ import { take } from 'rxjs';
 import { Stor } from 'firedev-storage';
 import { MatDrawer } from '@angular/material/sidenav';
 
+/**
+ * @deprecated
+ */
 @Component({
   selector: 'layout-proj-ng-related',
   templateUrl: './layout-proj-ng-related.component.html',
