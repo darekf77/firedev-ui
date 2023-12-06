@@ -3,7 +3,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { FiredevCmsContainer } from './firedev-cms.container';
-import { FiredevLayoutMaterialModule } from '../firedev-layout-material/firedev-layout-material.module';
 //#endregion
 
 const routes: Routes = [
@@ -31,7 +30,6 @@ const routes: Routes = [
   //#region container module options
   imports: [
     CommonModule,
-    FiredevLayoutMaterialModule,
     RouterModule.forChild(routes),
   ],
   declarations: [FiredevCmsContainer],

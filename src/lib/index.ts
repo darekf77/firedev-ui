@@ -1,13 +1,10 @@
 //#region @browser
 export * from './firedev-admin-mode-configuration';
 export * from './firedev-cms';
-export * from './layouts/firedev-layout-ng-like-project';
-export * from './deprecated/layout-proj-ng-related'; // TODO refactor name
 //#endregion
 export * from './firedev-file';
 export * from './firedev-binary-file';
 //#region @browser
-export * from './layouts/firedev-layout-material';
 export * from './firedev-formly';
 export * from './firedev-github-fork-me-corner';
 export * from './firedev-github-fork-me-ribbon';
