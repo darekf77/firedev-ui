@@ -1,7 +1,8 @@
 //#region @notForNpm
 //#region imports
 import { Firedev } from 'firedev';
-const host = 'http://localhost:4198';
+import { HOST_BACKEND_PORT } from './app.hosts';
+const host = `http://localhost:${HOST_BACKEND_PORT}`;
 
 import { Css } from './app/preview/previews/preview-form/css';
 
@@ -15,6 +16,7 @@ import { AceConfigInterface } from 'ngx-ace-wrapper';
 import 'brace';
 import 'brace/mode/text';
 import 'brace/theme/github';
+
 
 // Firedev.Websql.useFakeTimeout(5000)
 
@@ -48,7 +50,7 @@ const routes: Routes = [
   styleUrls: ['./app.scss'],
   templateUrl: './app.html',
 })
-export class FiredevUiComponent {}
+export class FiredevUiComponent { }
 //#endregion
 
 //#region main module
