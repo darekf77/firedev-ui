@@ -10,6 +10,7 @@ import { Subject, takeUntil, tap } from 'rxjs';
 import { createCustomElement } from '@angular/elements';
 import { FiredevFileComponent } from '../firedev-file/firedev-file.component';
 import { FiredevAdminModeTab } from './models/firedev-admin-mode-tabs';
+declare const ENV: any;
 //#endregion
 
 @Component({
@@ -26,6 +27,7 @@ export class FiredevAdminModeConfigurationComponent implements OnInit {
   public tabs: FiredevAdminModeTab[] = [];
   public admin: FiredevAdmin = (window['firedev'] as FiredevAdmin);
   public isWebSQLMode: boolean = Helpers.isWebSQL;
+  public hideFiredevToolsInProduction: boolean = ENV.hideFiredevToolsInProduction && ENV.angularProd;
   public isIframe: boolean = (window.location !== window.parent.location);
   public height: number = 100;
   public openedOnce = false;

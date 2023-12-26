@@ -5,7 +5,7 @@
         class="fab-button"
         color="accent"
         aria-label="Firedev Admin Mode"
-        *ngIf="!admin.draggablePopupMode && isDesktop && !isIframe"
+        *ngIf="!admin.draggablePopupMode && isDesktop && !isIframe && !hideFiredevToolsInProduction"
         (click)="toogle()">
   <mat-icon>build</mat-icon>
 </button>
