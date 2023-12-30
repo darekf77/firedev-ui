@@ -5,6 +5,7 @@ export * from './firedev-cms';
 export * from './firedev-file';
 export * from './firedev-binary-file';
 //#region @browser
+export * from './firedev-session-passcode';
 export * from './firedev-formly';
 export * from './firedev-github-fork-me-corner';
 export * from './firedev-github-fork-me-ribbon';
