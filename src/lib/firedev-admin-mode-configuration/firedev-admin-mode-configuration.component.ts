@@ -32,6 +32,9 @@ export class FiredevAdminModeConfigurationComponent implements OnInit {
   public height: number = 100;
   public openedOnce = false;
   public reloading: boolean = false;
+  public showPasscode: boolean = (_.isString(ENV.passcode) || _.isObject(ENV.passcode));
+  public passcode: string = (_.isString(ENV.passcode) ? ENV.passcode : (_.isObject(ENV.passcode) ? ENV.passcode.code : ''));
+  public message: string = _.isObject(ENV.passcode) ? ENV.passcode.message : void 0;
 
   @Stor.property.in.localstorage.for(FiredevAdminModeConfigurationComponent).withDefaultValue(0)
   dragPositionX: number;

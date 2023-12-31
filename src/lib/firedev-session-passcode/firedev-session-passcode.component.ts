@@ -32,11 +32,8 @@ export class FiredevSessionPasscodeComponent implements OnInit {
 
   // @HostBinding('style.width.px') public width: number;
   // @HostBinding('style.height.px') public height: number;
-  @Input() public passcode: string = '1234';
-  @Input() public message: string = `
-  This website is only for testing purpose. Please type passcode bellow to see content.
-
-  `;
+  @Input() public passcode: string;
+  @Input() public message: string;
   public safeMessage: SafeHtml;
 
   @Stor.property.in.localstorage.for(FiredevSessionPasscodeComponent).withDefaultValue('')
@@ -52,6 +49,19 @@ export class FiredevSessionPasscodeComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    if (!this.passcode) {
+      this.passcode = '123456';
+    }
+    if (!this.message) {
+      this.message = `
+      This website is only for testing purpose. Please type passcode bellow to see content.
+
+      `
+    }
+    console.log({
+      'current passcode': this.passcode,
+      'current message': this.message,
+    })
     // this.width = window.innerWidth;
     // this.height = window.innerHeight;
     this.safeMessage = this.domSanitizer.bypassSecurityTrustHtml(this.message);
@@ -65,12 +75,16 @@ export class FiredevSessionPasscodeComponent implements OnInit {
   }
 
   submit({ passcode }: Partial<FiredevSessionPasscodeModel>) {
-    this.lastPasscode = passcode || '';
-    if (passcode === this.passcode) {
+    if (this.isPasscodeOK(passcode || '')) {
       this.hide();
     } else {
       this.clear();
     }
+  }
+
+  private isPasscodeOK(passcode: string) {
+    this.lastPasscode = passcode.toString();
+    return this.passcode.toString() === passcode;
   }
 
   ngAfterViewInit(): void {
@@ -95,8 +109,7 @@ export class FiredevSessionPasscodeComponent implements OnInit {
   }
 
   onKeyup(event: KeyboardEvent & { target: { value: string } }) {
-    this.lastPasscode = event.target.value;
-    if (this.lastPasscode === this.passcode) {
+    if ((this.isPasscodeOK(event.target.value || ''))) {
       this.hide();
       return;
     }
