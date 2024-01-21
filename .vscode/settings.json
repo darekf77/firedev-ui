@@ -66,5 +66,10 @@
   "tslint.autoFixOnSave": true,
   "eslint.enable": false,
   "tslint.enable": false,
-  "typescript.tsdk": "node_modules/typescript/lib"
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "search.exclude": {
+    "docs": true,
+    "projects": true,
+    "bin": true
+  }
 }
