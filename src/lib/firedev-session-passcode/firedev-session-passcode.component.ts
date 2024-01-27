@@ -59,6 +59,7 @@ export class FiredevSessionPasscodeComponent implements OnInit {
       `
     }
     console.log({
+      'lastPasscode': this.lastPasscode,
       'current passcode': this.passcode,
       'current message': this.message,
     })
@@ -66,7 +67,7 @@ export class FiredevSessionPasscodeComponent implements OnInit {
     // this.height = window.innerHeight;
     this.safeMessage = this.domSanitizer.bypassSecurityTrustHtml(this.message);
 
-    if (this.lastPasscode === this.passcode) {
+    if (this.lastPasscode?.toString() === this.passcode?.toString()) {
       this.hide();
     } else {
       this.show();
