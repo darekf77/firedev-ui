@@ -1,6 +1,6 @@
 //#region @browser
 //#region imports
-import { Component, EventEmitter, HostListener, Injector, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, HostListener, Injector, Input, OnInit, Output, ViewChild, inject } from '@angular/core';
 import { Helpers, _ } from 'tnp-core';
 import { FiredevAdmin } from './firedev-admin';
 import { Stor } from 'firedev-storage';
@@ -10,6 +10,8 @@ import { Subject, takeUntil, tap } from 'rxjs';
 import { createCustomElement } from '@angular/elements';
 import { FiredevFileComponent } from '../firedev-file/firedev-file.component';
 import { FiredevAdminModeTab } from './models/firedev-admin-mode-tabs';
+import { FiredevAdminService } from './firedev-admin-control.service';
+
 declare const ENV: any;
 //#endregion
 
@@ -23,6 +25,8 @@ declare const ENV: any;
 export class FiredevAdminModeConfigurationComponent implements OnInit {
   //#region fields & getters
   $destroy = new Subject();
+  public readonly cdr = inject(ChangeDetectorRef);
+  public readonly firedevAdminService = inject(FiredevAdminService);
   public readonly isDesktop: boolean;
   public tabs: FiredevAdminModeTab[] = [];
   public admin: FiredevAdmin = (window['firedev'] as FiredevAdmin);
@@ -81,8 +85,7 @@ export class FiredevAdminModeConfigurationComponent implements OnInit {
       // @ts-ignore
       this.isDesktop = (breakpoint === 'desktop');
     })
-
-
+    this.firedevAdminService.init(this);
   }
   //#endregion
 

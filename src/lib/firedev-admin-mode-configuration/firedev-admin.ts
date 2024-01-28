@@ -11,6 +11,7 @@ import type { FiredevAdminModeConfigurationComponent } from './firedev-admin-mod
 export class FiredevAdmin {
   //#region fields & getters
   public cmp: FiredevAdminModeConfigurationComponent;
+  public scrollableEnabled = true; // TOOD @LAST false by default
   private onEditMode = new Subject()
   onEditMode$ = this.onEditMode.asObservable();
   private onRegisterFileChange = new Subject<void>()

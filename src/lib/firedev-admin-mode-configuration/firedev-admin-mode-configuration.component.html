@@ -20,10 +20,14 @@
         (click)="toogle()"> Admin </button> -->
 <!-- #endregion -->
 
+<ng-template #contentNoScroll>
+  <ng-content>
+  </ng-content>
+</ng-template>
+
 <ng-template #content>
   <ng-scrollbar>
-    <ng-content>
-    </ng-content>
+    <ng-container [ngTemplateOutlet]="contentNoScroll"></ng-container>
   </ng-scrollbar>
 </ng-template>
 
@@ -221,7 +225,7 @@
      *ngIf="(isIframe || !isDesktop || admin.draggablePopupMode || admin.draggablePopupModeFullScreen) && !reloading"
      style="width: 100%;display: block;"
      class="content">
-  <ng-container [ngTemplateOutlet]="content"></ng-container>
+  <ng-container [ngTemplateOutlet]="admin.scrollableEnabled ? content: contentNoScroll"></ng-container>
 </div>
 <!-- #endregion -->
 
@@ -241,9 +245,9 @@
     <ng-container [ngTemplateOutlet]="adminTabs"></ng-container>
 
   </mat-drawer>
-  <mat-drawer-content>
+  <mat-drawer-content style="overflow: hidden;">
     <ng-container *ngIf="!admin.draggablePopupMode && !reloading"
-                  [ngTemplateOutlet]="content"></ng-container>
+                  [ngTemplateOutlet]="admin.scrollableEnabled ? content: contentNoScroll"></ng-container>
 
   </mat-drawer-content>
 </mat-drawer-container>

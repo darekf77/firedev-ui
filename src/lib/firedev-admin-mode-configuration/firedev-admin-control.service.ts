@@ -1,12 +1,19 @@
-import { Injectable, TemplateRef } from '@angular/core';
+import { ApplicationRef, ChangeDetectorRef, Injectable, TemplateRef, inject } from '@angular/core';
 import type { FiredevAdmin } from './firedev-admin';
+import type { FiredevAdminModeConfigurationComponent } from './firedev-admin-mode-configuration.component';
 
 @Injectable({ providedIn: 'root' })
 export class FiredevAdminService {
+  firedevAdminModeConfigurationComponent: FiredevAdminModeConfigurationComponent
 
   private readonly admin: FiredevAdmin;
 
-  constructor() {
+  disableScroll() {
+    this.admin.scrollableEnabled = false;
+    this.firedevAdminModeConfigurationComponent.cdr.detectChanges();
+  }
+
+  constructor(private cdr: ApplicationRef) {
     this.admin = (window['firedev'] as FiredevAdmin);
   }
 
@@ -15,6 +22,10 @@ export class FiredevAdminService {
       name,
       template
     });
+  }
+
+  init(firedevAdminModeConfigurationComponent: FiredevAdminModeConfigurationComponent) {
+    this.firedevAdminModeConfigurationComponent = firedevAdminModeConfigurationComponent;
   }
 
 }
