@@ -170,7 +170,7 @@
     "firedev-storage": "~16.5.11",
     "firedev-type-sql": "~16.5.11",
     "firedev-typeorm": "~16.5.13",
-    "firedev-ui": "~16.5.10",
+    "firedev-ui": "~16.5.11",
     "fkill": "6.1.0",
     "font-awesome": "4.7.0",
     "form-data": "4.0.0",
@@ -311,5 +311,5 @@
     "yup": "1.1.1",
     "zone.js": "~0.13.0"
   },
-  "lastBuildTagHash": "f58f7b002c172ee46c84475803d36fbd483a2af5"
+  "lastBuildTagHash": "cf4822a41afe2b6b0b87eb0214c6221e93662bf2"
 }
