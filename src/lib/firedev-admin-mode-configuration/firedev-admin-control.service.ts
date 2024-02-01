@@ -8,9 +8,12 @@ export class FiredevAdminService {
 
   private readonly admin: FiredevAdmin;
 
+  /**
+   * @deprecated
+   */
   disableScroll() {
-    this.admin.scrollableEnabled = false;
-    this.firedevAdminModeConfigurationComponent.cdr.detectChanges();
+    // this.admin.scrollableEnabled = false;
+    // this.firedevAdminModeConfigurationComponent.cdr.detectChanges();
   }
 
   constructor(private cdr: ApplicationRef) {
