@@ -1,9 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, ElementRef, HostBinding, Input, OnInit, Self } from '@angular/core';
+import { ChangeDetectorRef, Component, DestroyRef, ElementRef, HostBinding, Input, OnInit, Self, inject } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PasswordModule } from 'primeng/password';
 import { Stor } from 'firedev-storage/src'
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { interval, take, tap } from 'rxjs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 export interface FiredevSessionPasscodeModel {
   passcode: string;
@@ -29,7 +31,7 @@ export type FiredevSessionPasscodeForm = {
   ]
 })
 export class FiredevSessionPasscodeComponent implements OnInit {
-
+  destroyRef = inject(DestroyRef)
   // @HostBinding('style.width.px') public width: number;
   // @HostBinding('style.height.px') public height: number;
   @Input() public passcode: string;
@@ -73,6 +75,13 @@ export class FiredevSessionPasscodeComponent implements OnInit {
       this.show();
       this.focus();
     }
+
+    interval(1000).pipe(
+      takeUntilDestroyed(this.destroyRef),
+      tap(() => {
+        this.focus();
+      })
+    ).subscribe();
   }
 
   submit({ passcode }: Partial<FiredevSessionPasscodeModel>) {
