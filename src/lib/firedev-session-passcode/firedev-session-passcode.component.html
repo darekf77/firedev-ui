@@ -3,18 +3,19 @@
       autocomplete="off"
       (click)="focus()"
       (ngSubmit)="submit(form.value)"
-      class="flex flex-column align-items-start w-full h-full">
+      class="flex flex-column align-items-center w-full h-full">
 
   <div class="flex align-content-center w-full justify-content-center  mt-8">
-    <p class="shadow-4 p-3"
+    <p class="p-3"
        style="max-width: 400px; min-height: 100px;"
        [innerHtml]="safeMessage">
     </p>
   </div>
   <input type="password"
-         class="text-5xl md:text-8xl pt-5 pointer-events-none"
+         class="text-5xl md:text-8xl pointer-events-none"
          #firedevpasscode
          (keyup)="onKeyup($event)"
-         placeholder="Enter passcode"
+
          formControlName="passcode">
+         <!-- placeholder="Enter passcode" -->
 </form>
