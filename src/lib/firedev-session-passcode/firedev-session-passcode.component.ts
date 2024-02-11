@@ -60,11 +60,11 @@ export class FiredevSessionPasscodeComponent implements OnInit {
 
       `
     }
-    console.log({
-      'lastPasscode': this.lastPasscode,
-      'current passcode': this.passcode,
-      'current message': this.message,
-    })
+    // console.log({
+    //   'lastPasscode': this.lastPasscode,
+    //   'current passcode': this.passcode,
+    //   'current message': this.message,
+    // })
     // this.width = window.innerWidth;
     // this.height = window.innerHeight;
     this.safeMessage = this.domSanitizer.bypassSecurityTrustHtml(this.message);

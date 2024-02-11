@@ -226,10 +226,10 @@ export class FiredevBinaryFileController extends Firedev.Base.Controller<Firedev
       return;
     }
 
-    console.log('getting asset start')
+    // console.log('getting asset start')
     const assets = await this.backend.getAssets();
-    console.log(`getting asset done, length = ${assets.length}`)
-    console.log('saving asset start')
+    // console.log(`getting asset done, length = ${assets.length}`)
+    // console.log('saving asset start')
     const filesToSave = [];
     for (let index = 0; index < assets.length; index++) {
       const src = assets[index];
@@ -242,7 +242,7 @@ export class FiredevBinaryFileController extends Firedev.Base.Controller<Firedev
       filesToSave.push(file);
     }
     await repo.save(filesToSave);
-    console.log('saving asset done')
+    // console.log('saving asset done')
     //#endregion
 
   }
