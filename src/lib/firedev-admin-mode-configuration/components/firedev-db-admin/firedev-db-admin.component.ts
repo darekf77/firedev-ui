@@ -25,14 +25,18 @@ import { FiredevTableModule } from '../../../firedev-table/firedev-table.module'
   standalone: true,
 })
 export class FiredevDbAdminComponent implements OnInit {
-
+  public dataBaseInited: boolean = false;
   public tables: FiredevDbEntity[] = [];
   async ngOnInit() {
-    const data = await FiredevBinaryFile.ctrl.getAllEntities().received;
-    this.tables = data.body.json;
+
   }
 
   public trackByName(a: FiredevDbEntity) {
     return a.name;
+  }
+
+  async initDb() {
+    const data = await FiredevBinaryFile.ctrl.getAllEntities().received;
+    this.tables = data.body.json;
   }
 }
