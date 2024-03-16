@@ -68,7 +68,7 @@ export class FiredevBinaryFileBackend {
   private constructor(private ctrl: FiredevBinaryFileController) {
     //#region @backend
 
-    this.project = Project.nearestTo(process.cwd()) as Project;
+    this.project = Project.ins.nearestTo(process.cwd()) as Project;
     console.log({
       'CWD': process.cwd(),
       nearestTo: this.project.genericName
