@@ -1,8 +1,8 @@
 //#region imports
 import { Firedev } from 'firedev';
-import { ConfigModels } from 'tnp-config';
+import { CoreModels } from 'tnp-core';
 import { FiredevBinaryFile } from './firedev-binary-file';
-import { Helpers, Utils, _, crossPlatformPath, mimeTypes, path } from 'tnp-core';
+import { Helpers, Utils, _, crossPlatformPath, path } from 'tnp-core';
 import {
   randUserName,
   randAddress,
@@ -283,7 +283,7 @@ export class FiredevBinaryFileController extends Firedev.Base.Controller<Firedev
         // sparate browser and backend path
         const restoreFileFromFileSystem = await this.backend.getFileNodejs(relativePathOnServer);
         let blob = await Utils.binary.bufferToBlob(restoreFileFromFileSystem);
-        blob = blob.slice(0, blob.size, mimeTypes[path.extname(relativePathOnServer)])
+        blob = blob.slice(0, blob.size, CoreModels.mimeTypes[path.extname(relativePathOnServer)])
         return blob;
         // return restoreFileFromFileSystem as any;
       }
@@ -321,7 +321,7 @@ export class FiredevBinaryFileController extends Firedev.Base.Controller<Firedev
         res.status(400).send('No files were uploaded.');
         return;
       }
-      const files = _.values(req['files']) as ConfigModels.UploadedBackendFile[];
+      const files = _.values(req['files']) as CoreModels.UploadedBackendFile[];
       await this.backend.saveFileNodejs(_.first(files), relativePathOnServer)
       //#endregion
 
@@ -392,7 +392,7 @@ export class FiredevBinaryFileController extends Firedev.Base.Controller<Firedev
         const table = tables[index];
         table.columns = (await this.connection.query(`
         SELECT c.name FROM pragma_table_info('${table.name}') c;
-        `)).map( c => c.name );
+        `)).map(c => c.name);
       }
 
 

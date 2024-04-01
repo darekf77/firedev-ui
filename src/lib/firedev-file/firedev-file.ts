@@ -1,6 +1,6 @@
 //#region imports
 import { Firedev } from 'firedev';
-import { path, _, Utils, Files, ContentType } from 'tnp-core';
+import { path, _, Utils, CoreModels } from 'tnp-core';
 import { Helpers } from 'tnp-helpers';
 import type { FiredevFileController } from './firedev-file.controller';
 import { FiredevFileDefaultAs, IFiredevFileType } from './firedev-file.models';
@@ -143,7 +143,7 @@ export class FiredevFile extends Firedev.Base.Entity<any> {
 
     const isExt = extensionOrContentType.startsWith('.');
     if (isExt) {
-      const contentType = Files.MimeTypesObj[extensionOrContentType];
+      const contentType = CoreModels.MimeTypesObj[extensionOrContentType];
       return contentType?.startsWith(`${isWhat}`);
     }
     return extensionOrContentType.startsWith(`${isWhat}`);
@@ -220,7 +220,7 @@ export class FiredevFile extends Firedev.Base.Entity<any> {
     default: null,
   })
   //#endregion
-  contentType: ContentType;
+  contentType: CoreModels.ContentType;
   //#endregion
 
   //#region fields & getters / version
@@ -353,8 +353,8 @@ export class FiredevFile extends Firedev.Base.Entity<any> {
   //#endregion
 
   //#region methods / get content type
-  getContentType(): ContentType {
-    return Files.MimeTypesObj[this.ext] as ContentType;
+  getContentType(): CoreModels.ContentType {
+    return CoreModels.MimeTypesObj[this.ext] as CoreModels.ContentType;
   }
   //#endregion
 

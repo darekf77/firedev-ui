@@ -1,4 +1,4 @@
-import { ContentType } from 'tnp-core';
+import { CoreModels } from 'tnp-core';
 
 // export type FiredevModeSimple = 'view' | 'edit' | 'add';
 
@@ -10,7 +10,7 @@ export interface FiredevUploadedFile {
   data: Buffer
   encoding: string;
   md5: string;
-  mimetype: ContentType;
+  mimetype: CoreModels. ContentType;
   mv: (path, callback) => any;
   name: string;
   truncated: boolean;

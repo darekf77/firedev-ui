@@ -1,7 +1,7 @@
 import { Component, EventEmitter, HostBinding, Inject, Input, OnInit, Output } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { CommonModule } from '@angular/common';
-import { Helpers, MediaType, Utils, _, mimeTypes, path } from 'tnp-core';
+import { Helpers, Utils, _, CoreModels, path } from 'tnp-core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FiredevCmsEditDialogData } from '../firedev-cms.models';
 import { FiredevBinaryFile, FiredevFullMaterialModule } from 'firedev-ui';
@@ -38,7 +38,7 @@ export class FiredevCmsEditComponent implements OnInit {
   public text: string;
   public mode: ViewMode;
   public readonly originalMode: ViewMode;
-  public readonly mediaType: MediaType;
+  public readonly mediaType: CoreModels.MediaType;
 
   public get filePath() {
     return this.data.entity?.src;

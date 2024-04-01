@@ -62,12 +62,12 @@ export class FiredevFileBackend {
 
       //#region @backend
       if (Helpers.isNode) {
-        const proj = Project.From(process.cwd()) as Project;  // TODO
+        const proj = Project.ins.From(process.cwd()) as Project;  // TODO
         // '/assets/assets-for/firedev-ui/cutsmall.jpg'
         let relativeFilePath = file.src.replace(`/assets-for/${proj.name}/`, '/');
-        if (proj.isSmartContainerTarget) {
+        if (proj.__isSmartContainerTarget) {
 
-        } else if (proj.isStandaloneProject) {
+        } else if (proj.__isStandaloneProject) {
           const absFilePath = `${proj.location}/src${relativeFilePath}`;
           const buffer = fse.readFileSync(absFilePath).buffer;
           file.blob = await Utils.binary.arrayBufferToBlob(buffer, 'text/plain',)
@@ -113,7 +113,7 @@ export class FiredevFileBackend {
 
     //#region @backend
     if (Helpers.isNode) {
-      const proj = Project.From(process.cwd()) as Project;  // TODO
+      const proj = Project.ins.From(process.cwd()) as Project;  // TODO
       const assetsList = Helpers.readJson(proj.pathFor(`tmp-apps-for-dist/${proj.name}/src/assets/assets-list.json`)) as string[];
 
       // console.log({ proj, env: global['ENV'], assetsList })

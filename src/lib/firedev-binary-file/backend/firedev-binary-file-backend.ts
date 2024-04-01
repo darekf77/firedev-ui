@@ -3,7 +3,8 @@ import { Utils, crossPlatformPath, _, Helpers, path } from 'tnp-core';
 import { FiredevBinaryFile } from '../firedev-binary-file';
 import type { FiredevBinaryFileController } from '../firedev-binary-file.controller';
 import { Project } from 'tnp';
-import { ConfigModels, config } from 'tnp-config';
+import { config } from 'tnp-config';
+import { CoreModels } from 'tnp-core';
 import axios from 'axios';
 //#region @browser
 import * as localForge from 'localforage';
@@ -101,7 +102,7 @@ export class FiredevBinaryFileBackend {
 
   //#region public methods / save file in nodejs
   //#region @backend
-  async saveFileNodejs(data: ConfigModels.UploadedBackendFile | Buffer | string | Blob, relativePath: string): Promise<void> {
+  async saveFileNodejs(data: CoreModels.UploadedBackendFile | Buffer | string | Blob, relativePath: string): Promise<void> {
     const destinationFilePath = crossPlatformPath([this.assetsPath, relativePath]);
     console.log('UPLOADING FILE', {
       destinationFilePath, data
