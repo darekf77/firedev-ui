@@ -6,11 +6,11 @@ import { _ } from 'tnp-core';
 import axios from 'axios'
 import { NgProgressConfig, NgProgressModule, NgProgressRef } from 'ngx-progressbar';
 import { Morphi } from 'morphi';
-import { Models } from 'tnp-models';
+// import { Models } from 'tnp-models';
 import type { FiredevAdmin } from '../firedev-admin-mode-configuration';
 
 const calculatePercentage = (loaded, total) => (Math.floor(loaded * 1.0) / total)
-declare const ENV: Models.env.EnvConfig;
+declare const ENV: any;
 
 @Component({
   selector: 'firedev-progress-bar',
