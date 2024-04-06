@@ -93,5 +93,5 @@ try {
 }
 }
 
-export default startElectron;
+startElectron();
 //#endregion  

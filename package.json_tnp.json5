@@ -29,6 +29,7 @@
     'cliBuildNoDts': false,
     'cliBuildObscure': false,
     'cliBuildIncludeNodeModules': false,
+    'cliBuildUglify': false,
   },
   "version": "v4",
   "type": "isomorphic-lib"
