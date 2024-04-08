@@ -18,22 +18,6 @@
       ]
     },
     {
-      "name": "Debugger with ng serve",
-      "type": "chrome",
-      "request": "launch",
-      "preLaunchTask": "Ng Serve",
-      "postDebugTask": "terminateall",
-      "sourceMaps": true,
-      "webRoot": "${workspaceFolder}",
-      "sourceMapPathOverrides": {
-        "webpack:/*": "${webRoot}/*",
-        "/./*": "${webRoot}/*",
-        "/tmp-src/*": "${webRoot}/*",
-        "/*": "*",
-        "/./~/*": "${webRoot}/node_modules/*"
-      }
-    },
-    {
       "name": "Start electron app debug",
       "type": "node",
       "request": "launch",
@@ -44,7 +28,7 @@
       "runtimeArgs": [
         "--serve",
         ".",
-        "--remote-debugging-port=9876"
+        "--remote-debugging-port=9880"
       ],
       "windows": {
         "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron.cmd"
@@ -62,10 +46,9 @@
   ],
   "compounds": [
     {
-      "name": "Debug backend/frontend",
+      "name": "Debug Server + Electron App",
       "configurations": [
         "Launch Server standalone",
-        "Debugger with ng serve",
         "Start electron app debug"
       ]
     }
