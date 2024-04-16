@@ -4,7 +4,7 @@ import { fse } from 'tnp-core';
 //#endregion
 import { Utils } from 'tnp-core';
 import axios from 'axios';
-import { Project } from 'firedev';
+import { Project } from 'tnp';
 import { _ } from 'tnp-core';
 import { Helpers } from 'tnp-helpers';
 import { FiredevFile } from '../firedev-file';

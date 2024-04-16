@@ -1,5 +1,6 @@
 //#region imports
-import { Firedev, Project } from 'firedev';
+import { Firedev } from 'firedev';
+import { Project } from 'tnp';
 import { Repository } from 'firedev-typeorm'; // must be
 import { FiredevFile } from './firedev-file';
 import { crossPlatformPath, path, _, Utils } from 'tnp-core';
