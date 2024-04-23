@@ -96,7 +96,7 @@ async function start() {
       // PUT FIREDEV CONTORLLERS HERE
     ],
     entities: [
-      Css,
+      // Css,
       // PUT FIREDEV ENTITIES HERE
     ],
     disabledRealtime: true,
@@ -112,13 +112,13 @@ async function start() {
 
 
   //#region @backend
-  console.log('process.cwd()', process.cwd())
+  // console.log('process.cwd()', process.cwd())
 
-  if (Firedev.isNode) {
-    context.node.app.get('/hello', (req, res) => {
-      res.send('Hello firedev-ui')
-    })
-  }
+  // if (Firedev.isNode) {
+  //   context.node.app.get('/hello', (req, res) => {
+  //     res.send('Hello firedev-ui')
+  //   })
+  // }
   //#endregion
 }
 //#endregion

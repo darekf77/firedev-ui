@@ -1,7 +1,7 @@
 //#region imports
 import { Component, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { MediaType, Utils, _, mimeTypes, path } from 'tnp-core';
+import { CoreModels, Utils, _, path } from 'tnp-core';
 import { FiredevBinaryFile } from 'firedev-ui';
 import { FiredevBinaryFile as FiredevBinaryFile2 } from 'firedev-ui';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -34,8 +34,8 @@ export class PreviewBinaryComponent {
   //   return data.body.json;
   // }))
 
-  is(type: MediaType) {
-    return (mimeTypes[path.extname(this.filename)] as string)?.startsWith(type);
+  is(type: CoreModels.MediaType) {
+    return (CoreModels.mimeTypes[path.extname(this.filename)] as string)?.startsWith(type);
   }
 
   myId: number;
