@@ -48,7 +48,7 @@ export class FiredevFormlyFormComponent implements OnInit, AfterViewInit {
   @Input() include: string[];
   @Input() fieldsOrder: string[];
   @Input() mode: 'update' | 'create' = 'update';
-  @Input() crud: Firedev.CRUD.Base<any>;
+  @Input() crud: Firedev.Base.CrudController<any>;
   @Input() form = new FormGroup({});
   @Input() formGroup: FormGroup;
   @Input() showButtons = true;
@@ -135,45 +135,46 @@ export class FiredevFormlyFormComponent implements OnInit, AfterViewInit {
   }
 
   private resolveFields() {
-    let fieldsFromEntity = _.isFunction(this.entity) ? Firedev.Formly.getFrom(this.entity) : [];
-    log.i(`fields from entity : ${this.entity && this.entity.name}`, fieldsFromEntity);
+    // TODO @LAST @UNCOMMENT @IMPORTANT
+    // let fieldsFromEntity = _.isFunction(this.entity) ? Firedev.Formly.getFrom(this.entity) : [];
+    // log.i(`fields from entity : ${this.entity && this.entity.name}`, fieldsFromEntity);
 
-    if (_.isFunction(this.entity) && !fieldsFromEntity) {
-      this.waringAboutDecorator();
-    }
+    // if (_.isFunction(this.entity) && !fieldsFromEntity) {
+    //   this.waringAboutDecorator();
+    // }
 
-    if (_.isArray(this.fields)) {
-      log.i('field from input', this.fields);
+    // if (_.isArray(this.fields)) {
+    //   log.i('field from input', this.fields);
 
-      if (_.isArray(fieldsFromEntity)) {
-        const keys = fieldsFromEntity.map(c => c.key);
+    //   if (_.isArray(fieldsFromEntity)) {
+    //     const keys = fieldsFromEntity.map(c => c.key);
 
-        fieldsFromEntity = fieldsFromEntity.map(field => {
-          return _.merge(field, this.fields.find(f => f.key === field.key));
-        });
-        fieldsFromEntity = fieldsFromEntity
-          .concat(this.fields.filter(field => !keys.includes(field.key)) as any);
-        // log.i('field affer contact', fields);
-      }
+    //     fieldsFromEntity = fieldsFromEntity.map(field => {
+    //       return _.merge(field, this.fields.find(f => f.key === field.key));
+    //     });
+    //     fieldsFromEntity = fieldsFromEntity
+    //       .concat(this.fields.filter(field => !keys.includes(field.key)) as any);
+    //     // log.i('field affer contact', fields);
+    //   }
 
-    }
-    if (!_.isArray(fieldsFromEntity)) {
-      fieldsFromEntity = this.fields as any;
-    }
+    // }
+    // if (!_.isArray(fieldsFromEntity)) {
+    //   fieldsFromEntity = this.fields as any;
+    // }
 
-    fieldsFromEntity = fieldsFromEntity.filter(({ key }) => {
-      if (_.isArray(this.exclude)) {
-        return !(key && this.exclude.includes(key as any));
-      }
-      if (_.isArray(this.include)) {
-        return (key && this.include.includes(key as any));
-      }
-      return true;
-    });
-    // log.i('fields filter', fields);
+    // fieldsFromEntity = fieldsFromEntity.filter(({ key }) => {
+    //   if (_.isArray(this.exclude)) {
+    //     return !(key && this.exclude.includes(key as any));
+    //   }
+    //   if (_.isArray(this.include)) {
+    //     return (key && this.include.includes(key as any));
+    //   }
+    //   return true;
+    // });
+    // // log.i('fields filter', fields);
 
-    this.formly.fields = fieldsFromEntity as any;
-    // log.i('FORMLY FIELDS', this.formly.fields);
+    // this.formly.fields = fieldsFromEntity as any;
+    // // log.i('FORMLY FIELDS', this.formly.fields);
   }
 
 

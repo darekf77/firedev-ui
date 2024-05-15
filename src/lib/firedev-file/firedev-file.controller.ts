@@ -25,12 +25,13 @@ declare const ENV: any;
 @Firedev.Controller({
   //#region controller config
   className: 'FiredevFileController',
-  entity: FiredevFile
   //#endregion
 })
-export class FiredevFileController extends Firedev.Base.Controller<FiredevFile> {
+export class FiredevFileController extends Firedev.Base.CrudController<FiredevFile> {
   //#region fields
-  entity: typeof FiredevFile;
+  entity() {
+    return FiredevFile
+  }
   //#region @websql
   readonly backend = FiredevFileBackend.for(this);
   //#endregion

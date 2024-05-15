@@ -28,7 +28,7 @@ import {
   //#endregion,
   defaultModelValues
 })
-export class FiredevFileCss extends Firedev.Base.Entity<any> {
+export class FiredevFileCss extends Firedev.Base.Entity {
 
   //#region static
   static ctrl: FiredevFileCssController;

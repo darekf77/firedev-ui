@@ -35,12 +35,13 @@ declare const ENV: any;
 @Firedev.Controller({
   //#region controller options
   className: 'FiredevBinaryFileController',
-  entity: FiredevBinaryFile,
   //#endregion
 })
-export class FiredevBinaryFileController extends Firedev.Base.Controller<FiredevBinaryFile> {
+export class FiredevBinaryFileController extends Firedev.Base.CrudController<FiredevBinaryFile> {
   //#region fields
-  entity: typeof FiredevBinaryFile;
+  entity() {
+    return FiredevBinaryFile
+  };
   //#region @websql
   readonly backend = FiredevBinaryFileBackend.for(this);
   //#endregion

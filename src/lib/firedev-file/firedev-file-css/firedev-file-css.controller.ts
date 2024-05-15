@@ -18,10 +18,11 @@ import { FiredevFileCssBackend } from './firedev-file-css-backend';
  */
 @Firedev.Controller({
   className: 'FiredevFileCssController',
-  entity: FiredevFileCss,
 })
-export class FiredevFileCssController extends Firedev.Base.Controller<any> {
-  entity: typeof FiredevFileCss;
+export class FiredevFileCssController extends Firedev.Base.CrudController<any> {
+  entity() {
+    return FiredevFileCss;
+  };
   //#region @websql
   readonly backend = FiredevFileCssBackend.for(this);
   //#endregion

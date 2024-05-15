@@ -171,38 +171,39 @@ export class FiredevTableComponent {
 
   //#region methods / retrive data
   async retriveData() { // @ts-ignore
-    if (!this.entity) {
-      return;
-    }
-    this.isLoading = true;
-    // console.log('PAGINTION FETCH DATA START!')
-    const controller = ((this.entity as any).ctrl as Firedev.CRUD.Base<any>);
-    if (controller) {
-      const data = await controller.pagination(this.pageNumber, this.pageSize).received;
-      // console.log('PAGINTION DATA', {
-      //   data,
-      // })
-      const totalElements = Number(data.headers.get(Morphi.SYMBOL.X_TOTAL_COUNT));
-      const rows = data.body.json;
-      // console.log('PAGINTION DATA', {
-      //   rows,
-      //   totalElements,
-      // })
-      this.totalElements = totalElements;
-      this.rows = rows.map(d => {
-        for (const key in d) {
-          if (Object.prototype.hasOwnProperty.call(d, key)) {
-            const elem = d[key];
-            if (_.isObject(elem)) {
-              d[key] = json5.stringify(d[key]);
-            }
-          }
-        }
-        // console.log({ d })
-        return d;
-      })
-    }
-    this.isLoading = false;
+    // TODO @LAST
+    // if (!this.entity) {
+    //   return;
+    // }
+    // this.isLoading = true;
+    // // console.log('PAGINTION FETCH DATA START!')
+    // const controller = ((this.entity as any).ctrl as Firedev.CRUD.Base<any>);
+    // if (controller) {
+    //   const data = await controller.pagination(this.pageNumber, this.pageSize).received;
+    //   // console.log('PAGINTION DATA', {
+    //   //   data,
+    //   // })
+    //   const totalElements = Number(data.headers.get(Morphi.SYMBOL.X_TOTAL_COUNT));
+    //   const rows = data.body.json;
+    //   // console.log('PAGINTION DATA', {
+    //   //   rows,
+    //   //   totalElements,
+    //   // })
+    //   this.totalElements = totalElements;
+    //   this.rows = rows.map(d => {
+    //     for (const key in d) {
+    //       if (Object.prototype.hasOwnProperty.call(d, key)) {
+    //         const elem = d[key];
+    //         if (_.isObject(elem)) {
+    //           d[key] = json5.stringify(d[key]);
+    //         }
+    //       }
+    //     }
+    //     // console.log({ d })
+    //     return d;
+    //   })
+    // }
+    // this.isLoading = false;
   }
   //#endregion
 

@@ -27,7 +27,7 @@ import { Blob } from 'buffer';
   },
   //#endregion
 })
-export class FiredevFile extends Firedev.Base.Entity<any> {
+export class FiredevFile extends Firedev.Base.Entity {
 
   //#region static
 

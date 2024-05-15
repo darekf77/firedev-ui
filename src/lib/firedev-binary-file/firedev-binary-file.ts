@@ -26,7 +26,7 @@ import { Blob } from 'buffer';
   defaultModelValues,
   //#endregion
 })
-export class FiredevBinaryFile<T = Utils.DbBinaryFormat> extends Firedev.Base.Entity<any> {
+export class FiredevBinaryFile<T = Utils.DbBinaryFormat> extends Firedev.Base.Entity {
   //#region static
   static ctrl: FiredevBinaryFileController;
   static from(obj: Omit<Partial<FiredevBinaryFile>, FiredevBinaryFileNonColumnsKeys>) {

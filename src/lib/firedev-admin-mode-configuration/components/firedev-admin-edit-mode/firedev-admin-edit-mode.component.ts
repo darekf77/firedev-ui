@@ -1,7 +1,7 @@
 //#region @browser
 //#region imports
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { delay, Subject, Subscription, takeUntil, tap } from 'rxjs';
+import { delay, of, Subject, Subscription, takeUntil, tap } from 'rxjs';
 import { FiredevFile } from '../../../firedev-file';
 import { FiredevAdmin } from '../../firedev-admin';
 import { Router } from '@angular/router';
@@ -26,7 +26,8 @@ import { MtxGridColumn } from '@ng-matero/extensions/grid';
 export class FiredevAdminEditModeComponent implements OnInit {
 
   //#region fields & getters
-  inited$ = Firedev.anyContextLoaded();
+  // inited$ = Firedev.anyContextLoaded();
+  inited$ = of(true)
   private destroyed$ = new Subject()
   admin = (window['firedev'] as FiredevAdmin);
   handlers: Subscription[] = [];
