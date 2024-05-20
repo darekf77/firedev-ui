@@ -1,5 +1,5 @@
 {
-  "resources": ['README.md','logo.png'],
+  "resources": ["README.md","logo.png"],
   "overrided": {
     "linkedFolders": [],
     "ignoreDepsPattern": [
@@ -7,11 +7,11 @@
     ],
     "includeAsDev": [],
     "includeOnly": [
-      'static-columns',
-      'firedev'
+      "static-columns",
+      "firedev"
     ],
     "dependencies": {},
-    'npmFixes': [],
+    "npmFixes": [],
   },
   "smartContainerBuildTarget": "",
   "linkedRepos": [],
@@ -20,10 +20,10 @@
     "obscure": false,
     "ugly": false,
     "includeNodeModules": false,
-    'cliBuildNoDts': false,
-    'cliBuildObscure': false,
-    'cliBuildIncludeNodeModules': false,
-    'cliBuildUglify': false,
+    "cliBuildNoDts": false,
+    "cliBuildObscure": false,
+    "cliBuildIncludeNodeModules": false,
+    "cliBuildUglify": false,
   },
   "version": "v4",
   "type": "isomorphic-lib",
