@@ -1,7 +1,6 @@
 //#region imports
 import { Component, OnInit, Input, Output, TemplateRef, EventEmitter, ViewChild, ElementRef } from '@angular/core';
 import * as _ from 'lodash';
-import { Morphi } from 'morphi';
 import { Log, Level } from 'ng2-logger';
 import { Firedev } from 'firedev';
 import { CLASS } from 'typescript-class-helpers';

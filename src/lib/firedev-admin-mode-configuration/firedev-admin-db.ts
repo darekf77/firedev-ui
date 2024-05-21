@@ -1,11 +1,13 @@
 //#region @browser
-import { FrameworkContext } from 'morphi';
+// import { FrameworkContext } from 'firedev';
 
 
 export class FiredevAdminDB {
 
-  private registeredContexts = {} as { [host: string]: FrameworkContext; }
-  register(context: FrameworkContext) {
+  private registeredContexts = {} as {
+    [host: string]: any; // FrameworkContext;
+  }
+  register(context: any) {
     this.registeredContexts[context.host] = context;
   }
 

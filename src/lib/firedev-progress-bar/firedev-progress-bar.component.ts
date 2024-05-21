@@ -5,7 +5,7 @@ import { _ } from 'tnp-core';
 
 import axios from 'axios'
 import { NgProgressConfig, NgProgressModule, NgProgressRef } from 'ngx-progressbar';
-import { Morphi } from 'morphi';
+import { Firedev } from 'firedev';
 // import { Models } from 'tnp-models';
 import type { FiredevAdmin } from '../firedev-admin-mode-configuration';
 
@@ -106,7 +106,7 @@ export class FiredevProgressBarComponent implements OnInit {
     setupStopProgress()
 
     //#region @websqlOnly
-    const SYMBOL = Morphi.symbols;
+    const SYMBOL = Firedev.symbols;
     let updateFun: Observable<number> = window[SYMBOL.WEBSQL_REST_PROGRESS_FUN];
     if (!window[SYMBOL.WEBSQL_REST_PROGRESS_FUN]) {
       window[SYMBOL.WEBSQL_REST_PROGRESS_FUN] = new Subject();
