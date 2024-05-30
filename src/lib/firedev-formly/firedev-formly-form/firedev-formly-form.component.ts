@@ -2,9 +2,16 @@
 
 //#region imports
 import {
-  Component, OnInit, Input, Output, EventEmitter, ViewChild,
-  TemplateRef, ComponentFactoryResolver, ViewContainerRef,
-  AfterViewInit
+  Component,
+  OnInit,
+  Input,
+  Output,
+  EventEmitter,
+  ViewChild,
+  TemplateRef,
+  ComponentFactoryResolver,
+  ViewContainerRef,
+  AfterViewInit,
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -13,11 +20,8 @@ import { _ } from 'tnp-core';
 import { Log, Level } from 'ng2-logger';
 import { CLASS } from 'typescript-class-helpers';
 import { Firedev } from 'firedev';
-const log = Log.create('form warpper material component',
-  Level.__NOTHING
-);
+const log = Log.create('form warpper material component', Level.__NOTHING);
 //#endregion
-
 
 @Component({
   //#region component options
@@ -27,12 +31,11 @@ const log = Log.create('form warpper material component',
   //#endregion
 })
 export class FiredevFormlyFormComponent implements OnInit, AfterViewInit {
-
   //#region fields & getters
   formly = {
-    form: (void 0) as FormGroup,
+    form: void 0 as FormGroup,
     options: void 0 as FormlyFormOptions,
-    fields: void 0 as FormlyFieldConfig[]
+    fields: void 0 as FormlyFieldConfig[],
   };
   private backupModel = {};
   private __model = {};
@@ -41,7 +44,8 @@ export class FiredevFormlyFormComponent implements OnInit, AfterViewInit {
   public ftype: { component: Function; entity?: Function; name: string };
 
   @ViewChild('templateDelete') templateDelete: TemplateRef<any>;
-  @ViewChild('entitycomponent', { read: ViewContainerRef }) entitycomponent: ViewContainerRef;
+  @ViewChild('entitycomponent', { read: ViewContainerRef })
+  entitycomponent: ViewContainerRef;
   @Input() id: number;
   @Input() modelDataConfig: any;
   @Input() exclude: string[];
@@ -74,13 +78,13 @@ export class FiredevFormlyFormComponent implements OnInit, AfterViewInit {
   //#region constructor
   constructor(
     private dialog: MatDialog,
-    private viewContainerRef: ViewContainerRef,
-  ) { }
+    private viewContainerRef: ViewContainerRef
+  ) {}
   //#endregion
 
   //#region hooks
   async ngOnInit() {
-    log.i('[formwarpper] this.fields before anyting from input', this.fields)
+    log.i('[formwarpper] this.fields before anyting from input', this.fields);
 
     // console.log('model', this.model);
     // log.i(`CRUD`, this.crud);
@@ -89,15 +93,15 @@ export class FiredevFormlyFormComponent implements OnInit, AfterViewInit {
     }
     if (!this.entity && _.isObject(this.model)) {
       const ob = _.isArray(this.model) ? _.first(this.model) : this.model;
-      this.entity = CLASS.getFromObject(ob)
+      this.entity = CLASS.getFromObject(ob);
     }
-    log.i('[formwarpper] this.fields before resolve from input', this.fields)
+    log.i('[formwarpper] this.fields before resolve from input', this.fields);
     this.resolveFields();
 
     this.formly.options = this.options;
     this.formly.form = this.formGroup ? this.formGroup : this.form;
 
-    if ((!_.isUndefined(this.id))) {
+    if (!_.isUndefined(this.id)) {
       const m = await this.crud.getBy(this.id).received;
       this.model = m.body.json;
     }
@@ -111,13 +115,13 @@ export class FiredevFormlyFormComponent implements OnInit, AfterViewInit {
       setTimeout(() => {
         this.entitycomponent.clear();
         // const factory = this.viewContainerRef.resolveComponentFactory(this.ftype.component as any);
-        const componentRef = this.viewContainerRef.createComponent(this.ftype.component as any);
+        const componentRef = this.viewContainerRef.createComponent(
+          this.ftype.component as any
+        );
         (componentRef.instance as any).model = this.model;
       });
     }
-
   }
-
 
   //#endregion
 
@@ -138,17 +142,13 @@ export class FiredevFormlyFormComponent implements OnInit, AfterViewInit {
     // TODO @LAST @UNCOMMENT @IMPORTANT
     // let fieldsFromEntity = _.isFunction(this.entity) ? Firedev.Formly.getFrom(this.entity) : [];
     // log.i(`fields from entity : ${this.entity && this.entity.name}`, fieldsFromEntity);
-
     // if (_.isFunction(this.entity) && !fieldsFromEntity) {
     //   this.waringAboutDecorator();
     // }
-
     // if (_.isArray(this.fields)) {
     //   log.i('field from input', this.fields);
-
     //   if (_.isArray(fieldsFromEntity)) {
     //     const keys = fieldsFromEntity.map(c => c.key);
-
     //     fieldsFromEntity = fieldsFromEntity.map(field => {
     //       return _.merge(field, this.fields.find(f => f.key === field.key));
     //     });
@@ -156,12 +156,10 @@ export class FiredevFormlyFormComponent implements OnInit, AfterViewInit {
     //       .concat(this.fields.filter(field => !keys.includes(field.key)) as any);
     //     // log.i('field affer contact', fields);
     //   }
-
     // }
     // if (!_.isArray(fieldsFromEntity)) {
     //   fieldsFromEntity = this.fields as any;
     // }
-
     // fieldsFromEntity = fieldsFromEntity.filter(({ key }) => {
     //   if (_.isArray(this.exclude)) {
     //     return !(key && this.exclude.includes(key as any));
@@ -172,15 +170,11 @@ export class FiredevFormlyFormComponent implements OnInit, AfterViewInit {
     //   return true;
     // });
     // // log.i('fields filter', fields);
-
     // this.formly.fields = fieldsFromEntity as any;
     // // log.i('FORMLY FIELDS', this.formly.fields);
   }
 
-
-
   private createOrder() {
-
     if (!this.fieldsOrder) {
       this.fieldsOrder = [];
     }
@@ -192,20 +186,21 @@ export class FiredevFormlyFormComponent implements OnInit, AfterViewInit {
 
     if (this.fieldsOrder.length > 0) {
       this.fieldsOrder.forEach(orderKey => {
-        const f = this.formly.fields.find(({ key, id }) => (key === orderKey || id === orderKey));
+        const f = this.formly.fields.find(
+          ({ key, id }) => key === orderKey || id === orderKey
+        );
         if (f) {
           fieldsNewOrder.push(f);
         }
       });
-      this.formly.fields = fieldsNewOrder.concat(this.formly.fields.filter(f => !fieldsNewOrder.includes(f)));
+      this.formly.fields = fieldsNewOrder.concat(
+        this.formly.fields.filter(f => !fieldsNewOrder.includes(f))
+      );
       // log.i('new Order', this.formly.fields.map(f => f.key).join(','));
     }
   }
 
-
-
   async ngSubmit(model) {
-
     const { id } = model;
     let resultModel = model;
     log.i('submit model', model);
@@ -232,7 +227,6 @@ export class FiredevFormlyFormComponent implements OnInit, AfterViewInit {
           this.submit.error(e);
         }
       }
-
     } else if (this.crud) {
       this.submit.next(model);
     }
@@ -248,7 +242,7 @@ export class FiredevFormlyFormComponent implements OnInit, AfterViewInit {
     this.id_toDelete = id;
     // @ts-ignore
     this.dialogRefDelete = this.dialog.open(this.templateDelete);
-    this.dialogRefDelete.afterClosed().subscribe((result) => {
+    this.dialogRefDelete.afterClosed().subscribe(result => {
       log.i(`dialog result: ${result} `);
       if (result) {
         this.complete.next();
@@ -265,7 +259,6 @@ export class FiredevFormlyFormComponent implements OnInit, AfterViewInit {
     this.backupModel = _.cloneDeep(this.model);
   }
   //#endregion
-
 }
 
 //#endregion

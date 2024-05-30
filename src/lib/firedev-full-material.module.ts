@@ -85,7 +85,7 @@ import { MatTreeModule } from '@angular/material/tree';
     MatTooltipModule,
     MatTreeModule,
     ScrollingModule,
-  ]
+  ],
 })
-export class FiredevFullMaterialModule { }
+export class FiredevFullMaterialModule {}
 //#endregion

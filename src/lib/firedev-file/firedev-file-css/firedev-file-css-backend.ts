@@ -9,11 +9,13 @@ import type { FiredevFileCssController } from './firedev-file-css.controller';
  */
 export class FiredevFileCssBackend {
   //#region initialization
-  public static for(ctrl: FiredevFileCssController) { return new FiredevFileCssBackend(ctrl); }
+  public static for(ctrl: FiredevFileCssController) {
+    return new FiredevFileCssBackend(ctrl);
+  }
   private get repo() {
     return this.ctrl.repository;
   }
-  private constructor(private ctrl: FiredevFileCssController) { }
+  private constructor(private ctrl: FiredevFileCssController) {}
   //#endregion
 
   async countEntities() {
@@ -21,9 +23,7 @@ export class FiredevFileCssBackend {
   }
 
   async initExampleDbData() {
-
     // await this.repo.save(FiredevFileCss.from({ description: 'hello world' }))
     // const all = await this.repo.find()
   }
-
 }

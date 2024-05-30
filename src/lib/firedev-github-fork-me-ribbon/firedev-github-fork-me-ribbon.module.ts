@@ -4,11 +4,9 @@ import { CommonModule } from '@angular/common';
 import { FiredevGithubForkMeRibbonComponent } from './firedev-github-fork-me-ribbon.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-  ],
+  imports: [CommonModule],
   declarations: [FiredevGithubForkMeRibbonComponent],
   exports: [FiredevGithubForkMeRibbonComponent],
 })
-export class FiredevGithubForkMeRibbonModule { }
+export class FiredevGithubForkMeRibbonModule {}
 //#endregion

@@ -12,16 +12,18 @@ export class FiredevAdmin {
   //#region fields & getters
   public cmp: FiredevAdminModeConfigurationComponent;
   public scrollableEnabled = false; // TOOD @LAST false by default
-  private onEditMode = new Subject()
+  private onEditMode = new Subject();
   onEditMode$ = this.onEditMode.asObservable();
-  private onRegisterFileChange = new Subject<void>()
+  private onRegisterFileChange = new Subject<void>();
   private onRegisterFileChange$ = this.onRegisterFileChange.asObservable();
 
   @Stor.property.in.indexedb.for(FiredevAdmin).withDefaultValue({})
-  private registeredFiles = {} as { [filePathOrName: string]: { value: FiredevFile; refCount: number; }; };
+  private registeredFiles = {} as {
+    [filePathOrName: string]: { value: FiredevFile; refCount: number };
+  };
 
   @Stor.property.in.localstorage.for(FiredevAdmin).withDefaultValue('')
-  selectedFileSrc: string
+  selectedFileSrc: string;
 
   //#region fields & getters / files edit mode
   /**
@@ -62,17 +64,15 @@ export class FiredevAdmin {
   // public firstTimeKeepWebsqlDbDataTrue: boolean;
   //#endregion
 
-  db = new FiredevAdminDB()
+  db = new FiredevAdminDB();
 
   public get selectedFile(): FiredevFile {
     return this.registeredFiles[this.selectedFileSrc]?.value;
   }
 
-
   public set selectedFile(v: FiredevFile) {
     this.selectedFileSrc = v?.src;
   }
-
 
   get currentFiles() {
     if (!this.filesEditMode) {
@@ -83,13 +83,10 @@ export class FiredevAdmin {
   //#endregion
 
   //#region constructor
-  constructor(
-    protected ENV?: any
-  ) {
+  constructor(protected ENV?: any) {
     this.scrollableEnabled = !!ENV?.useGlobalNgxScrollbar;
   }
   //#endregion
-
 
   //#region methods
   setEditMode(value: boolean) {
@@ -107,7 +104,7 @@ export class FiredevAdmin {
   onRegisterFile() {
     setTimeout(() => {
       this.onRegisterFileChange.next();
-    })
+    });
     return this.onRegisterFileChange$;
   }
 
@@ -116,13 +113,13 @@ export class FiredevAdmin {
       if (!this.registeredFiles[file.src]) {
         this.registeredFiles[file.src] = {
           value: file,
-          refCount: 1
-        }
+          refCount: 1,
+        };
       } else {
         this.registeredFiles[file.src].refCount++;
       }
 
-      this.onRegisterFileChange.next(void 0)
+      this.onRegisterFileChange.next(void 0);
     }
   }
 
@@ -133,7 +130,7 @@ export class FiredevAdmin {
       } else {
         delete this.registeredFiles[file.src];
       }
-      this.onRegisterFileChange.next(void 0)
+      this.onRegisterFileChange.next(void 0);
     }
   }
 
@@ -149,10 +146,7 @@ export class FiredevAdmin {
     this.adminPanelIsOpen = true;
   }
 
-  logout() {
-
-  }
+  logout() {}
   //#endregion
-
 }
 //#endregion

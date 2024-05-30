@@ -27,5 +27,5 @@ const routes: Routes = [
   ],
   declarations: [PreviewFormComponent],
 })
-export class PreviewFormModule { }
+export class PreviewFormModule {}
 //#endregion

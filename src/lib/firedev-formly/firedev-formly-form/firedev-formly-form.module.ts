@@ -18,12 +18,9 @@ import { NgStringPipesModule } from 'ngx-pipes';
 // local
 import { FiredevFormlyFormComponent } from './firedev-formly-form.component';
 // aditional types componets
-import {
-  IconButtonWithActionComponent
-} from './additional-types';
+import { IconButtonWithActionComponent } from './additional-types';
 import { FiredevFullMaterialModule } from '../../firedev-full-material.module';
 //#endregion
-
 
 export const FormlyModuleMod = FormlyModule.forRoot({
   types: [
@@ -37,10 +34,7 @@ export const FormlyModuleMod = FormlyModule.forRoot({
   // wrappers: [{ name: 'groupwrap', component: FormlyHorizontalWrapper }],  TODO QUICK_FIX
 });
 
-const angularModules = [
-  CommonModule,
-  ReactiveFormsModule,
-];
+const angularModules = [CommonModule, ReactiveFormsModule];
 
 const myFormlyModules = [
   // SelectWrapperModule,
@@ -56,7 +50,7 @@ const formlyModules = [
   // FormlyMatDatepickerModule,
   FiredevFullMaterialModule,
   // custom
-  NgStringPipesModule
+  NgStringPipesModule,
 ];
 
 const customComponetns = [
@@ -75,15 +69,10 @@ const entityModules = [
     ...angularModules,
     ...formlyModules,
     ...myFormlyModules,
-    ...entityModules
+    ...entityModules,
   ],
-  exports: [
-    ...myFormlyModules,
-    ...customComponetns
-  ],
-  declarations: [
-    ...customComponetns
-  ]
+  exports: [...myFormlyModules, ...customComponetns],
+  declarations: [...customComponetns],
 })
-export class FiredevFormlyFormModule { }
+export class FiredevFormlyFormModule {}
 //#endregion

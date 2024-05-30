@@ -11,27 +11,30 @@ const routes: Routes = [
   },
   {
     path: 'file',
-    loadChildren: () => import('./previews/preview-file/preview-file.module')
-      .then(m => m.PreviewFileModule),
+    loadChildren: () =>
+      import('./previews/preview-file/preview-file.module').then(
+        m => m.PreviewFileModule
+      ),
   },
   {
     path: 'form',
-    loadChildren: () => import('./previews/preview-form/preview-form.module')
-      .then(m => m.PreviewFormModule),
+    loadChildren: () =>
+      import('./previews/preview-form/preview-form.module').then(
+        m => m.PreviewFormModule
+      ),
   },
   {
     path: 'binary',
-    loadChildren: () => import('./previews/preview-binary/preview-binary.module')
-      .then(m => m.PreviewBinaryModule),
+    loadChildren: () =>
+      import('./previews/preview-binary/preview-binary.module').then(
+        m => m.PreviewBinaryModule
+      ),
   },
 ];
 
 @NgModule({
-  imports: [
-    CommonModule,
-    RouterModule.forChild(routes),
-  ],
+  imports: [CommonModule, RouterModule.forChild(routes)],
   declarations: [PreviewComponent],
 })
-export class PreviewModule { }
+export class PreviewModule {}
 //#endregion

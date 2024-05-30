@@ -1,4 +1,3 @@
-
 //#region @browser
 export { FiredevResizeService } from './firedev-resize.service';
 export { FiredevLongPress } from './firedev-long-press.directive';

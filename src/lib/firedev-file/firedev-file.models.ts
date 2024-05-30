@@ -1,5 +1,5 @@
 //#region imports
-import type { FiredevFile } from "./firedev-file";
+import type { FiredevFile } from './firedev-file';
 //#endregion
 
 //#region models
@@ -11,7 +11,8 @@ export type IFiredevFile = Partial<FiredevFile>;
 /**
  * @deprecated
  */
-export type IFiredevFileType = 'image'
+export type IFiredevFileType =
+  | 'image'
   | 'video'
   | 'audio'
   | 'html'
@@ -19,13 +20,13 @@ export type IFiredevFileType = 'image'
   | 'md'
   | 'json'
   | 'js'
-  | 'css'
-  ;
+  | 'css';
 
 /**
-* @deprecated
-*/
-export type FiredevFileDefaultAs = 'script-tag'
+ * @deprecated
+ */
+export type FiredevFileDefaultAs =
+  | 'script-tag'
   | 'css-tag'
   | 'textarea'
   | 'wysig-editor'
@@ -34,6 +35,5 @@ export type FiredevFileDefaultAs = 'script-tag'
   | 'text-string'
   | 'img-tag'
   | 'html-rendered'
-  | 'json-editor'
-  ;
+  | 'json-editor';
 //#endregion

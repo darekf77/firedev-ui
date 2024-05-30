@@ -38,5 +38,4 @@ export class FiredevBinaryFileComponent {
     FiredevBinaryFileHelpers.helloWorldFiredevBinaryFile();
   }
   //#endregion
-
 }

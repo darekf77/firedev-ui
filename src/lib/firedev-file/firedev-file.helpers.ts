@@ -6,36 +6,40 @@ import type { FiredevFileComponent } from './firedev-file.component';
 //#endregion
 
 export namespace FiredevFileHelpers {
-
   //#region @browser
   export function loadScript(src: string, context: FiredevFileComponent) {
     return new Promise((resolve, reject) => {
       //resolve if already loaded
       if (context.scripts[src]) {
         resolve({ script: src, status: 'Already Loaded Script File' });
-      }
-      else {
+      } else {
         //load script
         let script = document.createElement('script') as any;
         script.type = 'text/javascript';
         script.src = src;
 
-        if (script.readyState) {  //IE
+        if (script.readyState) {
+          //IE
           script.onreadystatechange = () => {
-            if (script.readyState === "loaded" || script.readyState === "complete") {
+            if (
+              script.readyState === 'loaded' ||
+              script.readyState === 'complete'
+            ) {
               script.onreadystatechange = null;
               context.scripts[src] = true;
               resolve({ script: src, status: 'Loaded' });
             }
           };
-        } else {  //Others
+        } else {
+          //Others
           script.onload = () => {
             context.scripts[src] = true;
             resolve({ script: src, status: 'Loaded' });
           };
         }
 
-        script.onerror = (error: any) => resolve({ script: src, status: 'Loaded' });
+        script.onerror = (error: any) =>
+          resolve({ script: src, status: 'Loaded' });
         document.getElementsByTagName('head')[0].appendChild(script);
       }
     });
@@ -49,36 +53,40 @@ export namespace FiredevFileHelpers {
       //resolve if already loaded
       if (styles[src]) {
         resolve({ script: src, status: 'Already Loaded Style File' });
-      }
-      else {
+      } else {
         //load script
         let link = document.createElement('link') as any;
         link.rel = 'stylesheet';
         link.type = 'text/css';
         link.href = src;
 
-        if (link.readyState) {  //IE
+        if (link.readyState) {
+          //IE
           link.onreadystatechange = () => {
-            if (link.readyState === "loaded" || link.readyState === "complete") {
+            if (
+              link.readyState === 'loaded' ||
+              link.readyState === 'complete'
+            ) {
               link.onreadystatechange = null;
               styles[src] = true;
               resolve({ script: src, status: 'Loaded' });
             }
           };
-        } else {  //Others
+        } else {
+          //Others
           link.onload = () => {
             styles[src] = true;
             resolve({ script: src, status: 'Loaded' });
           };
         }
 
-        link.onerror = (error: any) => resolve({ script: src, status: 'Loaded' });
+        link.onerror = (error: any) =>
+          resolve({ script: src, status: 'Loaded' });
         document.getElementsByTagName('head')[0].appendChild(link);
       }
     });
   }
   //#endregion
-
 }
 
 // const base64image1 = 'data:image/png;base64,R0lGODlhDAAMAKIFAF5LAP/zxAAAANyuAP/gaP///wAAAAAAACH5BAEAAAUALAAAAAAMAAwAAAMlWLPcGjDKFYi9lxKBOaGcF35DhWHamZUW0K4mAbiwWtuf0uxFAgA7'; // emoji

@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatSelectModule } from '@angular/material/select';
 import { FiredevTableComponent } from './firedev-table.component';
-import { MtxGridModule } from '@ng-matero/extensions/grid'
+import { MtxGridModule } from '@ng-matero/extensions/grid';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
@@ -24,10 +24,8 @@ import { MatButton, MatButtonModule } from '@angular/material/button';
     FormsModule,
     ReactiveFormsModule,
   ],
-  exports: [
-    FiredevTableComponent
-  ],
-  declarations: [FiredevTableComponent]
+  exports: [FiredevTableComponent],
+  declarations: [FiredevTableComponent],
 })
-export class FiredevTableModule { }
+export class FiredevTableModule {}
 //#endregion

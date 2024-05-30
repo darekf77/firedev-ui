@@ -4,18 +4,17 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { firstValueFrom, Subscription } from 'rxjs';
 import * as localForge from 'localforage';
 import axios from 'axios';
-import hlsj from 'highlight.js/lib/core'
-
+import hlsj from 'highlight.js/lib/core';
 
 const previewStorage = localForge.createInstance({
   driver: localForge.INDEXEDDB,
   storeName: 'app-preview-file',
-})
+});
 
 @Component({
   selector: 'app-preview-file',
   templateUrl: './preview-file.component.html',
-  styleUrls: ['./preview-file.component.scss']
+  styleUrls: ['./preview-file.component.scss'],
 })
 export class PreviewFileComponent implements OnInit {
   @ViewChild('imageToFaceDetect') imageToFaceDetect: ElementRef;
@@ -26,13 +25,9 @@ export class PreviewFileComponent implements OnInit {
   loadedHammny: string;
   code = ' no code loaded';
   images = [];
-  generalHash = (new Date()).getTime();
+  generalHash = new Date().getTime();
 
-  constructor(
-    private domSanitizer: DomSanitizer
-  ) {
-
-  }
+  constructor(private domSanitizer: DomSanitizer) {}
 
   input(el: InputEvent) {
     // console.log(el)
@@ -40,48 +35,42 @@ export class PreviewFileComponent implements OnInit {
   }
 
   async ngOnInit() {
-
     const existedFiles = await previewStorage.getItem('files');
     // console.log({
     //   FILESFROMCACHE: existedFiles
     // })
     if (existedFiles) {
-      this.processFiles(existedFiles as any)
+      this.processFiles(existedFiles as any);
     }
-
 
     await (async () => {
       // const data = await FiredevFile.ctrl.getImage_text().received;
       // const blob = await blobToBase64(data.body.blob)
       // this.loadedImage = this.domSanitizer.bypassSecurityTrustUrl(URL.createObjectURL(data.body.blob))
       // this.loadedImage = blob; // URL.createObjectURL(blob);
-
       // var file = new File([data.body.blob], "my_image.png", { type: "image/png", lastModified: new Date().getTime() });
       // console.log({
       //   file
       // });
-
       // console.log({
       //   data,
       //   loadedImage: this.loadedImage,
       // })
-    })()
+    })();
 
     await (async () => {
       // const data = await FiredevFile.ctrl.getImage_jpeg().received;
       // // const blob = await blobToBase64(data.body.blob)
       // var file = new File([data.body.blob], "hammy.jpeg", { type: data.body.blob.type, lastModified: new Date().getTime() });
-
       // this.loadedHammny = await blobToBase64(file);
-    })()
+    })();
 
     await (async () => {
       // const data2 = await FiredevFile.ctrl.hello().received;
       // console.log({
       //   data2
       // })
-    })()
-
+    })();
 
     await (async () => {
       // const tsfile = await axios({
@@ -93,7 +82,7 @@ export class PreviewFileComponent implements OnInit {
       // console.log({
       //   tsfile
       // })
-    })()
+    })();
 
     await (async () => {
       // try {
@@ -108,9 +97,6 @@ export class PreviewFileComponent implements OnInit {
       //   console.error(err);
       // }
     })();
-
-
-
   }
 
   ngOnDestroy(): void {
@@ -119,7 +105,6 @@ export class PreviewFileComponent implements OnInit {
 
   ngAfterViewInit(): void {
     // const elem = (this.imageToFaceDetect.nativeElement as HTMLElement);
-
     // defer(($) => {
     //   console.log({
     //     elem
@@ -143,7 +128,7 @@ export class PreviewFileComponent implements OnInit {
     this.files = [];
 
     for (let i = 0; i < files.length; i++) {
-      let file = files.item(i)
+      let file = files.item(i);
       this.files.push(file);
       console.log(file.name);
       // const blobString = await FiredevUIHelpers.blobToBase64(file)
@@ -168,32 +153,27 @@ export class PreviewFileComponent implements OnInit {
 
   files: File[] = [];
   async upload(event: Event) {
-
-    const elem = (<HTMLInputElement>event.target);
+    const elem = <HTMLInputElement>event.target;
     let files = elem.files;
     if (files) {
-      this.processFiles(files)
+      this.processFiles(files);
       await previewStorage.setItem('files', files);
     }
   }
 
   async sendFile() {
-
     // const resp = await FiredevFile.uploadFiles(this.files);
     // console.log('response firedevfile', resp)
   }
-
 }
-
-
-
-
 
 function defer(method: ($: any) => any) {
   if (window['$']) {
     method(window['$']);
   } else {
-    setTimeout(function () { defer(method) }, 50);
+    setTimeout(function () {
+      defer(method);
+    }, 50);
   }
 }
 

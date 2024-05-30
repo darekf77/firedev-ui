@@ -26,5 +26,5 @@ import { FiredevTableModule } from '../../../firedev-table';
   declarations: [FiredevAdminEditModeComponent],
   exports: [FiredevAdminEditModeComponent],
 })
-export class FiredevAdminEditModeModule { }
+export class FiredevAdminEditModeModule {}
 //#endregion

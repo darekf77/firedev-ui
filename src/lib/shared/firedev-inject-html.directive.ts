@@ -1,5 +1,4 @@
-import { Directive, ElementRef, Input } from "@angular/core";
-
+import { Directive, ElementRef, Input } from '@angular/core';
 
 @Directive({
   selector: '[firedevInjectHTML]',

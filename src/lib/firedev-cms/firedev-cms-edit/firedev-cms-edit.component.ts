@@ -1,18 +1,25 @@
-import { Component, EventEmitter, HostBinding, Inject, Input, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  HostBinding,
+  Inject,
+  Input,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { Subscription } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { Helpers, Utils, _, CoreModels, path } from 'tnp-core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FiredevCmsEditDialogData } from '../firedev-cms.models';
 import { FiredevBinaryFile, FiredevFullMaterialModule } from 'firedev-ui';
-import { MtxSplitModule } from "@ng-matero/extensions/split";
+import { MtxSplitModule } from '@ng-matero/extensions/split';
 import { StaticColumnsModule } from 'static-columns';
 import { DomSanitizer } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SafePipe } from '../../shared/safe.pipe';
 import { ViewMode } from '../../shared/view-mode';
 import { AceModule } from 'ngx-ace-wrapper';
-
 
 @Component({
   selector: 'firedev-cms-edit',
@@ -31,7 +38,6 @@ import { AceModule } from 'ngx-ace-wrapper';
   standalone: true,
 })
 export class FiredevCmsEditComponent implements OnInit {
-
   public ViewMode: typeof ViewMode = ViewMode;
   public height: number = window.innerHeight - 150;
   public url: string;
@@ -46,7 +52,7 @@ export class FiredevCmsEditComponent implements OnInit {
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: FiredevCmsEditDialogData,
-    public dialogRef: MatDialogRef<FiredevCmsEditComponent>,
+    public dialogRef: MatDialogRef<FiredevCmsEditComponent>
   ) {
     this.mode = data.mode;
     this.originalMode = this.mode;
@@ -58,16 +64,18 @@ export class FiredevCmsEditComponent implements OnInit {
   //#region hooks
   public async ngOnInit() {
     if (this.mediaType === 'image' || this.mediaType === 'audio') {
-      this.url = window.URL.createObjectURL(this.data.entity.binaryData as Blob);
+      this.url = window.URL.createObjectURL(
+        this.data.entity.binaryData as Blob
+      );
     }
     if (this.mediaType === 'text') {
-      this.text = await Utils.binary.blobToText(this.data.entity.binaryData as any);
+      this.text = await Utils.binary.blobToText(
+        this.data.entity.binaryData as any
+      );
     }
-
-
   }
 
-  public ngOnDestroy(): void { }
+  public ngOnDestroy(): void {}
   //#endregion
 
   //#region methods
@@ -76,12 +84,12 @@ export class FiredevCmsEditComponent implements OnInit {
   }
 
   save() {
-    console.log('saving file')
+    console.log('saving file');
   }
 
-
   toogleMode() {
-    this.mode = (this.mode === ViewMode.Preview) ? this.originalMode : ViewMode.Preview;
+    this.mode =
+      this.mode === ViewMode.Preview ? this.originalMode : ViewMode.Preview;
   }
   //#endregion
 }

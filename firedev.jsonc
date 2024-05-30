@@ -1,15 +1,10 @@
 {
-  "resources": ["README.md","logo.png"],
+  "resources": ["README.md", "logo.png"],
   "overrided": {
     "linkedFolders": [],
-    "ignoreDepsPattern": [
-      "*"
-    ],
+    "ignoreDepsPattern": ["*"],
     "includeAsDev": [],
-    "includeOnly": [
-      "static-columns",
-      "firedev"
-    ],
+    "includeOnly": ["static-columns", "firedev"],
     "dependencies": {},
     "npmFixes": [],
   },

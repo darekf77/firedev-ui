@@ -7,7 +7,7 @@ import { FiredevFileDefaultAs, IFiredevFileType } from './firedev-file.models';
 import { FiredevFileCss } from './firedev-file-css/firedev-file-css';
 import {
   defaultModelValues,
-  FiredevFileTypeArr
+  FiredevFileTypeArr,
 } from './firedev-file.constants';
 //#region @backend
 import * as FromData from 'form-data';
@@ -23,12 +23,11 @@ import { Blob } from 'buffer';
   //#region entity config
   className: 'FiredevFile',
   defaultModelMapping: {
-    'css': 'FiredevFileCss',
+    css: 'FiredevFileCss',
   },
   //#endregion
 })
 export class FiredevFile extends Firedev.Base.Entity {
-
   //#region static
 
   //#region static / ctrl
@@ -41,10 +40,10 @@ export class FiredevFile extends Firedev.Base.Entity {
     const clonedObj = _.cloneDeep(obj) as IFiredevFileType;
     instance = _.merge(instance, clonedObj);
     if (!instance.defaultViewAs) {
-      instance.defaultViewAs = instance.getDefaultView()
+      instance.defaultViewAs = instance.getDefaultView();
     }
     if (!instance.contentType) {
-      instance.contentType = instance.getContentType()
+      instance.contentType = instance.getContentType();
     }
     return instance;
   }
@@ -57,7 +56,10 @@ export class FiredevFile extends Firedev.Base.Entity {
   //#endregion
 
   //#region static / upload files
-  static async uploadFiles(files: FileList | File[], options?: { dontRestoreBlob?: boolean; }): Promise<FiredevFile[]> {
+  static async uploadFiles(
+    files: FileList | File[],
+    options?: { dontRestoreBlob?: boolean }
+  ): Promise<FiredevFile[]> {
     const { dontRestoreBlob } = options || {};
     const firedevFiles: FiredevFile[] = [];
     for (let index = 0; index < files.length; index++) {
@@ -81,7 +83,7 @@ export class FiredevFile extends Firedev.Base.Entity {
       return FiredevFile.from({
         src,
         version: 0,
-      })
+      });
     }
 
     src = encodeURIComponent(src);
@@ -109,7 +111,7 @@ export class FiredevFile extends Firedev.Base.Entity {
         src,
         blob,
         version: 0,
-      })
+      });
     }
 
     src = encodeURIComponent(src);
@@ -119,14 +121,17 @@ export class FiredevFile extends Firedev.Base.Entity {
   //#endregion
 
   //#region static / is
-  private static is(extensionOrContentType: string, isWhat: IFiredevFileType): boolean {
+  private static is(
+    extensionOrContentType: string,
+    isWhat: IFiredevFileType
+  ): boolean {
     if (isWhat === 'css') {
       // @ts-ignore
-      isWhat = 'text/css'
+      isWhat = 'text/css';
     }
     if (isWhat === 'js') {
       // @ts-ignore
-      isWhat = 'text/javascript'
+      isWhat = 'text/javascript';
     }
     if (isWhat === 'html') {
       // @ts-ignore
@@ -153,7 +158,8 @@ export class FiredevFile extends Firedev.Base.Entity {
   //#endregion
 
   //#region constructor
-  private constructor(...args) { // @ts-ignore
+  private constructor(...args) {
+    // @ts-ignore
     super(...args);
   }
   //#endregion
@@ -235,8 +241,8 @@ export class FiredevFile extends Firedev.Base.Entity {
 
   //#region fields & getters / version
   /**
-  * Field is create when initing assets
-  */
+   * Field is create when initing assets
+   */
   //#region @websql
   @Firedev.Orm.Column.Boolean(false)
   //#endregion
@@ -287,8 +293,8 @@ export class FiredevFile extends Firedev.Base.Entity {
         // console.log(`FROM (value is not string):`, value)
         // return value.toString();
         return value;
-      }
-    }
+      },
+    },
   })
   //#endregion
   blob: Blob | string;
@@ -302,7 +308,7 @@ export class FiredevFile extends Firedev.Base.Entity {
     if (this.defaultViewAs === 'css-tag') {
       return '.css';
     }
-    const realSrc = _.first(this.src?.split('?'))
+    const realSrc = _.first(this.src?.split('?'));
     return realSrc ? path.extname(realSrc) : '';
   }
   //#endregion

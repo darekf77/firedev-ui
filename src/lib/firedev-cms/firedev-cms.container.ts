@@ -12,7 +12,6 @@ import { _ } from 'tnp-core';
   //#endregion
 })
 export class FiredevCmsContainer {
-
   // @Input() FiredevCms = FiredevCms;
   // firedevCms$ = this.FiredevCms.$getAll().pipe(map(data => {
   //   return data.body.json;
@@ -23,16 +22,13 @@ export class FiredevCmsContainer {
   myId: number;
 
   @Input({
-    required: false
+    required: false,
   })
   set id(v: string) {
     this.myId = Number(v);
   }
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit() {
-
-  }
-
+  ngOnInit() {}
 }

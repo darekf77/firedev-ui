@@ -5,22 +5,16 @@ import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class FiredevAlertsService {
-  constructor() {
+  constructor() {}
 
-  }
+  private cmp: FiredevAlertsComponent;
+  __registerComponent(cmp: FiredevAlertsComponent) {}
 
-  private cmp: FiredevAlertsComponent
-  __registerComponent(cmp: FiredevAlertsComponent) {
+  showOrHide(
+    observable: Observable<boolean>,
+    onHide?: (valueFromCallback: any) => any
+  ) {}
 
-  }
-
-  showOrHide(observable: Observable<boolean>, onHide?: (valueFromCallback: any) => any) {
-
-  }
-
-  hide() {
-
-  }
-
+  hide() {}
 }
 //#endregion

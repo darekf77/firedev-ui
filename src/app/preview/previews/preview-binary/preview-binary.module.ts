@@ -33,4 +33,4 @@ const routes: Routes = [
   declarations: [PreviewBinaryComponent],
   //#endregion
 })
-export class PreviewBinaryModule { }
+export class PreviewBinaryModule {}

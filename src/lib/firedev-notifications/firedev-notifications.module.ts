@@ -13,11 +13,11 @@ import { FiredevNotificationsService } from './firedev-notifications.service';
     // BrowserAnimationsModule, // required animations module
     HotToastModule.forRoot({
       position: 'top-right',
-    })
+    }),
   ],
   exports: [FiredevNotificationsComponent],
   declarations: [FiredevNotificationsComponent],
-  providers: [FiredevNotificationsService]
+  providers: [FiredevNotificationsService],
 })
-export class FiredevNotificationsModule { }
+export class FiredevNotificationsModule {}
 //#endregion

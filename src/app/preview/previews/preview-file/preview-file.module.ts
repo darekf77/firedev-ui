@@ -32,5 +32,4 @@ const routes: Routes = [
   declarations: [PreviewFileComponent],
   //#endregion
 })
-export class PreviewFileModule { }
-
+export class PreviewFileModule {}

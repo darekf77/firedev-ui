@@ -6,7 +6,7 @@ import { Css } from './css';
 @Component({
   selector: 'app-preview-form',
   templateUrl: './preview-form.component.html',
-  styleUrls: ['./preview-form.component.scss']
+  styleUrls: ['./preview-form.component.scss'],
 })
 export class PreviewFormComponent implements OnInit {
   handlers: Subscription[] = [];
@@ -17,14 +17,12 @@ export class PreviewFormComponent implements OnInit {
     // widthUnit: '%',
     // heightUnit: 'px'
   });
-  constructor() { }
+  constructor() {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   ngOnDestroy(): void {
     this.handlers.forEach(h => h.unsubscribe());
   }
-
 }
 //#endregion

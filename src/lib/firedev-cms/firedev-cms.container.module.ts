@@ -11,12 +11,14 @@ const routes: Routes = [
     path: '',
     component: FiredevCmsContainer,
     // redirectTo: './list',
-    pathMatch: 'full' // => when using variables in other routers
+    pathMatch: 'full', // => when using variables in other routers
   },
   {
     path: 'list',
-    loadChildren: () => import('./firedev-cms-list/firedev-cms-list.container.module')
-      .then(m => m.FiredevCmsListContainerModule),
+    loadChildren: () =>
+      import('./firedev-cms-list/firedev-cms-list.container.module').then(
+        m => m.FiredevCmsListContainerModule
+      ),
   },
   // {
   //   path: 'other/:otherId',
@@ -28,11 +30,8 @@ const routes: Routes = [
 
 @NgModule({
   //#region container module options
-  imports: [
-    CommonModule,
-    RouterModule.forChild(routes),
-  ],
+  imports: [CommonModule, RouterModule.forChild(routes)],
   declarations: [FiredevCmsContainer],
   //#endregion
 })
-export class FiredevCmsContainerModule { }
+export class FiredevCmsContainerModule {}

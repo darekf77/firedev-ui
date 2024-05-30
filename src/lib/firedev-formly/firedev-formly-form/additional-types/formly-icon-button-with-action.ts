@@ -5,29 +5,39 @@ import { FormlyFormOptions, FormlyFieldConfig } from '@ngx-formly/core';
 // other
 import * as _ from 'lodash';
 
-
 @Component({
   selector: 'formly-icon-button-with-action',
   template: `
-     <button *ngIf="!field.templateOptions.raised" mat-button type="button" (click)="action()" [disabled]="field.templateOptions.disabled"  >
-        <mat-icon>{{field.templateOptions.icon}}</mat-icon>
-        {{field.templateOptions.label}}
+    <button
+      *ngIf="!field.templateOptions.raised"
+      mat-button
+      type="button"
+      (click)="action()"
+      [disabled]="field.templateOptions.disabled">
+      <mat-icon>{{ field.templateOptions.icon }}</mat-icon>
+      {{ field.templateOptions.label }}
     </button>
-    <button  *ngIf="field.templateOptions.raised" mat-raised-button type="button" (click)="action()" [disabled]="field.templateOptions.disabled"  >
-    <mat-icon>{{field.templateOptions.icon}}</mat-icon>
-    {{field.templateOptions.label}}
-</button>
+    <button
+      *ngIf="field.templateOptions.raised"
+      mat-raised-button
+      type="button"
+      (click)="action()"
+      [disabled]="field.templateOptions.disabled">
+      <mat-icon>{{ field.templateOptions.icon }}</mat-icon>
+      {{ field.templateOptions.label }}
+    </button>
   `,
-  styles: [`
-    :host {
-      padding-bottom: 20px;
-      position: relative;
-      top: -5px;
-    }
-  `]
+  styles: [
+    `
+      :host {
+        padding-bottom: 20px;
+        position: relative;
+        top: -5px;
+      }
+    `,
+  ],
 })
 export class IconButtonWithActionComponent extends FieldType implements OnInit {
-
   action() {
     if (_.isFunction(this.field.templateOptions.action)) {
       this.field.templateOptions.action();
@@ -42,5 +52,4 @@ export class IconButtonWithActionComponent extends FieldType implements OnInit {
       this.field.templateOptions.lable = 'Button';
     }
   }
-
 }

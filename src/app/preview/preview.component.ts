@@ -5,18 +5,16 @@ import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-preview',
   templateUrl: './preview.component.html',
-  styleUrls: ['./preview.component.scss']
+  styleUrls: ['./preview.component.scss'],
 })
 export class PreviewComponent implements OnInit {
   handlers: Subscription[] = [];
-  constructor() { }
+  constructor() {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   ngOnDestroy(): void {
     this.handlers.forEach(h => h.unsubscribe());
   }
-
 }
 //#endregion

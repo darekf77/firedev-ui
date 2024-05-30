@@ -27,10 +27,11 @@ declare const ENV: any;
   className: 'FiredevFileController',
   //#endregion
 })
-export class FiredevFileController extends Firedev.Base.CrudController<FiredevFile> {
+export class FiredevFileController extends Firedev.Base
+  .CrudController<FiredevFile> {
   //#region fields
   entity() {
-    return FiredevFile
+    return FiredevFile;
   }
   //#region @websql
   readonly backend = FiredevFileBackend.for(this);
@@ -39,7 +40,9 @@ export class FiredevFileController extends Firedev.Base.CrudController<FiredevFi
 
   //#region get latest version by src
   @Firedev.Http.GET('/version/:src')
-  getLatestVersion(@Firedev.Http.Param.Path('src') src: string): Firedev.Response<number> {
+  getLatestVersion(
+    @Firedev.Http.Param.Path('src') src: string
+  ): Firedev.Response<number> {
     //#region @websqlFunc
     return async (req, res) => {
       const repo = this.repository;
@@ -48,18 +51,20 @@ export class FiredevFileController extends Firedev.Base.CrudController<FiredevFi
       let item = await repo.findOne({
         where: {
           src,
-        }
+        },
       });
 
       return item?.version || 0;
-    }
+    };
     //#endregion
   }
   //#endregion
 
   //#region get blobless by src
   @Firedev.Http.GET('/blobless/:src')
-  getBloblessBy(@Firedev.Http.Param.Path('src') src: string): Firedev.Response<FiredevFile> {
+  getBloblessBy(
+    @Firedev.Http.Param.Path('src') src: string
+  ): Firedev.Response<FiredevFile> {
     //#region @websqlFunc
     src = decodeURIComponent(src);
     return async (req, res) => {
@@ -68,14 +73,14 @@ export class FiredevFileController extends Firedev.Base.CrudController<FiredevFi
       let item = await repo.findOne({
         where: {
           src,
-        }
+        },
       });
 
       if (item?.blob) {
         delete item.blob;
       }
       return item;
-    }
+    };
     //#endregion
   }
   //#endregion
@@ -83,22 +88,24 @@ export class FiredevFileController extends Firedev.Base.CrudController<FiredevFi
   //#region get blob only by src
   @Firedev.Http.GET({
     overridResponseType: 'blob',
-    path: '/blobonly/:src'
+    path: '/blobonly/:src',
   })
-  getBlobOnlyBy(@Firedev.Http.Param.Path('src') src: string): Firedev.Response<Blob> {
+  getBlobOnlyBy(
+    @Firedev.Http.Param.Path('src') src: string
+  ): Firedev.Response<Blob> {
     //#region @websqlFunc
-    src = decodeURIComponent(src)
+    src = decodeURIComponent(src);
     return async (req, res) => {
       const repo = this.repository;
       let item = await repo.findOne({
         where: {
           src,
-        }
+        },
       });
       item = await this.backend.restoreBlobWhenFileFromAsset(item);
       const blob = await Utils.binary.base64toBlob(item.blob as string);
       return blob;
-    }
+    };
     //#endregion
   }
   //#endregion
@@ -106,22 +113,24 @@ export class FiredevFileController extends Firedev.Base.CrudController<FiredevFi
   //#region delete by src
   @Firedev.Http.DELETE({
     overridResponseType: 'blob',
-    path: '/blobonly/:src'
+    path: '/blobonly/:src',
   })
-  deleteBy(@Firedev.Http.Param.Path('src') src: string): Firedev.Response<FiredevFile> {
+  deleteBy(
+    @Firedev.Http.Param.Path('src') src: string
+  ): Firedev.Response<FiredevFile> {
     //#region @websqlFunc
     return async (req, res) => {
       const repo = this.repository;
       let item = await repo.findOne({
         where: {
           src: decodeURI(src),
-        }
+        },
       });
       // await repo.delete
 
       delete item.blob;
       return item;
-    }
+    };
     //#endregion
   }
   //#endregion
@@ -139,7 +148,9 @@ export class FiredevFileController extends Firedev.Base.CrudController<FiredevFi
    * @returns
    */
   @Firedev.Http.POST({ overrideContentType: 'multipart/form-data' as any })
-  upload(@Firedev.Http.Param.Body() formData: FormData): Firedev.Response<FiredevFile> {
+  upload(
+    @Firedev.Http.Param.Body() formData: FormData
+  ): Firedev.Response<FiredevFile> {
     //#region @websqlFunc
     return async (req, res) => {
       //#region @backendFunc
@@ -152,35 +163,42 @@ export class FiredevFileController extends Firedev.Base.CrudController<FiredevFi
       // @ts-ignore
       const files = _.values(req.files);
       if (!Helpers.exists(path.dirname(pathDest))) {
-        Helpers.mkdirp(path.dirname(pathDest))
+        Helpers.mkdirp(path.dirname(pathDest));
       }
 
       const repo = this.repository;
 
       const file = _.first(files) as FiredevUploadedFile;
-      const uploadPath = crossPlatformPath([pathDest, file.md5 + '_' + file.name]);
-      await repo.save(FiredevFile.from({
-        contentType: file.mimetype,
-        id: file.md5,
-        blob: file.data as any,
-        src: uploadPath,
-      }));
+      const uploadPath = crossPlatformPath([
+        pathDest,
+        file.md5 + '_' + file.name,
+      ]);
+      await repo.save(
+        FiredevFile.from({
+          contentType: file.mimetype,
+          id: file.md5,
+          blob: file.data as any,
+          src: uploadPath,
+        })
+      );
 
       await new Promise((resolve, reject) => {
-        file.mv(uploadPath, (err) => {
+        file.mv(uploadPath, err => {
           if (err) {
             throw err;
           } else {
-            resolve(void 0)
+            resolve(void 0);
           }
         });
       });
-      console.log("Files uploaded: ", req['files']);
-      const fileInstance = await repo.findOneOrFail({ where: { id: file.md5 } });
+      console.log('Files uploaded: ', req['files']);
+      const fileInstance = await repo.findOneOrFail({
+        where: { id: file.md5 },
+      });
       delete fileInstance.blob;
       return fileInstance;
       //#endregion
-    }
+    };
     //#endregion
   }
   //#endregion
@@ -188,10 +206,8 @@ export class FiredevFileController extends Firedev.Base.CrudController<FiredevFi
   //#region init example data
   //#region @websql
   async initExampleDbData() {
-    await this.backend.initExampleDbData()
+    await this.backend.initExampleDbData();
   }
   //#endregion
   //#endregion
-
 }
-

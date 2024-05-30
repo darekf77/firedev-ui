@@ -1,21 +1,14 @@
-<mat-expansion-panel [expanded]="dataBaseInited"
-                     (opened)="initDb()">
-
-  <mat-expansion-panel-header>
-    Database
-  </mat-expansion-panel-header>
+<mat-expansion-panel [expanded]="dataBaseInited" (opened)="initDb()">
+  <mat-expansion-panel-header> Database </mat-expansion-panel-header>
   <ng-container *ngFor="let table of tables; trackBy: trackByName">
-
     <mat-expansion-panel>
       <mat-expansion-panel-header>
         {{ table.name }}
       </mat-expansion-panel-header>
 
-      <firedev-table [entity]="table.name"
-                     [allowedColumns]="table.columns" />
-
+      <firedev-table [entity]="table.name" [allowedColumns]="table.columns" />
     </mat-expansion-panel>
-    <br>
+    <br />
   </ng-container>
 </mat-expansion-panel>
 <!--

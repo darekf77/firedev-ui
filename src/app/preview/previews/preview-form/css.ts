@@ -1,4 +1,4 @@
-import { Firedev } from "firedev";
+import { Firedev } from 'firedev';
 import { _ } from 'tnp-core';
 
 export type DisplayOpt = 'block' | 'inline-block' | 'flex';
@@ -8,7 +8,10 @@ export type BrowserUnit = 'px' | 'rem' | '%' | '-';
 export const BrowserUnitArr = ['px', 'rem', '%', '-'] as BrowserUnit[];
 
 export type BrowserHeightOrWidth = 'auto' | 'inherit';
-export const BrowserHeightOrWidth = ['auto', 'inherit'] as BrowserHeightOrWidth[];
+export const BrowserHeightOrWidth = [
+  'auto',
+  'inherit',
+] as BrowserHeightOrWidth[];
 
 @Firedev.Entity<Css>({
   className: 'Css',
@@ -21,22 +24,21 @@ export const BrowserHeightOrWidth = ['auto', 'inherit'] as BrowserHeightOrWidth[
     height: 200,
     heightUnit: 'px',
     display: 'block',
-  }
+  },
 })
 export class Css {
-
   static from(o: Omit<Css, 'getOptionsFor'>) {
-    return _.merge(new Css(), o)
+    return _.merge(new Css(), o);
   }
 
-
   getOptionsFor(classProperty: keyof Css) {
-    const map = (arr: string[]) => arr.map((value) => {
-      return {
-        value,
-        label: value
-      }
-    })
+    const map = (arr: string[]) =>
+      arr.map(value => {
+        return {
+          value,
+          label: value,
+        };
+      });
     switch (classProperty) {
       case 'display':
         return map(DisplayOptArr);
@@ -70,6 +72,5 @@ export class Css {
   //#region @websqlOnly
   @Firedev.Orm.Column.Custom('varchar')
   //#endregion
-
   heightUnit?: BrowserUnit;
 }

@@ -28,12 +28,8 @@ import { FiredevSessionPasscodeComponent } from '../firedev-session-passcode';
     FiredevDbAdminComponent,
     FiredevSessionPasscodeComponent,
   ],
-  declarations: [
-    FiredevAdminModeConfigurationComponent,],
+  declarations: [FiredevAdminModeConfigurationComponent],
   exports: [FiredevAdminModeConfigurationComponent],
 })
-export class FiredevAdminModeConfigurationModule {
-
-
-}
+export class FiredevAdminModeConfigurationModule {}
 //#endregion

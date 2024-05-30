@@ -5,12 +5,9 @@ import { FiredevProgressBarComponent } from './firedev-progress-bar.component';
 import { NgProgressConfig, NgProgressModule } from 'ngx-progressbar';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    NgProgressModule.withConfig({})
-  ],
+  imports: [CommonModule, NgProgressModule.withConfig({})],
   declarations: [FiredevProgressBarComponent],
   exports: [FiredevProgressBarComponent],
 })
-export class FiredevProgressBarModule { }
+export class FiredevProgressBarModule {}
 //#endregion

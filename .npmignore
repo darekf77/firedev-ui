@@ -7,5 +7,6 @@
 tsconfig.json
 npm-debug.log*
 .npmrc
-tslint.json
-.editorconfig
+.prettierrc
+.eslintrc.json
+.prettierignore

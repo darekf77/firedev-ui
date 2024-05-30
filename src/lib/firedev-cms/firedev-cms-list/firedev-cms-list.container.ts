@@ -19,7 +19,6 @@ import { ViewMode } from '../../shared/view-mode';
   //#endregion
 })
 export class FiredevCmsListContainer {
-
   public FiredevFile: typeof FiredevFile = FiredevFile;
   public FiredevBinaryFile: typeof FiredevBinaryFile = FiredevBinaryFile;
   public columns: MtxGridColumn[] = [
@@ -32,7 +31,7 @@ export class FiredevCmsListContainer {
     {
       header: 'src',
       field: 'src',
-      maxWidth: 250
+      maxWidth: 250,
     },
     {
       header: 'Actions',
@@ -48,7 +47,6 @@ export class FiredevCmsListContainer {
           icon: 'edit',
           tooltip: 'Edit',
           click: async (model: FiredevBinaryFile) => {
-
             const entity = await FiredevBinaryFile.loadBy(model.src);
 
             this.dialog.open(FiredevCmsEditComponent, {
@@ -59,17 +57,15 @@ export class FiredevCmsListContainer {
               data: {
                 entity,
                 mode: ViewMode.Preview,
-              } as FiredevCmsEditDialogData
-            })
+              } as FiredevCmsEditDialogData,
+            });
           },
         },
       ],
     },
   ] as MtxGridColumn[];
 
-  constructor(public dialog: MatDialog) {
-
-  }
+  constructor(public dialog: MatDialog) {}
 
   //#region hooks
   async ngOnInit(): Promise<void> {
@@ -87,15 +83,12 @@ export class FiredevCmsListContainer {
       width: '100%',
       data: {
         mode: ViewMode.Add,
-      } as FiredevCmsEditDialogData
-    })
+      } as FiredevCmsEditDialogData,
+    });
   }
 
   expansionRow(e) {
-    console.log(e)
+    console.log(e);
   }
   //#endregion
-
-
-
 }

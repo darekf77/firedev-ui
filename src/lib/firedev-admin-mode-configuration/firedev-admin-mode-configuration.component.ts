@@ -1,10 +1,27 @@
 //#region @browser
 //#region imports
-import { ChangeDetectorRef, Component, EventEmitter, HostListener, Injector, Input, OnInit, Output, ViewChild, inject } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  HostListener,
+  Injector,
+  Input,
+  OnInit,
+  Output,
+  ViewChild,
+  inject,
+} from '@angular/core';
 import { Helpers, _ } from 'tnp-core';
 import { FiredevAdmin } from './firedev-admin';
 import { Stor } from 'firedev-storage';
-import { CdkDrag, CdkDragEnd, CdkDragMove, CdkDragRelease, Point } from '@angular/cdk/drag-drop';
+import {
+  CdkDrag,
+  CdkDragEnd,
+  CdkDragMove,
+  CdkDragRelease,
+  Point,
+} from '@angular/cdk/drag-drop';
 import { BreakpointsService } from 'static-columns';
 import { Subject, takeUntil, tap } from 'rxjs';
 import { createCustomElement } from '@angular/elements';
@@ -19,7 +36,7 @@ declare const ENV: any;
   //#region component options
   selector: 'app-firedev-admin-mode-configuration',
   templateUrl: './firedev-admin-mode-configuration.component.html',
-  styleUrls: ['./firedev-admin-mode-configuration.component.scss']
+  styleUrls: ['./firedev-admin-mode-configuration.component.scss'],
   //#endregion
 })
 export class FiredevAdminModeConfigurationComponent implements OnInit {
@@ -29,32 +46,48 @@ export class FiredevAdminModeConfigurationComponent implements OnInit {
   public readonly firedevAdminService = inject(FiredevAdminService);
   public readonly isDesktop: boolean;
   public tabs: FiredevAdminModeTab[] = [];
-  public admin: FiredevAdmin = (window['firedev'] as FiredevAdmin);
+  public admin: FiredevAdmin = window['firedev'] as FiredevAdmin;
   public isWebSQLMode: boolean = Helpers.isWebSQL;
-  public hideFiredevToolsInProduction: boolean = ENV.hideFiredevToolsInProduction && ENV.angularProd;
-  public isIframe: boolean = (window.location !== window.parent.location);
+  public hideFiredevToolsInProduction: boolean =
+    ENV.hideFiredevToolsInProduction && ENV.angularProd;
+  public isIframe: boolean = window.location !== window.parent.location;
   public height: number = 100;
   public openedOnce = false;
   public reloading: boolean = false;
-  public showPasscode: boolean = (_.isString(ENV.passcode) || _.isObject(ENV.passcode));
-  public passcode: string = (_.isString(ENV.passcode) ? ENV.passcode : (_.isObject(ENV.passcode) ? ENV.passcode.code : ''));
-  public message: string = _.isObject(ENV.passcode) ? ENV.passcode.message : void 0;
+  public showPasscode: boolean =
+    _.isString(ENV.passcode) || _.isObject(ENV.passcode);
+  public passcode: string = _.isString(ENV.passcode)
+    ? ENV.passcode
+    : _.isObject(ENV.passcode)
+      ? ENV.passcode.code
+      : '';
+  public message: string = _.isObject(ENV.passcode)
+    ? ENV.passcode.message
+    : void 0;
 
-  @Stor.property.in.localstorage.for(FiredevAdminModeConfigurationComponent).withDefaultValue(0)
+  @Stor.property.in.localstorage
+    .for(FiredevAdminModeConfigurationComponent)
+    .withDefaultValue(0)
   dragPositionX: number;
 
-  @Stor.property.in.localstorage.for(FiredevAdminModeConfigurationComponent).withDefaultValue(0)
+  @Stor.property.in.localstorage
+    .for(FiredevAdminModeConfigurationComponent)
+    .withDefaultValue(0)
   dragPositionY: number;
 
   dragPositionZero = { x: 0, y: 0 } as Point;
   dragPosition: Point;
 
-  @Stor.property.in.localstorage.for(FiredevAdminModeConfigurationComponent).withDefaultValue(0)
+  @Stor.property.in.localstorage
+    .for(FiredevAdminModeConfigurationComponent)
+    .withDefaultValue(0)
   selectedIndex: number;
 
   @ViewChild('tabGroup') tabGroup;
 
-  @Stor.property.in.localstorage.for(FiredevAdminModeConfigurationComponent).withDefaultValue(false)
+  @Stor.property.in.localstorage
+    .for(FiredevAdminModeConfigurationComponent)
+    .withDefaultValue(false)
   wasOpenDraggablePopup: boolean;
 
   @Output() firedevAdminModeConfigurationDataChanged = new EventEmitter();
@@ -75,16 +108,15 @@ export class FiredevAdminModeConfigurationComponent implements OnInit {
   //#endregion
 
   //#region constructor
-  constructor(
-    private breakpointsService: BreakpointsService,
-  ) {
+  constructor(private breakpointsService: BreakpointsService) {
     this.admin.cmp = this;
-    this.breakpointsService.listenTo().pipe(
-      takeUntil(this.$destroy),
-    ).subscribe(breakpoint => {
-      // @ts-ignore
-      this.isDesktop = (breakpoint === 'desktop');
-    })
+    this.breakpointsService
+      .listenTo()
+      .pipe(takeUntil(this.$destroy))
+      .subscribe(breakpoint => {
+        // @ts-ignore
+        this.isDesktop = breakpoint === 'desktop';
+      });
     this.firedevAdminService.init(this);
   }
   //#endregion
@@ -93,8 +125,8 @@ export class FiredevAdminModeConfigurationComponent implements OnInit {
     this.reloading = true;
     setTimeout(() => {
       this.reloading = false;
-      console.log('reloading done')
-    })
+      console.log('reloading done');
+    });
   }
 
   //#region hooks
@@ -112,7 +144,6 @@ export class FiredevAdminModeConfigurationComponent implements OnInit {
     // })
   }
 
-
   ngAfterViewInit(): void {
     //Called after ngAfterContentInit when the component's view has been initialized. Applies to components only.
     //Add 'implements AfterViewInit' to the class.
@@ -121,7 +152,7 @@ export class FiredevAdminModeConfigurationComponent implements OnInit {
 
       // TODO QUICK_FIX for draggble popup proper first index load on tabs
       if (this.admin.draggablePopupMode) {
-        this.reloadTabs()
+        this.reloadTabs();
       }
 
       // const tablist = (this.tabGroup?._tabHeader?._elementRef?.nativeElement as HTMLElement).querySelector('.mat-tab-list') as HTMLElement;
@@ -133,7 +164,7 @@ export class FiredevAdminModeConfigurationComponent implements OnInit {
 
   ngOnDestroy(): void {
     this.$destroy.next(void 0);
-    this.$destroy.complete()
+    this.$destroy.complete();
   }
 
   @HostListener('window:resize', ['$event'])
@@ -149,10 +180,10 @@ export class FiredevAdminModeConfigurationComponent implements OnInit {
     this.opened = !this.opened;
   }
 
-
   async toogleFullScreen() {
     this.admin.draggablePopupMode = true;
-    this.admin.draggablePopupModeFullScreen = !this.admin.draggablePopupModeFullScreen
+    this.admin.draggablePopupModeFullScreen =
+      !this.admin.draggablePopupModeFullScreen;
     this.resetDrag();
   }
 
@@ -181,10 +212,7 @@ export class FiredevAdminModeConfigurationComponent implements OnInit {
     // }
   }
 
-
-
   //#endregion
 }
-
 
 //#endregion

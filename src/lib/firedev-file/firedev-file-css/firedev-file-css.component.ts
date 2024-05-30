@@ -35,6 +35,5 @@ export class FiredevFileCssComponent {
   ngOnInit() {
     FiredevFileCssHelpers.helloWorldFiredevFileCss();
   }
-
 }
 //#endregion

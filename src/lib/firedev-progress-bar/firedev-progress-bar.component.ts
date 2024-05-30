@@ -1,48 +1,61 @@
 //#region @browser
-import { Component, EventEmitter, HostBinding, Input, OnInit, Output, ViewChild } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  HostBinding,
+  Input,
+  OnInit,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import { Observable, Subject, Subscription } from 'rxjs';
 import { _ } from 'tnp-core';
 
-import axios from 'axios'
-import { NgProgressConfig, NgProgressModule, NgProgressRef } from 'ngx-progressbar';
+import axios from 'axios';
+import {
+  NgProgressConfig,
+  NgProgressModule,
+  NgProgressRef,
+} from 'ngx-progressbar';
 import { Firedev } from 'firedev';
 // import { Models } from 'tnp-models';
 import type { FiredevAdmin } from '../firedev-admin-mode-configuration';
 
-const calculatePercentage = (loaded, total) => (Math.floor(loaded * 1.0) / total)
+const calculatePercentage = (loaded, total) => Math.floor(loaded * 1.0) / total;
 declare const ENV: any;
 
 @Component({
   selector: 'firedev-progress-bar',
   templateUrl: './firedev-progress-bar.component.html',
-  styleUrls: ['./firedev-progress-bar.component.scss']
+  styleUrls: ['./firedev-progress-bar.component.scss'],
 })
 export class FiredevProgressBarComponent implements OnInit {
-  admin = (window['firedev'] as FiredevAdmin);
+  admin = window['firedev'] as FiredevAdmin;
   @ViewChild('labProgress') labProgress: NgProgressRef;
   @Input() isDesktop: boolean;
   handlers: Subscription[] = [];
-  options: NgProgressConfig = _.merge({
-    min: 8,
-    max: 100,
-    speed: 200,
-    trickleSpeed: 300,
-    debounceTime: 0,
-    ease: 'linear',
-    spinnerPosition: 'right',
-    direction: 'ltr+',
-    color: 'gray',
-    fixed: true,
-    meteor: true,
-    spinner: true,
-    thick: false
-  }, _.get(ENV, `plugins['ngx-progressbar']`));
+  options: NgProgressConfig = _.merge(
+    {
+      min: 8,
+      max: 100,
+      speed: 200,
+      trickleSpeed: 300,
+      debounceTime: 0,
+      ease: 'linear',
+      spinnerPosition: 'right',
+      direction: 'ltr+',
+      color: 'gray',
+      fixed: true,
+      meteor: true,
+      spinner: true,
+      thick: false,
+    },
+    _.get(ENV, `plugins['ngx-progressbar']`)
+  );
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit() {
-
-  }
+  ngOnInit() {}
 
   ngOnDestroy(): void {
     this.handlers.forEach(h => h.unsubscribe());
@@ -50,60 +63,55 @@ export class FiredevProgressBarComponent implements OnInit {
 
   ngAfterViewInit(): void {
     // this.labProgress.set(20)
-    this.loadProgressBar(void 0, axios)
+    this.loadProgressBar(void 0, axios);
   }
 
-
   loadProgressBar(config, instance = axios) {
-
-
-    let requestsCounter = 0
+    let requestsCounter = 0;
 
     const setupStartProgress = () => {
       instance.interceptors.request.use(config => {
         requestsCounter++;
         this.labProgress.start();
-        return config
-      })
-    }
+        return config;
+      });
+    };
 
     const setupUpdateProgress = () => {
-
       const update = e => {
         // NProgress.inc(calculatePercentage(e.loaded, e.total))
 
         const percentage = calculatePercentage(e.loaded, e.total) * 100;
         // console.log(`loaded: ${e.loaded}, total: ${e.total} , pecent: ${percentage}`)
-        this.labProgress.inc(percentage)
-      }
-      instance.defaults.onDownloadProgress = update
-      instance.defaults.onUploadProgress = update
-    }
+        this.labProgress.inc(percentage);
+      };
+      instance.defaults.onDownloadProgress = update;
+      instance.defaults.onUploadProgress = update;
+    };
 
     const setupStopProgress = () => {
       const responseFunc = response => {
-        if ((--requestsCounter) === 0) {
-          this.labProgress.complete()
+        if (--requestsCounter === 0) {
+          this.labProgress.complete();
           // NProgress.done()
         }
-        return response
-      }
+        return response;
+      };
 
       const errorFunc = error => {
-        if ((--requestsCounter) === 0) {
-          this.labProgress.complete()
+        if (--requestsCounter === 0) {
+          this.labProgress.complete();
           // NProgress.done()
         }
-        return Promise.reject(error)
-      }
+        return Promise.reject(error);
+      };
 
-      instance.interceptors.response.use(responseFunc, errorFunc)
-    }
+      instance.interceptors.response.use(responseFunc, errorFunc);
+    };
 
-
-    setupStartProgress()
-    setupUpdateProgress()
-    setupStopProgress()
+    setupStartProgress();
+    setupUpdateProgress();
+    setupStopProgress();
 
     //#region @websqlOnly
     const SYMBOL = Firedev.symbols;
@@ -126,12 +134,12 @@ export class FiredevProgressBarComponent implements OnInit {
     doneFun = window[SYMBOL.WEBSQL_REST_PROGRESS_FUN_DONE];
 
     this.handlers.push(
-      updateFun.subscribe((loaded) => {
+      updateFun.subscribe(loaded => {
         // console.log(`update: ${loaded}`)
         const total = 100;
         const percentage = calculatePercentage(loaded, total) * 100;
         // console.log(`set pecentage: ${percentage}`)
-        this.labProgress.set(percentage)
+        this.labProgress.set(percentage);
       })
     );
     this.handlers.push(
@@ -146,7 +154,7 @@ export class FiredevProgressBarComponent implements OnInit {
       doneFun.subscribe(() => {
         // if ((--requestsCounter) === 0) {
         // console.log('DONE WEBSQL REQUEST')
-        this.labProgress.complete()
+        this.labProgress.complete();
         // NProgress.done()
         // }
       })
@@ -154,6 +162,5 @@ export class FiredevProgressBarComponent implements OnInit {
 
     //#endregion
   }
-
 }
 //#endregion

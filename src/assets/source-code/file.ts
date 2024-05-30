@@ -9,7 +9,6 @@
 // import { FiredevFile } from './firedev-file';
 // import { FiredevFileDefaultAs, FiredevFileTypeArr, IFiredevFileType } from './firedev-file.models';
 
-
 // @Component({
 //   selector: 'firedev-file',
 //   templateUrl: './firedev-file.component.html',
@@ -51,8 +50,6 @@
 //     this.styles = FiredevFileComponent.styles;
 //   }
 
-
-
 //   async ngOnInit() {
 //     if (!this.contentType || !this.ext) {
 //       throw new Error(`[firedev-ui][firedev-file] Can't handle src="${this.src}" in this component`)
@@ -77,11 +74,9 @@
 //       }
 //     }
 
-
 //     if (!this.viewAs) {
 //       this.viewAs = this.defaultViewAs;
 //     }
-
 
 //     if (this.viewAs === 'script-tag') {
 //       this.service.loadScript(this.src, this)

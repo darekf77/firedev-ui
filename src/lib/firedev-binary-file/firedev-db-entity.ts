@@ -1,4 +1,4 @@
-import { Firedev } from "firedev";
+import { Firedev } from 'firedev';
 import { _ } from 'tnp-core';
 
 @Firedev.Entity({
@@ -9,10 +9,9 @@ import { _ } from 'tnp-core';
 })
 export class FiredevDbEntity {
   static from(entity: Partial<FiredevDbEntity>) {
-    return _.merge(new FiredevDbEntity(), entity)
+    return _.merge(new FiredevDbEntity(), entity);
   }
   name: string;
-
 
   columns: string[];
 }

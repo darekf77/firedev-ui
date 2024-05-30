@@ -1,28 +1,44 @@
 //#region imports
-import { Component, OnInit, Input, Output, TemplateRef, EventEmitter, ViewChild, ElementRef } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  Output,
+  TemplateRef,
+  EventEmitter,
+  ViewChild,
+  ElementRef,
+} from '@angular/core';
 import * as _ from 'lodash';
 import { Log, Level } from 'ng2-logger';
 import { Firedev } from 'firedev';
 import { CLASS } from 'typescript-class-helpers';
 import { PageEvent } from '@angular/material/paginator';
 import { MtxGridColumn } from '@ng-matero/extensions/grid';
-import { Subscription, debounceTime, defer, distinctUntilChanged, fromEvent, map, share, tap } from 'rxjs';
+import {
+  Subscription,
+  debounceTime,
+  defer,
+  distinctUntilChanged,
+  fromEvent,
+  map,
+  share,
+  tap,
+} from 'rxjs';
 import { json5 } from 'tnp-core';
 //#endregion
 
 //#region constants
-const log = Log.create('Table wrapper',
-  Level.__NOTHING
-);
+const log = Log.create('Table wrapper', Level.__NOTHING);
 const defaultColums = [
   {
     header: 'ID',
-    field: 'id'
+    field: 'id',
   },
   {
     header: 'NAME',
     field: 'name',
-  }
+  },
 ] as MtxGridColumn[];
 //#endregion
 
@@ -30,20 +46,19 @@ const defaultColums = [
   //#region component options
   selector: 'firedev-table',
   templateUrl: './firedev-table.component.html',
-  styleUrls: ['./firedev-table.component.scss']
+  styleUrls: ['./firedev-table.component.scss'],
 })
 export class FiredevTableComponent {
-
   //#region fields
   @Input() public pageNumber: number = 1;
   @Input() public pageSize: number = 5;
   @Input() public allowedColumns: string[] = [];
   @Input() public entity: typeof Firedev.Base.Entity | string;
   @Input() public expansionTemplate: TemplateRef<any>;
-  @Input() public rows = _.times(20, (id) => {
+  @Input() public rows = _.times(20, id => {
     return {
       id,
-      name: `Amazing ${id} row `
+      name: `Amazing ${id} row `,
     };
   });
   @Input() public columns: MtxGridColumn[] = defaultColums as MtxGridColumn[];
@@ -52,16 +67,17 @@ export class FiredevTableComponent {
 
   @Output() public addingItem = new EventEmitter<void>();
   @ViewChild('search', { static: true }) search?: ElementRef<HTMLElement>;
-  private searchInputChange$ = defer(() => fromEvent<KeyboardEvent>(this.search?.nativeElement as any, 'keyup'))
-    .pipe(
-      map(c => c.target['value']),
-      debounceTime(500),
-      distinctUntilChanged(),
-      share(),
-      tap((data) => {
-        console.log({ data })
-      })
-    );
+  private searchInputChange$ = defer(() =>
+    fromEvent<KeyboardEvent>(this.search?.nativeElement as any, 'keyup')
+  ).pipe(
+    map(c => c.target['value']),
+    debounceTime(500),
+    distinctUntilChanged(),
+    share(),
+    tap(data => {
+      console.log({ data });
+    })
+  );
 
   public expandable: boolean = false;
   public showPaginator = true;
@@ -70,7 +86,7 @@ export class FiredevTableComponent {
   private sub: Subscription = new Subscription();
   //#endregion
 
-  constructor() { }
+  constructor() {}
 
   //#region hooks
 
@@ -94,12 +110,19 @@ export class FiredevTableComponent {
 
     const entityClass = this.entity;
     if (entityClass && columnsConfigSameAsDefault) {
-      log.i('this.crud.entity', CLASS.describeProperites(entityClass as Function));
+      log.i(
+        'this.crud.entity',
+        CLASS.describeProperites(entityClass as Function)
+      );
 
       try {
-        const props = CLASS.describeProperites(entityClass as Function)
+        const props = CLASS.describeProperites(entityClass as Function);
         let columns = props
-          .filter(prop => this.allowedColumns.length > 0 ? this.allowedColumns.includes(prop) : true)
+          .filter(prop =>
+            this.allowedColumns.length > 0
+              ? this.allowedColumns.includes(prop)
+              : true
+          )
           .map(prop => {
             return {
               header: _.upperCase(prop),
@@ -110,12 +133,12 @@ export class FiredevTableComponent {
         const extra = this.allowedColumns.filter(f => !props.includes(f));
         columns = [
           ...columns,
-          ...extra.map((prop) => {
+          ...extra.map(prop => {
             return {
               header: _.upperCase(prop),
               field: prop,
             } as MtxGridColumn;
-          })
+          }),
         ];
 
         // console.log({
@@ -130,13 +153,9 @@ export class FiredevTableComponent {
         }
         this.columns = columns;
       } catch (error) {
-        console.error(error)
+        console.error(error);
       }
-
-
-
     } else {
-
     }
 
     if (!this.entity) {
@@ -169,7 +188,8 @@ export class FiredevTableComponent {
   //#endregion
 
   //#region methods / retrive data
-  async retriveData() { // @ts-ignore
+  async retriveData() {
+    // @ts-ignore
     // TODO @LAST
     // if (!this.entity) {
     //   return;
@@ -222,5 +242,4 @@ export class FiredevTableComponent {
   //#endregion
 
   //#endregion
-
 }

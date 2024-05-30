@@ -1,10 +1,7 @@
 import { Firedev } from 'firedev';
 import { FiredevFileCss } from './firedev-file-css';
 import { _ } from 'tnp-core';
-import {
-  randUserName,
-  randAddress,
-} from '@ngneat/falso'; // faking data
+import { randUserName, randAddress } from '@ngneat/falso'; // faking data
 import { IFiredevFileCss } from './firedev-file-css.models';
 //#region @websql
 import { FiredevFileCssBackend } from './firedev-file-css-backend';
@@ -22,7 +19,7 @@ import { FiredevFileCssBackend } from './firedev-file-css-backend';
 export class FiredevFileCssController extends Firedev.Base.CrudController<any> {
   entity() {
     return FiredevFileCss;
-  };
+  }
   //#region @websql
   readonly backend = FiredevFileCssBackend.for(this);
   //#endregion
@@ -35,5 +32,4 @@ export class FiredevFileCssController extends Firedev.Base.CrudController<any> {
     // const all = await repo.find()
   }
   //#endregion
-
 }

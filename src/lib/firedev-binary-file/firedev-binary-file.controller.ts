@@ -3,10 +3,7 @@ import { Firedev } from 'firedev';
 import { CoreModels } from 'tnp-core';
 import { FiredevBinaryFile } from './firedev-binary-file';
 import { Helpers, Utils, _, crossPlatformPath, path } from 'tnp-core';
-import {
-  randUserName,
-  randAddress,
-} from '@ngneat/falso'; // faking data
+import { randUserName, randAddress } from '@ngneat/falso'; // faking data
 import { IFiredevBinaryFile } from './firedev-binary-file.models';
 import { FORM_DATA_FILENAME } from './firedev-binary-file.constants';
 import { FiredevDbEntity } from './firedev-db-entity';
@@ -37,11 +34,12 @@ declare const ENV: any;
   className: 'FiredevBinaryFileController',
   //#endregion
 })
-export class FiredevBinaryFileController extends Firedev.Base.CrudController<FiredevBinaryFile> {
+export class FiredevBinaryFileController extends Firedev.Base
+  .CrudController<FiredevBinaryFile> {
   //#region fields
   entity() {
-    return FiredevBinaryFile
-  };
+    return FiredevBinaryFile;
+  }
   //#region @websql
   readonly backend = FiredevBinaryFileBackend.for(this);
   //#endregion
@@ -52,18 +50,18 @@ export class FiredevBinaryFileController extends Firedev.Base.CrudController<Fir
   //#region methods / save
   public async save(
     binaryData: Utils.DbBinaryFormatForBrowser,
-    relativePathOnServer: string,
+    relativePathOnServer: string
   ): Promise<void> {
-    console.log('SAVING', binaryData)
+    console.log('SAVING', binaryData);
     //#region @backend
     if (Helpers.isBuffer(binaryData)) {
-      this.backend.saveFileNodejs(binaryData, relativePathOnServer)
+      this.backend.saveFileNodejs(binaryData, relativePathOnServer);
     }
     if (_.isString(binaryData)) {
-      this.backend.saveFileNodejs(binaryData, relativePathOnServer)
+      this.backend.saveFileNodejs(binaryData, relativePathOnServer);
     }
     if (Helpers.isBlob(binaryData)) {
-      this.backend.saveFileNodejs(binaryData, relativePathOnServer)
+      this.backend.saveFileNodejs(binaryData, relativePathOnServer);
     }
     //#endregion
     //#region @browser
@@ -83,7 +81,7 @@ export class FiredevBinaryFileController extends Firedev.Base.CrudController<Fir
   //#region methods / load
   public async load<T = Utils.DbBinaryFormat>(
     relativePathOnServer: string,
-    loadAs: Utils.DbBinaryFormatEnum = Utils.DbBinaryFormatEnum.Blob,
+    loadAs: Utils.DbBinaryFormatEnum = Utils.DbBinaryFormatEnum.Blob
   ): Promise<T> {
     //#region @browser
     if (loadAs === Utils.DbBinaryFormatEnum.Blob) {
@@ -106,14 +104,20 @@ export class FiredevBinaryFileController extends Firedev.Base.CrudController<Fir
   //#endregion
 
   //#region methods / save file
-  protected async saveFile(file: File, relativePathOnServer?: string): Promise<FiredevBinaryFile> {
+  protected async saveFile(
+    file: File,
+    relativePathOnServer?: string
+  ): Promise<FiredevBinaryFile> {
     //#region @browser
     const formData = new FormData();
     formData.append(FORM_DATA_FILENAME, file);
-    await this.saveFormData(formData, (crossPlatformPath([
-      // 'files',
-      relativePathOnServer ? relativePathOnServer : file.name,
-    ]))).received;
+    await this.saveFormData(
+      formData,
+      crossPlatformPath([
+        // 'files',
+        relativePathOnServer ? relativePathOnServer : file.name,
+      ])
+    ).received;
     //#endregion
     return void 0;
   }
@@ -121,14 +125,23 @@ export class FiredevBinaryFileController extends Firedev.Base.CrudController<Fir
 
   //#region methods / save blob
   //#region @browser
-  protected async saveBlob(blob: Blob, relativePathOnServer: string): Promise<void> {
+  protected async saveBlob(
+    blob: Blob,
+    relativePathOnServer: string
+  ): Promise<void> {
     const formData = new FormData();
-    const file = await Utils.binary.blobToFile(blob, path.basename(relativePathOnServer));
+    const file = await Utils.binary.blobToFile(
+      blob,
+      path.basename(relativePathOnServer)
+    );
     formData.append(FORM_DATA_FILENAME, file);
-    await this.saveFormData(formData, (crossPlatformPath([
-      // 'blobs',
-      relativePathOnServer
-    ]))).received;
+    await this.saveFormData(
+      formData,
+      crossPlatformPath([
+        // 'blobs',
+        relativePathOnServer,
+      ])
+    ).received;
     return void 0;
   }
   //#endregion
@@ -140,10 +153,13 @@ export class FiredevBinaryFileController extends Firedev.Base.CrudController<Fir
     const file = await Utils.binary.textToFile(text, filename);
     const formData = new FormData();
     formData.append(FORM_DATA_FILENAME, file);
-    const data = this.saveFormData(formData, (crossPlatformPath([
-      // 'text',
-      filename,
-    ])));
+    const data = this.saveFormData(
+      formData,
+      crossPlatformPath([
+        // 'text',
+        filename,
+      ])
+    );
     await data.received;
   }
   //#endregion
@@ -152,7 +168,7 @@ export class FiredevBinaryFileController extends Firedev.Base.CrudController<Fir
   //#region methods / get text
   //#region @browser
   protected async getText(relativePathOnServer: string): Promise<string> {
-    const data = await this._getBlob((relativePathOnServer)).received;
+    const data = await this._getBlob(relativePathOnServer).received;
     return await data.body.blob.text();
   }
   //#endregion
@@ -161,7 +177,7 @@ export class FiredevBinaryFileController extends Firedev.Base.CrudController<Fir
   //#region methods / get blob
   //#region @browser
   protected async getBlob(relativePathOnServer: string): Promise<Blob> {
-    const data = await this._getBlob((relativePathOnServer)).received; // @ts-ignore
+    const data = await this._getBlob(relativePathOnServer).received; // @ts-ignore
     return data.body.blob;
   }
   //#endregion
@@ -170,9 +186,12 @@ export class FiredevBinaryFileController extends Firedev.Base.CrudController<Fir
   //#region methods / get file
   //#region @browser
   protected async getFile(relativePathOnServer: string): Promise<File> {
-    const data = await this._getBlob((relativePathOnServer)).received;
+    const data = await this._getBlob(relativePathOnServer).received;
     const blob = data.body.blob; // @ts-ignore
-    const binaryData = await Utils.binary.blobToFile(blob, relativePathOnServer);
+    const binaryData = await Utils.binary.blobToFile(
+      blob,
+      relativePathOnServer
+    );
     return binaryData;
   }
   //#endregion
@@ -186,7 +205,6 @@ export class FiredevBinaryFileController extends Firedev.Base.CrudController<Fir
     // @LAST simplyfi this and make api for access files/entities easy
     // - load entity (with binary data)
     // - save entity (with binary data)
-
 
     /* tests
     //#region hamster image
@@ -245,7 +263,6 @@ export class FiredevBinaryFileController extends Firedev.Base.CrudController<Fir
     await repo.save(filesToSave);
     // console.log('saving asset done')
     //#endregion
-
   }
   //#endregion
   //#endregion
@@ -253,27 +270,30 @@ export class FiredevBinaryFileController extends Firedev.Base.CrudController<Fir
   //#region methods / _ get blob
   @Firedev.Http.GET({
     overridResponseType: 'blob',
-    path: '/get/blob'
+    path: '/get/blob',
   })
-  private _getBlob(@Firedev.Http.Param.Query('by-path') relativePathOnServer: string): Firedev.Response<Blob> {
+  private _getBlob(
+    @Firedev.Http.Param.Query('by-path') relativePathOnServer: string
+  ): Firedev.Response<Blob> {
     //#region @websqlFunc
     return async (req, res) => {
-
-      relativePathOnServer = (relativePathOnServer);
+      relativePathOnServer = relativePathOnServer;
       //#region @websqlOnly
       if (Helpers.isWebSQL) {
         const file = await this.backend.getByUrl(relativePathOnServer);
 
         if (!file.isInIndexedDbCache) {
           let assetBlob: Blob;
-          assetBlob = await this.backend.getAssetFromWebsqlMode(relativePathOnServer);
+          assetBlob =
+            await this.backend.getAssetFromWebsqlMode(relativePathOnServer);
           await this.backend.saveFileWebsql(assetBlob, relativePathOnServer);
           file.isInIndexedDbCache = true;
           await this.repository.update(file.id, file);
           return assetBlob;
         }
         // console.log('restored file')
-        const restoreFileFromIndexeDb = await this.backend.getFileWebsql(relativePathOnServer);
+        const restoreFileFromIndexeDb =
+          await this.backend.getFileWebsql(relativePathOnServer);
         return restoreFileFromIndexeDb;
       }
       //#endregion
@@ -282,9 +302,14 @@ export class FiredevBinaryFileController extends Firedev.Base.CrudController<Fir
       if (Helpers.isNode) {
         // TODO @LAST reading form filesystem does not work... in bd should be
         // sparate browser and backend path
-        const restoreFileFromFileSystem = await this.backend.getFileNodejs(relativePathOnServer);
+        const restoreFileFromFileSystem =
+          await this.backend.getFileNodejs(relativePathOnServer);
         let blob = await Utils.binary.bufferToBlob(restoreFileFromFileSystem);
-        blob = blob.slice(0, blob.size, CoreModels.mimeTypes[path.extname(relativePathOnServer)])
+        blob = blob.slice(
+          0,
+          blob.size,
+          CoreModels.mimeTypes[path.extname(relativePathOnServer)]
+        );
         return blob;
         // return restoreFileFromFileSystem as any;
       }
@@ -298,32 +323,39 @@ export class FiredevBinaryFileController extends Firedev.Base.CrudController<Fir
   //#region methods / save form data
   @Firedev.Http.POST({
     overrideContentType: 'multipart/form-data',
-    path: '/blob/read'
+    path: '/blob/read',
   })
   private saveFormData(
     @Firedev.Http.Param.Body() formData: any, // FormData & { getAll(name: string): File[]; },
-    @Firedev.Http.Param.Query('filepath') relativePathOnServer: string): Firedev.Response<void> {
+    @Firedev.Http.Param.Query('filepath') relativePathOnServer: string
+  ): Firedev.Response<void> {
     //#region @websqlFunc
     return async (req, res) => {
-      relativePathOnServer = (relativePathOnServer);
+      relativePathOnServer = relativePathOnServer;
       console.log({
-        formData, relativePathOnServer, req, res
+        formData,
+        relativePathOnServer,
+        req,
+        res,
       });
 
       //#region @websqlOnly
       const websqlfile = formData.getAll(FORM_DATA_FILENAME) as File[];
-      await this.backend.saveFileWebsql(_.first(websqlfile), relativePathOnServer)
+      await this.backend.saveFileWebsql(
+        _.first(websqlfile),
+        relativePathOnServer
+      );
       //#endregion
 
       //#region @backend
       // @ts-ignore
       if (!req.files || Object.keys(req.files).length === 0) {
-        console.log("NOTHING TO UPLOAD")
+        console.log('NOTHING TO UPLOAD');
         res.status(400).send('No files were uploaded.');
         return;
       }
       const files = _.values(req['files']) as CoreModels.UploadedBackendFile[];
-      await this.backend.saveFileNodejs(_.first(files), relativePathOnServer)
+      await this.backend.saveFileNodejs(_.first(files), relativePathOnServer);
       //#endregion
 
       return void 0;
@@ -334,10 +366,11 @@ export class FiredevBinaryFileController extends Firedev.Base.CrudController<Fir
 
   //#region methods / get entity by url
   @Firedev.Http.GET({
-    path: '/get/blobless/enitiy/by'
+    path: '/get/blobless/enitiy/by',
   })
   getByUrl(
-    @Firedev.Http.Param.Query('by-path') relativePathOnServer: string): Firedev.Response<FiredevBinaryFile> {
+    @Firedev.Http.Param.Query('by-path') relativePathOnServer: string
+  ): Firedev.Response<FiredevBinaryFile> {
     //#region @websqlFunc
     return async (req, res) => {
       return await this.backend.getByUrl(relativePathOnServer);
@@ -348,14 +381,12 @@ export class FiredevBinaryFileController extends Firedev.Base.CrudController<Fir
 
   //#endregion
 
-
   //#region get all db entities
   @Firedev.Http.GET()
   public getAllEntities(): Firedev.Response<FiredevDbEntity[]> {
     //#region @websqlFunc
     return async (req, res) => {
-
-      let tables: FiredevDbEntity[]
+      let tables: FiredevDbEntity[];
 
       //#region @websqlOnly
       if (Helpers.isWebSQL) {
@@ -385,20 +416,19 @@ export class FiredevBinaryFileController extends Firedev.Base.CrudController<Fir
       }
       //#endregion
 
-
       tables = (tables || []).map(c => FiredevDbEntity.from(c));
-
 
       for (let index = 0; index < tables.length; index++) {
         const table = tables[index];
-        table.columns = (await this.connection.query(`
+        table.columns = (
+          await this.connection.query(`
         SELECT c.name FROM pragma_table_info('${table.name}') c;
-        `)).map(c => c.name);
+        `)
+        ).map(c => c.name);
       }
 
-
       return tables;
-    }
+    };
     //#endregion
   }
   //#endregion

@@ -1,12 +1,22 @@
 //#region imports
-import { Component, EventEmitter, HostBinding, Input, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  HostBinding,
+  Input,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { Subscription } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { _ } from 'tnp-core';
 import { StaticColumnsModule } from 'static-columns';
 import { FiredevFullMaterialModule } from '../../../firedev-full-material.module';
 import { FlatTreeControl } from '@angular/cdk/tree';
-import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
+import {
+  MatTreeFlatDataSource,
+  MatTreeFlattener,
+} from '@angular/material/tree';
 import { FiredevBinaryFile } from '../../../firedev-binary-file/firedev-binary-file';
 import { FiredevDbEntity } from '../../../firedev-binary-file/firedev-db-entity';
 import { FiredevTableModule } from '../../../firedev-table/firedev-table.module';
@@ -27,9 +37,7 @@ import { FiredevTableModule } from '../../../firedev-table/firedev-table.module'
 export class FiredevDbAdminComponent implements OnInit {
   public dataBaseInited: boolean = false;
   public tables: FiredevDbEntity[] = [];
-  async ngOnInit() {
-
-  }
+  async ngOnInit() {}
 
   public trackByName(a: FiredevDbEntity) {
     return a.name;

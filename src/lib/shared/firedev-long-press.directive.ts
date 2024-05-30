@@ -4,21 +4,18 @@ import {
   Output,
   EventEmitter,
   HostBinding,
-  HostListener
+  HostListener,
 } from '@angular/core';
 
 import { _ } from 'tnp-core';
 import { Log, Level } from 'ng2-logger';
-const log = Log.create(`[firedev-helpers] long-press`
-  , Level.__NOTHING
-)
+const log = Log.create(`[firedev-helpers] long-press`, Level.__NOTHING);
 
 @Directive({
   selector: '[firedev-long-press]',
   standalone: true,
 })
 export class FiredevLongPress {
-
   @Input() pressDuration: number = 1000;
 
   @Output() onLongPress: EventEmitter<any> = new EventEmitter();
@@ -32,15 +29,19 @@ export class FiredevLongPress {
   private mouseY: number = 0;
 
   @HostBinding('class.press')
-  get press() { return this.pressing; }
+  get press() {
+    return this.pressing;
+  }
 
   @HostBinding('class.longpress')
-  get longPress() { return this.longPressing; }
+  get longPress() {
+    return this.longPressing;
+  }
 
   allowTrigger = false;
   triggerEnd = _.debounce(() => {
     this.endPress();
-  }, 500)
+  }, 500);
 
   @HostListener('mousedown', ['$event'])
   onMouseDown(event) {
@@ -71,8 +72,8 @@ export class FiredevLongPress {
   @HostListener('mousemove', ['$event'])
   onMouseMove(event) {
     if (this.pressing && !this.longPressing) {
-      const xThres = (event.clientX - this.mouseX) > 10;
-      const yThres = (event.clientY - this.mouseY) > 10;
+      const xThres = event.clientX - this.mouseX > 10;
+      const yThres = event.clientY - this.mouseY > 10;
       if (xThres || yThres) {
         this.endPress();
       }
@@ -82,7 +83,7 @@ export class FiredevLongPress {
   loop(event) {
     if (this.longPressing) {
       this.timeout = setTimeout(() => {
-        log.d(`emil longpressing`)
+        log.d(`emil longpressing`);
         this.triggerEnd();
         this.onLongPressing.emit(event);
         this.loop(event);
@@ -96,10 +97,10 @@ export class FiredevLongPress {
     this.longPressing = false;
     this.pressing = false;
     if (emit) {
-      log.d(`EMIT END`)
+      log.d(`EMIT END`);
       this.onLongPressEnd.emit(true);
     } else {
-      log.d(`NOT EMIT END`)
+      log.d(`NOT EMIT END`);
     }
   }
 
@@ -107,5 +108,4 @@ export class FiredevLongPress {
   onMouseUp() {
     this.endPress(false);
   }
-
 }

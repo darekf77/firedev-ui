@@ -8,11 +8,10 @@ import {
   BrowserUnitArr,
   DisplayOpt,
   DisplayOptArr,
-  FiredevFileCssNonColumnsKeys, FiredevFileCssNonColumnsKeysArr,
+  FiredevFileCssNonColumnsKeys,
+  FiredevFileCssNonColumnsKeysArr,
 } from './firedev-file-css.models';
-import {
-  defaultModelValuesFiredevFileCss as defaultModelValues
-} from './firedev-file-css.models';
+import { defaultModelValuesFiredevFileCss as defaultModelValues } from './firedev-file-css.models';
 //#endregion
 
 /**
@@ -21,25 +20,28 @@ import {
  * + use static methods to for backend access encapsulation
  */
 @Firedev.Entity({
-
   className: 'FiredevFileCss',
   //#region @websql
   createTable: false,
   //#endregion,
-  defaultModelValues
+  defaultModelValues,
 })
 export class FiredevFileCss extends Firedev.Base.Entity {
-
   //#region static
   static ctrl: FiredevFileCssController;
-  static from(obj: Omit<Partial<FiredevFileCss>, FiredevFileCssNonColumnsKeys>) {
-    obj = _.merge(defaultModelValues, _.omit(obj, FiredevFileCssNonColumnsKeysArr))
+  static from(
+    obj: Omit<Partial<FiredevFileCss>, FiredevFileCssNonColumnsKeys>
+  ) {
+    obj = _.merge(
+      defaultModelValues,
+      _.omit(obj, FiredevFileCssNonColumnsKeysArr)
+    );
     return _.merge(new FiredevFileCss(), obj) as FiredevFileCss;
   }
   static $getAll() {
-    return this.ctrl.getAll().received?.observable.pipe(
-      map(data => data.body.json)
-    );
+    return this.ctrl
+      .getAll()
+      .received?.observable.pipe(map(data => data.body.json));
   }
 
   static async getAll() {
@@ -52,12 +54,13 @@ export class FiredevFileCss extends Firedev.Base.Entity {
   }
 
   static getOptionsFor(classProperty: keyof FiredevFileCss) {
-    const map = (arr: string[]) => arr.map((value) => {
-      return {
-        value,
-        label: value
-      }
-    })
+    const map = (arr: string[]) =>
+      arr.map(value => {
+        return {
+          value,
+          label: value,
+        };
+      });
     switch (classProperty) {
       case 'display':
         return map(DisplayOptArr);
@@ -70,7 +73,8 @@ export class FiredevFileCss extends Firedev.Base.Entity {
   //#endregion
 
   //#region constructor
-  private constructor(...args) { // @ts-ignore
+  private constructor(...args) {
+    // @ts-ignore
     super(...args);
   }
   //#endregion
@@ -87,7 +91,7 @@ export class FiredevFileCss extends Firedev.Base.Entity {
   @Firedev.Orm.Column.Custom({
     type: 'varchar',
     length: 100,
-    default: defaultModelValues.description
+    default: defaultModelValues.description,
   })
   //#endregion
   description?: string;
@@ -99,10 +103,11 @@ export class FiredevFileCss extends Firedev.Base.Entity {
   //#endregion
 
   //#region methods
-  clone(options?: { propsToOmit: (keyof FiredevFileCss)[]; }): FiredevFileCss {
-    const { propsToOmit } = options || { propsToOmit: FiredevFileCssNonColumnsKeysArr };
+  clone(options?: { propsToOmit: (keyof FiredevFileCss)[] }): FiredevFileCss {
+    const { propsToOmit } = options || {
+      propsToOmit: FiredevFileCssNonColumnsKeysArr,
+    };
     return _.merge(new FiredevFileCss(), _.omit(this, propsToOmit));
   }
   //#endregion
-
 }

@@ -1,19 +1,18 @@
 :host {
-  position           : fixed;
-  background-color   : rgb(159 159 159 / 34%);
-  z-index            : 99999;
-  backdrop-filter    : blur(50px);
-  width              : 100%;
-  height             : 100%;
+  position: fixed;
+  background-color: rgb(159 159 159 / 34%);
+  z-index: 99999;
+  backdrop-filter: blur(50px);
+  width: 100%;
+  height: 100%;
   // box-sizing      : border-box;
-  display            : none;
+  display: none;
 }
 
 // @font-face {
 //   font-family: "Geist Mono";
 //   src        : url("https://assets.codepen.io/605876/GeistMonoVariableVF.ttf") format("truetype");
 // }
-
 
 input {
   // font-family      : "Geist Mono", monospace;
@@ -29,11 +28,11 @@ input {
 
   background: rgb(255, 255, 255);
   border-radius: 6px;
-  outline          : 0px;
-  border           : 0px;
-  color            : gray;
-  text-align       : center;
-  width            : 500px;
+  outline: 0px;
+  border: 0px;
+  color: gray;
+  text-align: center;
+  width: 500px;
 
   // &::placeholder {
   //   font-style: italic;

@@ -1,8 +1,11 @@
 //#region @websql
 //#region imports
 import {
-  EntitySubscriberInterface, EventSubscriber, InsertEvent,
-  RemoveEvent, UpdateEvent
+  EntitySubscriberInterface,
+  EventSubscriber,
+  InsertEvent,
+  RemoveEvent,
+  UpdateEvent,
 } from 'firedev-typeorm';
 import type { FiredevBinaryFile } from '../firedev-binary-file';
 //#endregion
@@ -14,13 +17,11 @@ import type { FiredevBinaryFile } from '../firedev-binary-file';
  */
 @EventSubscriber()
 export class FiredevBinaryFileSubscriber implements EntitySubscriberInterface {
-
   /**
-  * Called after entity update.
-  */
+   * Called after entity update.
+   */
   // afterUpdate(event: UpdateEvent<FiredevBinaryFile>) {
   //   console.log(`AFTER ENTITY UPDATED: `, event.entity)
   // }
-
 }
 //#endregion

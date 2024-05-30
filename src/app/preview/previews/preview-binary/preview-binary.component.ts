@@ -1,5 +1,11 @@
 //#region imports
-import { Component, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnInit,
+  TemplateRef,
+  ViewChild,
+} from '@angular/core';
 import { Subscription } from 'rxjs';
 import { CoreModels, Utils, _, path } from 'tnp-core';
 import { FiredevBinaryFile } from 'firedev-ui';
@@ -13,7 +19,7 @@ import { CLASS } from 'typescript-class-helpers';
   //#region component options
   selector: 'app-preview-binary',
   templateUrl: './preview-binary.component.html',
-  styleUrls: ['./preview-binary.component.scss']
+  styleUrls: ['./preview-binary.component.scss'],
   //#endregion
 })
 export class PreviewBinaryComponent {
@@ -27,7 +33,7 @@ export class PreviewBinaryComponent {
   filename = 'myfile.txt';
   url: string;
   file: File;
-  generalHash = (new Date()).getTime();
+  generalHash = new Date().getTime();
   text = '';
   // @Input() Files = Files;
   // files$ = this.Files.$getAll().pipe(map(data => {
@@ -35,52 +41,63 @@ export class PreviewBinaryComponent {
   // }))
 
   is(type: CoreModels.MediaType) {
-    return (CoreModels.mimeTypes[path.extname(this.filename)] as string)?.startsWith(type);
+    return (
+      CoreModels.mimeTypes[path.extname(this.filename)] as string
+    )?.startsWith(type);
   }
 
   myId: number;
 
   @Input({
-    required: false
+    required: false,
   })
   set id(v: string) {
     this.myId = Number(v);
   }
 
-  cmsUrl = this.domSanitizer.bypassSecurityTrustResourceUrl(`${location.origin}/#/cms/list`);
+  cmsUrl = this.domSanitizer.bypassSecurityTrustResourceUrl(
+    `${location.origin}/#/cms/list`
+  );
 
   constructor(
     private domSanitizer: DomSanitizer,
 
-    private firedevAdminService: FiredevAdminService,
-  ) { }
+    private firedevAdminService: FiredevAdminService
+  ) {}
 
-  ngOnInit() {
-
-  }
+  ngOnInit() {}
 
   ngAfterViewInit(): void {
     this.firedevAdminService.addTab('CMS', this.cms);
   }
 
   async upload(event: Event) {
-    const elem = (<HTMLInputElement>event.target);
+    const elem = <HTMLInputElement>event.target;
     let files = elem.files;
     this.file = files.item(0);
     const blob = await Utils.binary.fileToBlob(this.file);
-    this.url = this.domSanitizer.bypassSecurityTrustUrl(window.URL.createObjectURL(blob as Blob)) as string;
-    console.log(this.url)
+    this.url = this.domSanitizer.bypassSecurityTrustUrl(
+      window.URL.createObjectURL(blob as Blob)
+    ) as string;
+    console.log(this.url);
   }
 
   async read() {
-
     if (this.is('text')) {
-      const data = await FiredevBinaryFile.ctrl.load<string>(this.filename, Utils.DbBinaryFormatEnum.string);
+      const data = await FiredevBinaryFile.ctrl.load<string>(
+        this.filename,
+        Utils.DbBinaryFormatEnum.string
+      );
       this.text = data;
     }
     if (this.is('image')) {
-      const blob = await FiredevBinaryFile.ctrl.load<Blob>(this.filename, Utils.DbBinaryFormatEnum.Blob);
-      this.url = this.domSanitizer.bypassSecurityTrustUrl(window.URL.createObjectURL(blob as Blob)) as string;
+      const blob = await FiredevBinaryFile.ctrl.load<Blob>(
+        this.filename,
+        Utils.DbBinaryFormatEnum.Blob
+      );
+      this.url = this.domSanitizer.bypassSecurityTrustUrl(
+        window.URL.createObjectURL(blob as Blob)
+      ) as string;
     }
   }
 
@@ -92,5 +109,4 @@ export class PreviewBinaryComponent {
       await FiredevBinaryFile.ctrl.save(this.file, this.filename);
     }
   }
-
 }

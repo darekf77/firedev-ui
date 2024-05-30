@@ -10,5 +10,5 @@ import { FiredevGithubForkMeCornerComponent } from './firedev-github-fork-me-cor
   declarations: [FiredevGithubForkMeCornerComponent],
   providers: [],
 })
-export class FiredevGithubForkMeCornerModule { }
+export class FiredevGithubForkMeCornerModule {}
 //#endregion

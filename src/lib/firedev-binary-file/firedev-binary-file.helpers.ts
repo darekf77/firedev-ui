@@ -9,9 +9,5 @@ import { Helpers } from 'tnp-helpers';
  * + helper can be used on backend/frontend
  */
 export namespace FiredevBinaryFileHelpers {
-
-  export function helloWorldFiredevBinaryFile() {
-
-  }
-
+  export function helloWorldFiredevBinaryFile() {}
 }

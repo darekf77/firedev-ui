@@ -1,5 +1,14 @@
 //#region  imports
-import { Component, ElementRef, HostBinding, Injector, Input, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  HostBinding,
+  Injector,
+  Input,
+  OnInit,
+  SimpleChanges,
+  ViewChild,
+} from '@angular/core';
 import { Firedev } from 'firedev';
 import { FiredevFileHelpers } from './firedev-file.helpers';
 import { crossPlatformPath, Helpers, path, _ } from 'tnp-core';
@@ -22,9 +31,7 @@ import { StaticColumnsModule } from 'static-columns';
 import { FiredevInjectHTMLDirective } from '../shared/firedev-inject-html.directive';
 import { Level, Log } from 'ng2-logger';
 import { CommonModule } from '@angular/common';
-const log = Log.create('firedev',
-  Level.__NOTHING
-);
+const log = Log.create('firedev', Level.__NOTHING);
 //#endregion
 
 /**
@@ -45,27 +52,30 @@ const log = Log.create('firedev',
   //#endregion
 })
 export class FiredevFileComponent implements OnInit {
-
   //#region static
-  static readonly scripts = {}
-  static readonly styles = {}
+  static readonly scripts = {};
+  static readonly styles = {};
   readonly scripts: any;
   readonly styles: any;
 
-  private static cachedFiles = {} as { [src in string]: { [version in number]: FiredevFile; } };
-  private static cachedFilesLastVer = {} as { [src in string]: number; };
-  private static currentProcessing = {} as { [src in string]: Subject<FiredevFile>; };
+  private static cachedFiles = {} as {
+    [src in string]: { [version in number]: FiredevFile };
+  };
+  private static cachedFilesLastVer = {} as { [src in string]: number };
+  private static currentProcessing = {} as {
+    [src in string]: Subject<FiredevFile>;
+  };
   private static filesToCache = [
     'image',
     'html',
     'json',
-    'js'
+    'js',
   ] as IFiredevFileType[];
 
   private static filesToCacheText = [
     'html',
     'json',
-    'js'
+    'js',
   ] as IFiredevFileType[];
   //#endregion
 
@@ -74,10 +84,11 @@ export class FiredevFileComponent implements OnInit {
   // tempFile?: File;
   tempText?: string;
   tempLink?: string;
-  admin = (window['firedev'] as FiredevAdmin);
+  admin = window['firedev'] as FiredevAdmin;
   @Input() file: FiredevFile;
   @Input() insideAdmin = false;
-  @Input() @HostBinding('style.width.px') @Input() width: number = DEFAULT_WIDTH;
+  @Input() @HostBinding('style.width.px') @Input() width: number =
+    DEFAULT_WIDTH;
   @Input() @HostBinding('style.height.px') @Input() height: number = 0;
   @Input() viewAs: FiredevFileDefaultAs;
   @Input() readonly src: string;
@@ -87,7 +98,10 @@ export class FiredevFileComponent implements OnInit {
   @ViewChild('image') image: any;
   @ViewChild('html') html: any;
   @ViewChild('json') json: any;
-  @HostBinding('style.display') styleDisplay: 'block' | 'inline-block' | 'none' = 'inline-block';
+  @HostBinding('style.display') styleDisplay:
+    | 'block'
+    | 'inline-block'
+    | 'none' = 'inline-block';
 
   get FiredevFile() {
     return FiredevFile;
@@ -95,8 +109,8 @@ export class FiredevFileComponent implements OnInit {
 
   //#region fields & getters / debouce init
   debounceInit = _.debounce(async () => {
-    await this.init(false)
-  }, 200)
+    await this.init(false);
+  }, 200);
   //#endregion
 
   //#region fields & getters / native element
@@ -116,10 +130,7 @@ export class FiredevFileComponent implements OnInit {
   //#endregion
 
   //#region constructor
-  constructor(
-    private domSanitizer: DomSanitizer,
-
-  ) {
+  constructor(private domSanitizer: DomSanitizer) {
     this.scripts = FiredevFileComponent.scripts;
     this.styles = FiredevFileComponent.styles;
   }
@@ -130,14 +141,12 @@ export class FiredevFileComponent implements OnInit {
   //#region hooks / on changes
   ngOnChanges(changes): void {
     // console.log(changes)
-    this.debounceInit()
+    this.debounceInit();
   }
   //#endregion
 
   //#region hooks / on init
   async ngOnInit() {
-
-
     if (_.isUndefined(this.offline)) {
       this.offline = true;
     }
@@ -150,7 +159,6 @@ export class FiredevFileComponent implements OnInit {
   async ngAfterViewInit() {
     //Called after ngAfterContentInit when the component's view has been initialized. Applies to components only.
     //Add 'implements AfterViewInit' to the class.
-
     // console.log({
     //   src: this.file?.src,
     //   type: this.file?.type,
@@ -186,7 +194,9 @@ export class FiredevFileComponent implements OnInit {
     if (_.isUndefined(FiredevFileComponent.currentProcessing[src])) {
       FiredevFileComponent.currentProcessing[src] = new Subject();
     } else {
-      const obs = FiredevFileComponent.currentProcessing[src] as Observable<FiredevFile>;
+      const obs = FiredevFileComponent.currentProcessing[
+        src
+      ] as Observable<FiredevFile>;
       const fromSubjectCache = await firstValueFrom(obs);
       // console.log('** subject cache ', fromSubjectCache);
       return fromSubjectCache;
@@ -197,39 +207,47 @@ export class FiredevFileComponent implements OnInit {
       latestVersion = await this.FiredevFile.getLatestVersion(src);
       FiredevFileComponent.cachedFilesLastVer[src] = latestVersion;
     } else {
-      latestVersion = FiredevFileComponent.cachedFilesLastVer[src]
+      latestVersion = FiredevFileComponent.cachedFilesLastVer[src];
     }
 
     // console.log(`version for ${src}`, latestVersion)
 
     if (!FiredevFileComponent.cachedFiles[src]) {
-      FiredevFileComponent.cachedFiles[src] = {}
+      FiredevFileComponent.cachedFiles[src] = {};
     }
 
-    if ( // invalidate cache
-      Object.keys(FiredevFileComponent.cachedFiles[src]).length > 0
-      && _.isUndefined(FiredevFileComponent.cachedFiles[src][latestVersion])
-    ) { //
+    if (
+      // invalidate cache
+      Object.keys(FiredevFileComponent.cachedFiles[src]).length > 0 &&
+      _.isUndefined(FiredevFileComponent.cachedFiles[src][latestVersion])
+    ) {
+      //
       // console.log(`INVALIDATE CACHE FOR ${src}`)
       FiredevFileComponent.cachedFiles[src] = {};
     }
 
     if (_.isUndefined(FiredevFileComponent.cachedFiles[src][latestVersion])) {
-
       const bloblessFile = await this.FiredevFile.getBloblessBy(src);
 
-      if (FiredevFileComponent.filesToCache.includes(bloblessFile.type)) { // only cache blob of images
+      if (FiredevFileComponent.filesToCache.includes(bloblessFile.type)) {
+        // only cache blob of images
         const fileBlob = await this.FiredevFile.getBlobOnlyBy(bloblessFile.src);
         bloblessFile.blob = fileBlob as any; // @ts-ignore
-        bloblessFile.file = new File([bloblessFile.blob], path.basename(_.first(bloblessFile.src.split('?'))));
+        bloblessFile.file = new File(
+          [bloblessFile.blob],
+          path.basename(_.first(bloblessFile.src.split('?')))
+        );
         if (FiredevFileComponent.filesToCacheText.includes(bloblessFile.type)) {
-          bloblessFile.text = await bloblessFile.file.text()
+          bloblessFile.text = await bloblessFile.file.text();
         }
       }
-      FiredevFileComponent.cachedFiles[src][bloblessFile.version] = bloblessFile;
+      FiredevFileComponent.cachedFiles[src][bloblessFile.version] =
+        bloblessFile;
       FiredevFileComponent.cachedFilesLastVer[src] = bloblessFile.version;
       // console.log('** caching file ', bloblessFile)
-      const obs = FiredevFileComponent.currentProcessing[src] as Subject<FiredevFile>;
+      const obs = FiredevFileComponent.currentProcessing[
+        src
+      ] as Subject<FiredevFile>;
       obs.next(bloblessFile);
       obs.unsubscribe();
       delete FiredevFileComponent.currentProcessing[src];
@@ -244,9 +262,8 @@ export class FiredevFileComponent implements OnInit {
 
   //#region methods / init
   async init(firstTime: boolean) {
-
     if (!this.file) {
-      this.file = await this.getFile(this.src)
+      this.file = await this.getFile(this.src);
     }
 
     if (FiredevFileComponent.filesToCache.includes(this.file.type)) {
@@ -256,15 +273,15 @@ export class FiredevFileComponent implements OnInit {
         }
       } else {
         if (!this.tempLink) {
-          this.tempLink = this.domSanitizer.bypassSecurityTrustUrl(URL.createObjectURL(this.file.file)) as any;
+          this.tempLink = this.domSanitizer.bypassSecurityTrustUrl(
+            URL.createObjectURL(this.file.file)
+          ) as any;
           if (!this.linksToRevoke.includes(this.tempLink)) {
             this.linksToRevoke.push(this.tempLink);
           }
         }
       }
     }
-
-
 
     const isTag = this.viewAs === 'script-tag' || this.viewAs === 'css-tag';
 
@@ -278,7 +295,6 @@ export class FiredevFileComponent implements OnInit {
       this.viewAs = this.file.defaultViewAs;
     }
 
-
     // if (this.viewAs === 'img-tag') {
     //   this.styleDisplay = 'inline-block'
     // }
@@ -290,9 +306,9 @@ export class FiredevFileComponent implements OnInit {
     }
 
     if (this.viewAs === 'script-tag') {
-      FiredevFileHelpers.loadScript(this.src, this)
+      FiredevFileHelpers.loadScript(this.src, this);
     } else if (this.viewAs === 'css-tag') {
-      FiredevFileHelpers.loadStyle(this.src, this)
+      FiredevFileHelpers.loadStyle(this.src, this);
     } else {
       this.styleDisplay = 'inline-block';
     }
@@ -306,7 +322,7 @@ export class FiredevFileComponent implements OnInit {
 
     // console.log(`${this.src} viewas: ${this.file?.defaultViewAs}, ext ${this.file.ext}`)
 
-    log.i(`display as ${this.viewAs}`)
+    log.i(`display as ${this.viewAs}`);
     if (this.insideAdmin) {
       delete this.width;
       this.height = 300;
@@ -316,7 +332,6 @@ export class FiredevFileComponent implements OnInit {
     if (this.file && !this.insideAdmin) {
       this.admin.register(this.file);
     }
-
   }
   //#endregion
 
@@ -328,5 +343,4 @@ export class FiredevFileComponent implements OnInit {
   //#endregion
 
   //#endregion
-
 }

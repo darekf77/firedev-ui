@@ -6,13 +6,9 @@ import { FiredevFormlyFormModule } from '../../../firedev-formly/firedev-formly-
 import { FiredevFullMaterialModule } from '../../../firedev-full-material.module';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FiredevFormlyFormModule,
-    FiredevFullMaterialModule,
-  ],
+  imports: [CommonModule, FiredevFormlyFormModule, FiredevFullMaterialModule],
   declarations: [FiredevFileGeneralOptComponent],
   exports: [FiredevFileGeneralOptComponent],
 })
-export class FiredevFileGeneralOptModule { }
+export class FiredevFileGeneralOptModule {}
 //#endregion

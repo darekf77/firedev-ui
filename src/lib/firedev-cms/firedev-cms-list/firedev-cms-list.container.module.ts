@@ -14,7 +14,7 @@ const routes: Routes = [
   {
     path: '',
     component: FiredevCmsListContainer,
-    pathMatch: 'full' // => when using variables in other routers
+    pathMatch: 'full', // => when using variables in other routers
   },
   // {
   //   path: 'anothermodulepath',
@@ -42,4 +42,4 @@ const routes: Routes = [
   declarations: [FiredevCmsListContainer],
   //#endregion
 })
-export class FiredevCmsListContainerModule { }
+export class FiredevCmsListContainerModule {}

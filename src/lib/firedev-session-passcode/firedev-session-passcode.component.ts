@@ -1,8 +1,23 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, DestroyRef, ElementRef, HostBinding, Input, OnInit, Self, inject } from '@angular/core';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+  ChangeDetectorRef,
+  Component,
+  DestroyRef,
+  ElementRef,
+  HostBinding,
+  Input,
+  OnInit,
+  Self,
+  inject,
+} from '@angular/core';
+import {
+  FormControl,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { PasswordModule } from 'primeng/password';
-import { Stor } from 'firedev-storage/src'
+import { Stor } from 'firedev-storage/src';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { interval, take, tap } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -11,44 +26,41 @@ export interface FiredevSessionPasscodeModel {
   passcode: string;
 }
 
-
 export type FiredevSessionPasscodeForm = {
   [prop in keyof FiredevSessionPasscodeModel]: FormControl<
     FiredevSessionPasscodeModel[prop]
   >;
-}
+};
 
 @Component({
   selector: 'firedev-session-passcode',
   templateUrl: './firedev-session-passcode.component.html',
   styleUrls: ['./firedev-session-passcode.component.scss'],
   standalone: true,
-  imports: [
-    PasswordModule,
-    CommonModule,
-    ReactiveFormsModule,
-    FormsModule,
-  ]
+  imports: [PasswordModule, CommonModule, ReactiveFormsModule, FormsModule],
 })
 export class FiredevSessionPasscodeComponent implements OnInit {
-  destroyRef = inject(DestroyRef)
+  destroyRef = inject(DestroyRef);
   // @HostBinding('style.width.px') public width: number;
   // @HostBinding('style.height.px') public height: number;
   @Input() public passcode: string;
   @Input() public message: string;
   public safeMessage: SafeHtml;
 
-  @Stor.property.in.localstorage.for(FiredevSessionPasscodeComponent).withDefaultValue('')
+  @Stor.property.in.localstorage
+    .for(FiredevSessionPasscodeComponent)
+    .withDefaultValue('')
   private lastPasscode: string;
   @HostBinding('style.display') public display = 'none';
-  public form: FormGroup<FiredevSessionPasscodeForm> = new FormGroup<FiredevSessionPasscodeForm>({
-    passcode: new FormControl()
-  })
+  public form: FormGroup<FiredevSessionPasscodeForm> =
+    new FormGroup<FiredevSessionPasscodeForm>({
+      passcode: new FormControl(),
+    });
   constructor(
     @Self() private element: ElementRef<HTMLElement>,
     private domSanitizer: DomSanitizer,
     private cdr: ChangeDetectorRef
-  ) { }
+  ) {}
 
   ngOnInit() {
     if (!this.passcode) {
@@ -58,7 +70,7 @@ export class FiredevSessionPasscodeComponent implements OnInit {
       this.message = `
       This website is only for testing purpose. Please type passcode bellow to see content.
 
-      `
+      `;
     }
     // console.log({
     //   'lastPasscode': this.lastPasscode,
@@ -76,12 +88,14 @@ export class FiredevSessionPasscodeComponent implements OnInit {
       this.focus();
     }
 
-    interval(1000).pipe(
-      takeUntilDestroyed(this.destroyRef),
-      tap(() => {
-        this.focus();
-      })
-    ).subscribe();
+    interval(1000)
+      .pipe(
+        takeUntilDestroyed(this.destroyRef),
+        tap(() => {
+          this.focus();
+        })
+      )
+      .subscribe();
   }
 
   submit({ passcode }: Partial<FiredevSessionPasscodeModel>) {
@@ -97,13 +111,10 @@ export class FiredevSessionPasscodeComponent implements OnInit {
     return this.passcode.toString() === passcode;
   }
 
-  ngAfterViewInit(): void {
-
-
-  }
+  ngAfterViewInit(): void {}
 
   public focus(): void {
-    this.element.nativeElement.querySelector('input')?.focus()
+    this.element.nativeElement.querySelector('input')?.focus();
   }
 
   hide() {
@@ -115,18 +126,17 @@ export class FiredevSessionPasscodeComponent implements OnInit {
   }
 
   clear() {
-    this.form.controls.passcode.setValue('')
+    this.form.controls.passcode.setValue('');
   }
 
   onKeyup(event: KeyboardEvent & { target: { value: string } }) {
-    if ((this.isPasscodeOK(event.target.value || ''))) {
+    if (this.isPasscodeOK(event.target.value || '')) {
       this.hide();
       return;
     }
     const key = event.keyCode || event.charCode;
     if (key === 8 || key === 46 || this.lastPasscode?.length > 5) {
-      this.clear()
+      this.clear();
     }
   }
-
 }

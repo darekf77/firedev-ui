@@ -22,33 +22,36 @@ declare const ENV: any;
  */
 export class FiredevFileBackend {
   //#region initialization
-  public static for(ctrl: FiredevFileController) { return new FiredevFileBackend(ctrl); }
+  public static for(ctrl: FiredevFileController) {
+    return new FiredevFileBackend(ctrl);
+  }
   private get repo() {
     return this.ctrl.repository;
   }
-  private constructor(private ctrl: FiredevFileController) { }
+  private constructor(private ctrl: FiredevFileController) {}
   //#endregion
 
   //#region restore blob for file
   public async restoreBlobWhenFileFromAsset(file: FiredevFile) {
     //#region @websqlFunc
     const repo = this.ctrl.repository;
-    const shouldRestoreBlob = (file.isFromAssets && file.hasEmptyBlob);
+    const shouldRestoreBlob = file.isFromAssets && file.hasEmptyBlob;
     // console.log({
     //   shouldRestoreBlob
     // })
     if (shouldRestoreBlob) {
-
       //#region @websqlOnly
       if (Helpers.isWebSQL) {
         // @ts-ignore
-        const basename = (window?.ENV?.basename ? (window.ENV.basename) : '') as string;
+        const basename = (
+          window?.ENV?.basename ? window.ENV.basename : ''
+        ) as string;
 
         const realSrc = file.src.startsWith('http')
           ? file.src //@ts-ignore
           : `${window.location.origin}${basename.endsWith('/') ? '' : '/'}${file.src.startsWith('/') ? file.src.slice(1) : ''}`;
 
-        console.log({ basename, realSrc })
+        console.log({ basename, realSrc });
         const blob = await Utils.binary.getBlobFrom(realSrc);
         // console.log({
         //   blob
@@ -62,15 +65,20 @@ export class FiredevFileBackend {
 
       //#region @backend
       if (Helpers.isNode) {
-        const proj = Project.ins.From(process.cwd()) as Project;  // TODO
+        const proj = Project.ins.From(process.cwd()) as Project; // TODO
         // '/assets/assets-for/firedev-ui/cutsmall.jpg'
-        let relativeFilePath = file.src.replace(`/assets-for/${proj.name}/`, '/');
+        let relativeFilePath = file.src.replace(
+          `/assets-for/${proj.name}/`,
+          '/'
+        );
         if (proj.__isSmartContainerTarget) {
-
         } else if (proj.__isStandaloneProject) {
           const absFilePath = `${proj.location}/src${relativeFilePath}`;
           const buffer = fse.readFileSync(absFilePath).buffer;
-          file.blob = await Utils.binary.arrayBufferToBlob(buffer, 'text/plain',)
+          file.blob = await Utils.binary.arrayBufferToBlob(
+            buffer,
+            'text/plain'
+          );
         }
       }
       //#endregion
@@ -113,8 +121,12 @@ export class FiredevFileBackend {
 
     //#region @backend
     if (Helpers.isNode) {
-      const proj = Project.ins.From(process.cwd()) as Project;  // TODO
-      const assetsList = Helpers.readJson(proj.pathFor(`tmp-apps-for-dist/${proj.name}/src/assets/assets-list.json`)) as string[];
+      const proj = Project.ins.From(process.cwd()) as Project; // TODO
+      const assetsList = Helpers.readJson(
+        proj.pathFor(
+          `tmp-apps-for-dist/${proj.name}/src/assets/assets-list.json`
+        )
+      ) as string[];
 
       // console.log({ proj, env: global['ENV'], assetsList })
       return assetsList;
@@ -122,12 +134,14 @@ export class FiredevFileBackend {
     //#endregion
 
     // @ts-ignore
-    const basename = (window?.ENV?.basename ? (window.ENV.basename) : '') as string;
+    const basename = (
+      window?.ENV?.basename ? window.ENV.basename : ''
+    ) as string;
     const data = await axios({
       // @ts-ignore
       url: `${basename}${basename.endsWith('/') ? '' : '/'}assets/assets-list.json`,
       method: 'GET',
-      responseType: 'json'
+      responseType: 'json',
     });
 
     return data.data as string[];

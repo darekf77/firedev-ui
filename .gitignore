@@ -49,8 +49,9 @@ Thumbs.db
 /tsconfig.json
 /tsconfig.backend.dist.json
 /.npmrc
-/tslint.json
-/.editorconfig
+/.prettierrc
+/.eslintrc.json
+/.prettierignore
 /index.js
 /index.d.ts
 /index.js.map

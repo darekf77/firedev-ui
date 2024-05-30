@@ -27,8 +27,6 @@ environment = global['ENV'];
 environment = window['ENV'];
 //#endregion
 
-
-
 //#region @websqlOnly
 const storIndexdDb = localForge.createInstance({
   driver: localForge.INDEXEDDB,
@@ -36,7 +34,7 @@ const storIndexdDb = localForge.createInstance({
     'firedev-binary-file',
     'INDEXEDDB',
     _.kebabCase(environment?.currentProjectGenericName),
-  ].join('_')
+  ].join('_'),
 });
 //#endregion
 //#endregion
@@ -59,7 +57,9 @@ export class FiredevBinaryFileBackend {
   private readonly assetsPath: string;
   //#endregion
 
-  public static for(ctrl: FiredevBinaryFileController) { return new FiredevBinaryFileBackend(ctrl); }
+  public static for(ctrl: FiredevBinaryFileController) {
+    return new FiredevBinaryFileBackend(ctrl);
+  }
   private get repo() {
     return this.ctrl.repository;
   }
@@ -71,9 +71,9 @@ export class FiredevBinaryFileBackend {
 
     this.project = Project.ins.nearestTo(process.cwd()) as Project;
     console.log({
-      'CWD': process.cwd(),
-      nearestTo: this.project.genericName
-    })
+      CWD: process.cwd(),
+      nearestTo: this.project.genericName,
+    });
     this.assetsPath = this.project.location;
     //#endregion
   }
@@ -85,7 +85,7 @@ export class FiredevBinaryFileBackend {
     const model = await this.repository.findOne({
       where: {
         src: relativePathOnServer,
-      }
+      },
     });
     return model;
   }
@@ -102,11 +102,18 @@ export class FiredevBinaryFileBackend {
 
   //#region public methods / save file in nodejs
   //#region @backend
-  async saveFileNodejs(data: CoreModels.UploadedBackendFile | Buffer | string | Blob, relativePath: string): Promise<void> {
-    const destinationFilePath = crossPlatformPath([this.assetsPath, relativePath]);
+  async saveFileNodejs(
+    data: CoreModels.UploadedBackendFile | Buffer | string | Blob,
+    relativePath: string
+  ): Promise<void> {
+    const destinationFilePath = crossPlatformPath([
+      this.assetsPath,
+      relativePath,
+    ]);
     console.log('UPLOADING FILE', {
-      destinationFilePath, data
-    })
+      destinationFilePath,
+      data,
+    });
     if (!Helpers.exists(path.dirname(destinationFilePath))) {
       Helpers.mkdirp(path.dirname(destinationFilePath));
     }
@@ -117,11 +124,11 @@ export class FiredevBinaryFileBackend {
     } else if (_.isString(data) || Helpers.isBuffer(data)) {
       Helpers.writeFile(destinationFilePath, data);
     } else {
-      return await new Promise<void>((resolve) => {
+      return await new Promise<void>(resolve => {
         data.mv(destinationFilePath, () => {
           resolve();
-        })
-      })
+        });
+      });
     }
   }
   //#endregion
@@ -132,37 +139,46 @@ export class FiredevBinaryFileBackend {
   async getFileNodejs(relativePath: string): Promise<Buffer> {
     //#region prepare proper path
     (() => {
-      const browserPathStart = '/assets/assets-for/'
+      const browserPathStart = '/assets/assets-for/';
       if (relativePath.startsWith(browserPathStart)) {
-        relativePath = relativePath.replace(/^\//, '')
+        relativePath = relativePath.replace(/^\//, '');
         const packageName = _.first(relativePath.split('/').slice(2));
         if (packageName === this.project.name) {
-          relativePath = 'src/assets/' + relativePath.split('/').slice(3).join('/');
+          relativePath =
+            'src/assets/' + relativePath.split('/').slice(3).join('/');
         } else {
-          relativePath = `${config.folder.node_modules}/` + relativePath.split('/').slice(3).join('/');
+          relativePath =
+            `${config.folder.node_modules}/` +
+            relativePath.split('/').slice(3).join('/');
         }
       }
     })();
 
     (() => {
-      const browserPathStart = '/src/assets/assets-for/'
+      const browserPathStart = '/src/assets/assets-for/';
       if (relativePath.startsWith(browserPathStart)) {
-        relativePath = relativePath.replace(/^\//, '')
+        relativePath = relativePath.replace(/^\//, '');
         const packageName = _.first(relativePath.split('/').slice(3));
         if (packageName === this.project.name) {
-          relativePath = 'src/assets/' + relativePath.split('/').slice(4).join('/');
+          relativePath =
+            'src/assets/' + relativePath.split('/').slice(4).join('/');
         } else {
-          relativePath = `${config.folder.node_modules}/` + relativePath.split('/').slice(4).join('/');
+          relativePath =
+            `${config.folder.node_modules}/` +
+            relativePath.split('/').slice(4).join('/');
         }
       }
     })();
     //#endregion
 
-    const destinationFilePath = crossPlatformPath([this.assetsPath, relativePath]);
+    const destinationFilePath = crossPlatformPath([
+      this.assetsPath,
+      relativePath,
+    ]);
     console.log({
       destinationFilePath,
-      'asdas': 'asdasd'
-    })
+      asdas: 'asdasd',
+    });
     const buffer = await fse.readFile(destinationFilePath);
     return buffer;
   }
@@ -172,9 +188,14 @@ export class FiredevBinaryFileBackend {
   //#region public methods / save file in websql mode
   //#region @websql
   async saveFileWebsql(file: File | Blob, relativePath: string): Promise<void> {
-    const blob = Helpers.isBlob(file) ? file : await Utils.binary.fileToBlob(file)
+    const blob = Helpers.isBlob(file)
+      ? file
+      : await Utils.binary.fileToBlob(file);
     //#region @websqlOnly
-    await storIndexdDb.setItem(relativePath, await Utils.binary.blobToBase64(blob))
+    await storIndexdDb.setItem(
+      relativePath,
+      await Utils.binary.blobToBase64(blob)
+    );
     //#endregion
   }
   //#endregion
@@ -201,17 +222,24 @@ export class FiredevBinaryFileBackend {
     if (Helpers.isNode) {
       const proj = this.project;
 
-      const assetsListDist = proj.pathFor(`tmp-apps-for-dist/${this.project.name}/src/assets/assets-list.json`);
-      const assetsListBundle = proj.pathFor(`tmp-apps-for-bundle/${this.project.name}/src/assets/assets-list.json`);
-      const readAssetsFrom = Helpers.exists(assetsListDist) ? assetsListDist : assetsListBundle;
+      const assetsListDist = proj.pathFor(
+        `tmp-apps-for-dist/${this.project.name}/src/assets/assets-list.json`
+      );
+      const assetsListBundle = proj.pathFor(
+        `tmp-apps-for-bundle/${this.project.name}/src/assets/assets-list.json`
+      );
+      const readAssetsFrom = Helpers.exists(assetsListDist)
+        ? assetsListDist
+        : assetsListBundle;
       return Helpers.readJson(readAssetsFrom) || [];
     }
     //#endregion
 
-
     //#region @browser
     // @ts-ignore
-    const basename = (window?.ENV?.basename ? (window.ENV.basename) : '') as string;
+    const basename = (
+      window?.ENV?.basename ? window.ENV.basename : ''
+    ) as string;
     const urlStart = `${basename}${basename.endsWith('/') ? '' : '/'}`;
     // TODO @LAST FIX LOADING
     //#endregion
@@ -220,7 +248,7 @@ export class FiredevBinaryFileBackend {
       // @ts-ignore
       url: `${urlStart}assets/assets-list.json`,
       method: 'GET',
-      responseType: 'json'
+      responseType: 'json',
     });
 
     return data.data as string[];
@@ -230,10 +258,11 @@ export class FiredevBinaryFileBackend {
 
   //#region public methods / get asset for (websql/nodejs) mode
   public async getAssetFromWebsqlMode(assetPath: string): Promise<Blob> {
-
     //#region @browser
     // @ts-ignore
-    const basename = (window?.ENV?.basename ? (window.ENV.basename) : '') as string;
+    const basename = (
+      window?.ENV?.basename ? window.ENV.basename : ''
+    ) as string;
     const urlStart = `${window.location.origin}${basename}${basename.endsWith('/') ? '' : '/'}`;
     if (assetPath.startsWith('/src/')) {
       assetPath = assetPath.replace(/^\/src\//, '');
@@ -245,14 +274,11 @@ export class FiredevBinaryFileBackend {
       // @ts-ignore
       url: `${urlStart}${assetPath}`, // TODO @LAST window location is
       method: 'GET',
-      responseType: 'blob'
+      responseType: 'blob',
     });
 
     return data.data;
     //#endregion
   }
   //#endregion
-
-
-
 }
