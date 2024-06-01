@@ -3,8 +3,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { PreviewFormComponent } from './preview-form.component';
-import { FiredevFormlyFormModule } from 'firedev-ui';
-import { FiredevFullMaterialModule } from 'firedev-ui';
+import { FiredevFormlyFormModule } from 'firedev-ui/src';
+import { FiredevFullMaterialModule } from 'firedev-ui/src';
 
 const routes: Routes = [
   {

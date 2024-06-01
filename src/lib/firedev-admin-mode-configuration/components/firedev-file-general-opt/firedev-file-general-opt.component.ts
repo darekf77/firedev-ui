@@ -10,7 +10,7 @@ import {
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Subscription } from 'rxjs';
 import type { FiredevFile } from '../../../firedev-file';
-import { _ } from 'tnp-core';
+import { _ } from 'tnp-core/src';
 
 @Component({
   selector: 'firedev-file-general-opt',

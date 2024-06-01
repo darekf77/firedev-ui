@@ -1,8 +1,8 @@
 //#region imports
-import { Firedev } from 'firedev';
-import { CoreModels } from 'tnp-core';
+import { Firedev } from 'firedev/src';
+import { CoreModels } from 'tnp-core/src';
 import { FiredevBinaryFile } from './firedev-binary-file';
-import { Helpers, Utils, _, crossPlatformPath, path } from 'tnp-core';
+import { Helpers, Utils, _, crossPlatformPath, path } from 'tnp-core/src';
 import { randUserName, randAddress } from '@ngneat/falso'; // faking data
 import { IFiredevBinaryFile } from './firedev-binary-file.models';
 import { FORM_DATA_FILENAME } from './firedev-binary-file.constants';

@@ -1,7 +1,7 @@
 //#region imports
-import { Firedev } from 'firedev';
+import { Firedev } from 'firedev/src';
 import { map } from 'rxjs';
-import { _ } from 'tnp-core';
+import { _ } from 'tnp-core/src';
 import type { FiredevFileCssController } from './firedev-file-css.controller';
 import {
   BrowserUnit,

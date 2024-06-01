@@ -12,9 +12,9 @@ import {
   ViewChild,
   inject,
 } from '@angular/core';
-import { Helpers, _ } from 'tnp-core';
+import { Helpers, _ } from 'tnp-core/src';
 import { FiredevAdmin } from './firedev-admin';
-import { Stor } from 'firedev-storage';
+import { Stor } from 'firedev-storage/src';
 import {
   CdkDrag,
   CdkDragEnd,
@@ -22,7 +22,7 @@ import {
   CdkDragRelease,
   Point,
 } from '@angular/cdk/drag-drop';
-import { BreakpointsService } from 'static-columns';
+import { BreakpointsService } from 'static-columns/src';
 import { Subject, takeUntil, tap } from 'rxjs';
 import { createCustomElement } from '@angular/elements';
 import { FiredevFileComponent } from '../firedev-file/firedev-file.component';

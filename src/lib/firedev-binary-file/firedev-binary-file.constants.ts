@@ -1,5 +1,5 @@
 //#region imports
-import { _ } from 'tnp-core';
+import { _ } from 'tnp-core/src';
 import type {
   IFiredevBinaryFile,
   FiredevBinaryFileNonColumnsKeys,

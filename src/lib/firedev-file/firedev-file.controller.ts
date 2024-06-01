@@ -1,10 +1,10 @@
 //#region imports
-import { Firedev } from 'firedev';
-import { Project } from 'tnp';
-import { Repository } from 'firedev-typeorm'; // must be
+import { Firedev } from 'firedev/src';
+import { Project } from 'tnp/src';
+import { Repository } from 'firedev-typeorm/src'; // must be
 import { FiredevFile } from './firedev-file';
-import { crossPlatformPath, path, _, Utils } from 'tnp-core';
-import { Helpers } from 'tnp-helpers';
+import { crossPlatformPath, path, _, Utils } from 'tnp-core/src';
+import { Helpers } from 'tnp-helpers/src';
 
 //#region @backend
 import * as FormData from 'form-data';

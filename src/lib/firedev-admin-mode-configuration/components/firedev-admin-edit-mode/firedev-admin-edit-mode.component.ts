@@ -12,12 +12,12 @@ import { delay, of, Subject, Subscription, takeUntil, tap } from 'rxjs';
 import { FiredevFile } from '../../../firedev-file';
 import { FiredevAdmin } from '../../firedev-admin';
 import { Router } from '@angular/router';
-import { Stor } from 'firedev-storage';
+import { Stor } from 'firedev-storage/src';
 import 'brace';
 import 'brace/mode/css';
 import 'brace/mode/typescript';
 import 'brace/theme/github';
-import { Firedev } from 'firedev';
+import { Firedev } from 'firedev/src';
 import { MtxGridColumn } from '@ng-matero/extensions/grid';
 // import 'brace/theme/twilight';
 

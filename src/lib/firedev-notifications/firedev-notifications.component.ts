@@ -1,7 +1,7 @@
 //#region @browser
 import { Component, OnInit, TemplateRef } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { Resource } from 'ng2-rest';
+import { Resource } from 'ng2-rest/src';
 import { FiredevNotificationsService } from './firedev-notifications.service';
 
 @Component({

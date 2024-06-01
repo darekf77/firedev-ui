@@ -3,7 +3,7 @@ import { Injector, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FiredevAdminModeConfigurationComponent } from './firedev-admin-mode-configuration.component';
 import { FiredevFullMaterialModule } from '../firedev-full-material.module';
-import { StaticColumnsModule } from 'static-columns';
+import { StaticColumnsModule } from 'static-columns/src';
 import { FiredevFileComponent } from '../firedev-file';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FiredevAdminEditModeModule } from './components/firedev-admin-edit-mode';

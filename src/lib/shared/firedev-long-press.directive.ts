@@ -7,8 +7,8 @@ import {
   HostListener,
 } from '@angular/core';
 
-import { _ } from 'tnp-core';
-import { Log, Level } from 'ng2-logger';
+import { _ } from 'tnp-core/src';
+import { Log, Level } from 'ng2-logger/src';
 const log = Log.create(`[firedev-helpers] long-press`, Level.__NOTHING);
 
 @Directive({

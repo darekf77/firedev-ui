@@ -1,16 +1,16 @@
 //#region imports
-import { Utils, crossPlatformPath, _, Helpers, path } from 'tnp-core';
+import { Utils, crossPlatformPath, _, Helpers, path } from 'tnp-core/src';
 import { FiredevBinaryFile } from '../firedev-binary-file';
 import type { FiredevBinaryFileController } from '../firedev-binary-file.controller';
-import { Project } from 'tnp';
-import { config } from 'tnp-config';
-import { CoreModels } from 'tnp-core';
+import { Project } from 'tnp/src';
+import { config } from 'tnp-config/src';
+import { CoreModels } from 'tnp-core/src';
 import axios from 'axios';
 //#region @browser
 import * as localForge from 'localforage';
 //#endregion
 //#region @backend
-import { fse } from 'tnp-core';
+import { fse } from 'tnp-core/src';
 import { Blob } from 'buffer';
 //#endregion
 
@@ -104,7 +104,7 @@ export class FiredevBinaryFileBackend {
   //#region @backend
   async saveFileNodejs(
     data: CoreModels.UploadedBackendFile | Buffer | string | Blob,
-    relativePath: string
+    relativePath: string,
   ): Promise<void> {
     const destinationFilePath = crossPlatformPath([
       this.assetsPath,
@@ -194,7 +194,7 @@ export class FiredevBinaryFileBackend {
     //#region @websqlOnly
     await storIndexdDb.setItem(
       relativePath,
-      await Utils.binary.blobToBase64(blob)
+      await Utils.binary.blobToBase64(blob),
     );
     //#endregion
   }
@@ -223,10 +223,10 @@ export class FiredevBinaryFileBackend {
       const proj = this.project;
 
       const assetsListDist = proj.pathFor(
-        `tmp-apps-for-dist/${this.project.name}/src/assets/assets-list.json`
+        `tmp-apps-for-dist/${this.project.name}/src/assets/assets-list.json`,
       );
       const assetsListBundle = proj.pathFor(
-        `tmp-apps-for-bundle/${this.project.name}/src/assets/assets-list.json`
+        `tmp-apps-for-bundle/${this.project.name}/src/assets/assets-list.json`,
       );
       const readAssetsFrom = Helpers.exists(assetsListDist)
         ? assetsListDist
@@ -237,9 +237,8 @@ export class FiredevBinaryFileBackend {
 
     //#region @browser
     // @ts-ignore
-    const basename = (
-      window?.ENV?.basename ? window.ENV.basename : ''
-    ) as string;
+    const basename = // @ts-ignore
+    (window?.ENV?.basename ? window.ENV.basename : '') as string;
     const urlStart = `${basename}${basename.endsWith('/') ? '' : '/'}`;
     // TODO @LAST FIX LOADING
     //#endregion
@@ -260,9 +259,8 @@ export class FiredevBinaryFileBackend {
   public async getAssetFromWebsqlMode(assetPath: string): Promise<Blob> {
     //#region @browser
     // @ts-ignore
-    const basename = (
-      window?.ENV?.basename ? window.ENV.basename : ''
-    ) as string;
+    const basename = // @ts-ignore
+    (window?.ENV?.basename ? window.ENV.basename : '') as string;
     const urlStart = `${window.location.origin}${basename}${basename.endsWith('/') ? '' : '/'}`;
     if (assetPath.startsWith('/src/')) {
       assetPath = assetPath.replace(/^\/src\//, '');

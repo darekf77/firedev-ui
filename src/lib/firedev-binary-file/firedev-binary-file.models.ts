@@ -1,6 +1,6 @@
 //#region imports
 import type { FiredevBinaryFile } from './firedev-binary-file';
-import { _ } from 'tnp-core';
+import { _ } from 'tnp-core/src';
 import {
   FIREDEV_BINARY_FILE_TABLE_NAME,
   DEF_MODEL_VALUE_FIREDEV_BINARY_FILE,

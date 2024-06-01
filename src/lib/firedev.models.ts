@@ -1,4 +1,4 @@
-import { CoreModels } from 'tnp-core';
+import { CoreModels } from 'tnp-core/src';
 
 // export type FiredevModeSimple = 'view' | 'edit' | 'add';
 

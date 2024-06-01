@@ -1,6 +1,6 @@
 //#region imports
-import { Firedev } from 'firedev';
-import { Helpers, Utils, _ } from 'tnp-core';
+import { Firedev } from 'firedev/src';
+import { Helpers, Utils, _ } from 'tnp-core/src';
 import { map } from 'rxjs';
 import type { FiredevBinaryFileController } from './firedev-binary-file.controller';
 import { FiredevBinaryFileNonColumnsKeys } from './firedev-binary-file.models';

@@ -1,5 +1,5 @@
-import { Firedev } from 'firedev';
-import { _ } from 'tnp-core';
+import { Firedev } from 'firedev/src';
+import { _ } from 'tnp-core/src';
 
 export type DisplayOpt = 'block' | 'inline-block' | 'flex';
 export const DisplayOptArr = ['block', 'inline-block', 'flex'] as DisplayOpt[];

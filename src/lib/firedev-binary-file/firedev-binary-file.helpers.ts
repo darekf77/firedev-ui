@@ -1,6 +1,6 @@
 //#region imports
-import { _ } from 'tnp-core';
-import { Helpers } from 'tnp-helpers';
+import { _ } from 'tnp-core/src';
+import { Helpers } from 'tnp-helpers/src';
 //#endregion
 
 /**

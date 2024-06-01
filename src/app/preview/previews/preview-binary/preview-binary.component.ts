@@ -7,12 +7,12 @@ import {
   ViewChild,
 } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { CoreModels, Utils, _, path } from 'tnp-core';
-import { FiredevBinaryFile } from 'firedev-ui';
-import { FiredevBinaryFile as FiredevBinaryFile2 } from 'firedev-ui';
+import { CoreModels, Utils, _, path } from 'tnp-core/src';
+import { FiredevBinaryFile } from 'firedev-ui/src';
+import { FiredevBinaryFile as FiredevBinaryFile2 } from 'firedev-ui/src';
 import { DomSanitizer } from '@angular/platform-browser';
-import { FiredevAdminService } from 'firedev-ui';
-import { CLASS } from 'typescript-class-helpers';
+import { FiredevAdminService } from 'firedev-ui/src';
+import { CLASS } from 'typescript-class-helpers/src';
 //#endregion
 
 @Component({

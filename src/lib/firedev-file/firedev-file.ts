@@ -1,7 +1,7 @@
 //#region imports
-import { Firedev } from 'firedev';
-import { path, _, Utils, CoreModels } from 'tnp-core';
-import { Helpers } from 'tnp-helpers';
+import { Firedev } from 'firedev/src';
+import { path, _, Utils, CoreModels } from 'tnp-core/src';
+import { Helpers } from 'tnp-helpers/src';
 import type { FiredevFileController } from './firedev-file.controller';
 import { FiredevFileDefaultAs, IFiredevFileType } from './firedev-file.models';
 import { FiredevFileCss } from './firedev-file-css/firedev-file-css';

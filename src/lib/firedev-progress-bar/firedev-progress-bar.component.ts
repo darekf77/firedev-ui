@@ -9,7 +9,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { Observable, Subject, Subscription } from 'rxjs';
-import { _ } from 'tnp-core';
+import { _ } from 'tnp-core/src';
 
 import axios from 'axios';
 import {
@@ -17,7 +17,7 @@ import {
   NgProgressModule,
   NgProgressRef,
 } from 'ngx-progressbar';
-import { Firedev } from 'firedev';
+import { Firedev } from 'firedev/src';
 // import { Models } from 'tnp-models';
 import type { FiredevAdmin } from '../firedev-admin-mode-configuration';
 

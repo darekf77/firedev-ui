@@ -16,10 +16,10 @@ import {
 import { FormGroup } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { FormlyFormOptions, FormlyFieldConfig } from '@ngx-formly/core';
-import { _ } from 'tnp-core';
-import { Log, Level } from 'ng2-logger';
-import { CLASS } from 'typescript-class-helpers';
-import { Firedev } from 'firedev';
+import { _ } from 'tnp-core/src';
+import { Log, Level } from 'ng2-logger/src';
+import { CLASS } from 'typescript-class-helpers/src';
+import { Firedev } from 'firedev/src';
 const log = Log.create('form warpper material component', Level.__NOTHING);
 //#endregion
 

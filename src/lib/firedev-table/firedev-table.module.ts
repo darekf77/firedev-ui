@@ -7,7 +7,7 @@ import { MtxGridModule } from '@ng-matero/extensions/grid';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
-import { StaticColumnsModule } from 'static-columns';
+import { StaticColumnsModule } from 'static-columns/src';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButton, MatButtonModule } from '@angular/material/button';
 

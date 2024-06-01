@@ -1,5 +1,5 @@
 import type { FiredevFileCss } from './firedev-file-css';
-import { _ } from 'tnp-core';
+import { _ } from 'tnp-core/src';
 import { FIREDEV_FILE_CSS_TABLE_NAME } from './firedev-file-css.constants';
 //#region @websql
 import {

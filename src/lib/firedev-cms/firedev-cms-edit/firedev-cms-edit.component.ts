@@ -9,12 +9,12 @@ import {
 } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { CommonModule } from '@angular/common';
-import { Helpers, Utils, _, CoreModels, path } from 'tnp-core';
+import { Helpers, Utils, _, CoreModels, path } from 'tnp-core/src';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FiredevCmsEditDialogData } from '../firedev-cms.models';
-import { FiredevBinaryFile, FiredevFullMaterialModule } from 'firedev-ui';
+import { FiredevBinaryFile, FiredevFullMaterialModule } from 'firedev-ui/src';
 import { MtxSplitModule } from '@ng-matero/extensions/split';
-import { StaticColumnsModule } from 'static-columns';
+import { StaticColumnsModule } from 'static-columns/src';
 import { DomSanitizer } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SafePipe } from '../../shared/safe.pipe';

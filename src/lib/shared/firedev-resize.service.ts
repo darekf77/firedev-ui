@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import * as elementResizeDetectorMaker from 'element-resize-detector';
+// import * as elementResizeDetectorMaker from 'element-resize-detector';
 
 @Injectable()
 export class FiredevResizeService {
   private resizeDetector: any;
 
   constructor() {
-    this.resizeDetector = elementResizeDetectorMaker({ strategy: 'scroll' });
+    // this.resizeDetector = elementResizeDetectorMaker({ strategy: 'scroll' });
   }
 
   addResizeEventListener(element: HTMLElement, handler: Function) {

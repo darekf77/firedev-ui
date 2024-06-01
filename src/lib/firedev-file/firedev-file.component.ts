@@ -9,9 +9,9 @@ import {
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
-import { Firedev } from 'firedev';
+import { Firedev } from 'firedev/src';
 import { FiredevFileHelpers } from './firedev-file.helpers';
-import { crossPlatformPath, Helpers, path, _ } from 'tnp-core';
+import { crossPlatformPath, Helpers, path, _ } from 'tnp-core/src';
 import { FiredevDisplayMode } from '../firedev.models';
 import { FiredevFile } from './firedev-file';
 import { FiredevFileDefaultAs, IFiredevFileType } from './firedev-file.models';
@@ -27,9 +27,9 @@ import { firstValueFrom, Observable, Subject } from 'rxjs';
 import { DomSanitizer } from '@angular/platform-browser';
 import { DEFAULT_HEIGHT, DEFAULT_WIDTH } from './firedev-file.constants';
 import { FiredevFullMaterialModule } from '../firedev-full-material.module';
-import { StaticColumnsModule } from 'static-columns';
+import { StaticColumnsModule } from 'static-columns/src';
 import { FiredevInjectHTMLDirective } from '../shared/firedev-inject-html.directive';
-import { Level, Log } from 'ng2-logger';
+import { Level, Log } from 'ng2-logger/src';
 import { CommonModule } from '@angular/common';
 const log = Log.create('firedev', Level.__NOTHING);
 //#endregion

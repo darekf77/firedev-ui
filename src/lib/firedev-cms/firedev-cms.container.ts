@@ -1,7 +1,7 @@
 //#region imports
 import { Component, HostBinding, Input, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { _ } from 'tnp-core';
+import { _ } from 'tnp-core/src';
 //#endregion
 
 @Component({

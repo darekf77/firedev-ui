@@ -1,5 +1,5 @@
 //#region imports
-import { Firedev } from 'firedev';
+import { Firedev } from 'firedev/src';
 //#region @browser
 import type { FiredevFileComponent } from './firedev-file.component';
 //#endregion

@@ -4,8 +4,8 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { FiredevCmsListContainer } from './firedev-cms-list.container';
 import { FiredevTableModule } from '../../firedev-table';
-import { StaticColumnsModule } from 'static-columns';
-import { FiredevFullMaterialModule } from 'firedev-ui';
+import { StaticColumnsModule } from 'static-columns/src';
+import { FiredevFullMaterialModule } from 'firedev-ui/src';
 import { FiredevCmsEditComponent } from '../firedev-cms-edit';
 //#endregion
 

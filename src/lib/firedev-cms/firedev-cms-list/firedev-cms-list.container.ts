@@ -1,12 +1,12 @@
 //#region imports
 import { Component, Input, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { Utils, _ } from 'tnp-core';
+import { Utils, _ } from 'tnp-core/src';
 import { MtxGridColumn } from '@ng-matero/extensions/grid';
 import { MatDialog } from '@angular/material/dialog';
 import { FiredevCmsEditComponent } from '../firedev-cms-edit';
-import { FiredevFile } from 'firedev-ui';
-import { FiredevBinaryFile } from 'firedev-ui';
+import { FiredevFile } from 'firedev-ui/src';
+import { FiredevBinaryFile } from 'firedev-ui/src';
 import { FiredevCmsEditDialogData } from '../firedev-cms.models';
 import { ViewMode } from '../../shared/view-mode';
 //#endregion

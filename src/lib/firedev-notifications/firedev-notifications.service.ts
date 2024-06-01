@@ -1,5 +1,5 @@
 //#region @browser
-import { _ } from 'tnp-core';
+import { _ } from 'tnp-core/src';
 import { Injectable } from '@angular/core';
 import { HotToastService } from '@ngneat/hot-toast';
 import {

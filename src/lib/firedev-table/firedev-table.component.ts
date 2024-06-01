@@ -10,9 +10,9 @@ import {
   ElementRef,
 } from '@angular/core';
 import * as _ from 'lodash';
-import { Log, Level } from 'ng2-logger';
-import { Firedev } from 'firedev';
-import { CLASS } from 'typescript-class-helpers';
+import { Log, Level } from 'ng2-logger/src';
+import { Firedev } from 'firedev/src';
+import { CLASS } from 'typescript-class-helpers/src';
 import { PageEvent } from '@angular/material/paginator';
 import { MtxGridColumn } from '@ng-matero/extensions/grid';
 import {
@@ -25,7 +25,7 @@ import {
   share,
   tap,
 } from 'rxjs';
-import { json5 } from 'tnp-core';
+import { json5 } from 'tnp-core/src';
 //#endregion
 
 //#region constants

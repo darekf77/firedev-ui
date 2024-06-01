@@ -9,8 +9,8 @@ import {
 } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { CommonModule } from '@angular/common';
-import { _ } from 'tnp-core';
-import { StaticColumnsModule } from 'static-columns';
+import { _ } from 'tnp-core/src';
+import { StaticColumnsModule } from 'static-columns/src';
 import { FiredevFullMaterialModule } from '../../../firedev-full-material.module';
 import { FlatTreeControl } from '@angular/cdk/tree';
 import {

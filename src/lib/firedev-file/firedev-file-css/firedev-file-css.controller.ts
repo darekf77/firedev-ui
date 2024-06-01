@@ -1,6 +1,6 @@
-import { Firedev } from 'firedev';
+import { Firedev } from 'firedev/src';
 import { FiredevFileCss } from './firedev-file-css';
-import { _ } from 'tnp-core';
+import { _ } from 'tnp-core/src';
 import { randUserName, randAddress } from '@ngneat/falso'; // faking data
 import { IFiredevFileCss } from './firedev-file-css.models';
 //#region @websql

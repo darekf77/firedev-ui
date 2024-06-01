@@ -1,12 +1,10 @@
 .vscode
 /dist
 /src
+/app
+/source
 /docs
 /preview
 /tests
 tsconfig.json
 npm-debug.log*
-.npmrc
-.prettierrc
-.eslintrc.json
-.prettierignore

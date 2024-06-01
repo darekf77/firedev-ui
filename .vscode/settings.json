@@ -17,6 +17,10 @@
     "backup": true,
     "module": true,
     "www": true,
+    ".eslintrc.json": true,
+    ".prettierignore": true,
+    ".prettierrc": true,
+    ".editorconfig": true,
     "Thumbs.db": true,
     ".DS_Store": true,
     "**/.DS_Store": true,
@@ -27,10 +31,6 @@
     "tsconfig.isomorphic-flat-dist.json": true,
     "tsconfig.browser.json": true,
     "tsconfig.json": true,
-    ".npmrc": true,
-    ".prettierrc": true,
-    ".eslintrc.json": true,
-    ".prettierignore": true,
     "index.js": true,
     "index.d.ts": true,
     "index.js.map": true,
@@ -44,6 +44,7 @@
     ".gitignore": true,
     ".npmignore": true,
     ".babelrc": true,
+    ".npmrc": true,
     "devDependencies.json": true,
     "package.json": true,
     "logo.svg": true
@@ -52,7 +53,10 @@
     "activityBar.background": "#95c157",
     "activityBar.foreground": "#000000"
   },
-  "editor.rulers": [80, 120],
+  "editor.rulers": [
+    80,
+    120
+  ],
   "html.format.wrapAttributes": "force-aligned",
   "workbench.colorTheme": "Default Light+",
   "tslint.autoFixOnSave": false,
@@ -65,37 +69,40 @@
     "bin": true
   },
   "[typescriptreact]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": false
   },
   "[json]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": false
   },
   "[jsonc]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": false
   },
   "[json5]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": false
   },
   "[scss]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": false
   },
   "[html]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "editor.codeActionsOnSave": {
-      "source.fixAll.eslint": "always"
-    },
     "editor.formatOnSave": false
   },
   "[typescript]": {
-    "editor.defaultFormatter": "dbaeumer.vscode-eslint",
-    "editor.codeActionsOnSave": {
-      "source.fixAll.eslint": "always"
-    },
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.formatOnSave": false
   },
   "eslint.migration.2_x": "off",
   "prettier.enable": true,
   "editor.suggest.snippetsPreventQuickSuggestions": false,
   "editor.inlineSuggest.enabled": true,
-  "tslint.alwaysShowRuleFailuresAsWarnings": false
+  "tslint.alwaysShowRuleFailuresAsWarnings": false,
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": false
+  }
 }

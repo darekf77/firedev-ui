@@ -1,9 +1,9 @@
 //#region @browser
 //#region import
 import { FiredevAdminDB } from './firedev-admin-db';
-import { Stor } from 'firedev-storage';
+import { Stor } from 'firedev-storage/src';
 import type { FiredevFile } from '../firedev-file';
-import { _ } from 'tnp-core';
+import { _ } from 'tnp-core/src';
 import { Subject, take, takeUntil, tap } from 'rxjs';
 import type { FiredevAdminModeConfigurationComponent } from './firedev-admin-mode-configuration.component';
 //#endregion

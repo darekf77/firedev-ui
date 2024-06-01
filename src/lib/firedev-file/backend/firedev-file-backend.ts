@@ -1,12 +1,12 @@
 //#region imports
 //#region @backend
-import { fse } from 'tnp-core';
+import { fse } from 'tnp-core/src';
 //#endregion
-import { Utils } from 'tnp-core';
+import { Utils } from 'tnp-core/src';
 import axios from 'axios';
-import { Project } from 'tnp';
-import { _ } from 'tnp-core';
-import { Helpers } from 'tnp-helpers';
+import { Project } from 'tnp/src';
+import { _ } from 'tnp-core/src';
+import { Helpers } from 'tnp-helpers/src';
 import { FiredevFile } from '../firedev-file';
 import type { FiredevFileController } from '../firedev-file.controller';
 declare const ENV: any;
@@ -43,9 +43,8 @@ export class FiredevFileBackend {
       //#region @websqlOnly
       if (Helpers.isWebSQL) {
         // @ts-ignore
-        const basename = (
-          window?.ENV?.basename ? window.ENV.basename : ''
-        ) as string;
+        const basename = // @ts-ignore
+        (window?.ENV?.basename ? window.ENV.basename : '') as string;
 
         const realSrc = file.src.startsWith('http')
           ? file.src //@ts-ignore
@@ -69,7 +68,7 @@ export class FiredevFileBackend {
         // '/assets/assets-for/firedev-ui/cutsmall.jpg'
         let relativeFilePath = file.src.replace(
           `/assets-for/${proj.name}/`,
-          '/'
+          '/',
         );
         if (proj.__isSmartContainerTarget) {
         } else if (proj.__isStandaloneProject) {
@@ -77,7 +76,7 @@ export class FiredevFileBackend {
           const buffer = fse.readFileSync(absFilePath).buffer;
           file.blob = await Utils.binary.arrayBufferToBlob(
             buffer,
-            'text/plain'
+            'text/plain',
           );
         }
       }
@@ -124,8 +123,8 @@ export class FiredevFileBackend {
       const proj = Project.ins.From(process.cwd()) as Project; // TODO
       const assetsList = Helpers.readJson(
         proj.pathFor(
-          `tmp-apps-for-dist/${proj.name}/src/assets/assets-list.json`
-        )
+          `tmp-apps-for-dist/${proj.name}/src/assets/assets-list.json`,
+        ),
       ) as string[];
 
       // console.log({ proj, env: global['ENV'], assetsList })
@@ -134,9 +133,8 @@ export class FiredevFileBackend {
     //#endregion
 
     // @ts-ignore
-    const basename = (
-      window?.ENV?.basename ? window.ENV.basename : ''
-    ) as string;
+    const basename = // @ts-ignore
+    (window?.ENV?.basename ? window.ENV.basename : '') as string;
     const data = await axios({
       // @ts-ignore
       url: `${basename}${basename.endsWith('/') ? '' : '/'}assets/assets-list.json`,
