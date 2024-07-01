@@ -1,4 +1,4 @@
-# firedev-ui
+# firedev-ui (DEPRECATED)
 
 - Part of [firedev.io](https://github.com/darekf77/
 - open-source helpers/components/modules/directives/services/layouts/popups for any firedev app
