@@ -1,0 +1,21 @@
+{
+  "extends": "./tsconfig.isomorphic.json",
+  "compilerOptions": {
+    "strictNullChecks": false,
+    "rootDir": "./src",
+    "paths": {
+      "firedev-ui": [
+        "./src/lib"
+      ],
+      "firedev-ui/*": [
+        "./src/lib/*"
+      ]
+    }
+  },
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+    "src/assets"
+  ]
+}
