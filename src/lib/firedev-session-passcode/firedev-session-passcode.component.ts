@@ -47,6 +47,7 @@ export class FiredevSessionPasscodeComponent implements OnInit {
   @Input() public message: string;
   public safeMessage: SafeHtml;
 
+  // @ts-ignore
   @Stor.property.in.localstorage
     .for(FiredevSessionPasscodeComponent)
     .withDefaultValue('')

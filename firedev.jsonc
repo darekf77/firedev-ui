@@ -1,15 +1,18 @@
 {
   "resources": ["README.md", "logo.png"],
+
   "overrided": {
     "linkedFolders": [],
     "ignoreDepsPattern": ["*"],
     "includeAsDev": [],
     "includeOnly": ["static-columns", "firedev"],
     "dependencies": {},
-    "npmFixes": [],
+    "npmFixes": []
   },
+
   "smartContainerBuildTarget": "",
   "linkedRepos": [],
+
   "libReleaseOptions": {
     "nodts": false,
     "obscure": false,
@@ -18,8 +21,9 @@
     "cliBuildNoDts": false,
     "cliBuildObscure": false,
     "cliBuildIncludeNodeModules": false,
-    "cliBuildUglify": false,
+    "cliBuildUglify": false
   },
-  "version": "v16",
-  "type": "isomorphic-lib",
+
+  "version": "v18",
+  "type": "isomorphic-lib"
 }

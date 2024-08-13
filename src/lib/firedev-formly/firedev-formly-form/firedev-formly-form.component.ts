@@ -78,7 +78,7 @@ export class FiredevFormlyFormComponent implements OnInit, AfterViewInit {
   //#region constructor
   constructor(
     private dialog: MatDialog,
-    private viewContainerRef: ViewContainerRef
+    private viewContainerRef: ViewContainerRef,
   ) {}
   //#endregion
 
@@ -88,9 +88,13 @@ export class FiredevFormlyFormComponent implements OnInit, AfterViewInit {
 
     // console.log('model', this.model);
     // log.i(`CRUD`, this.crud);
+    // TODO @REFACTOR
+    // @ts-ignore
     if (!this.entity && this.crud && this.crud.entity) {
+      // @ts-ignore
       this.entity = this.crud.entity;
     }
+    // @ts-ignore
     if (!this.entity && _.isObject(this.model)) {
       const ob = _.isArray(this.model) ? _.first(this.model) : this.model;
       this.entity = CLASS.getFromObject(ob);
@@ -116,7 +120,7 @@ export class FiredevFormlyFormComponent implements OnInit, AfterViewInit {
         this.entitycomponent.clear();
         // const factory = this.viewContainerRef.resolveComponentFactory(this.ftype.component as any);
         const componentRef = this.viewContainerRef.createComponent(
-          this.ftype.component as any
+          this.ftype.component as any,
         );
         (componentRef.instance as any).model = this.model;
       });
@@ -187,14 +191,14 @@ export class FiredevFormlyFormComponent implements OnInit, AfterViewInit {
     if (this.fieldsOrder.length > 0) {
       this.fieldsOrder.forEach(orderKey => {
         const f = this.formly.fields.find(
-          ({ key, id }) => key === orderKey || id === orderKey
+          ({ key, id }) => key === orderKey || id === orderKey,
         );
         if (f) {
           fieldsNewOrder.push(f);
         }
       });
       this.formly.fields = fieldsNewOrder.concat(
-        this.formly.fields.filter(f => !fieldsNewOrder.includes(f))
+        this.formly.fields.filter(f => !fieldsNewOrder.includes(f)),
       );
       // log.i('new Order', this.formly.fields.map(f => f.key).join(','));
     }

@@ -19,7 +19,7 @@ import { NgStringPipesModule } from 'ngx-pipes';
 import { FiredevFormlyFormComponent } from './firedev-formly-form.component';
 // aditional types componets
 import { IconButtonWithActionComponent } from './additional-types';
-import { FiredevFullMaterialModule } from '../../firedev-full-material.module';
+// import { FiredevFullMaterialModule } from '../../firedev-full-material.module';
 //#endregion
 
 export const FormlyModuleMod = FormlyModule.forRoot({
@@ -48,7 +48,7 @@ const formlyModules = [
   // FormlyMatInputModule,
   // FormlyMatToggleModule,
   // FormlyMatDatepickerModule,
-  FiredevFullMaterialModule,
+  // FiredevFullMaterialModule, // TODO @UNCOMMENT
   // custom
   NgStringPipesModule,
 ];
