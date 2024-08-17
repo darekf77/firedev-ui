@@ -33,7 +33,7 @@
     "type": "isomorphic-lib"
   },
   "name": "firedev-ui",
-  "version": "18.0.4",
+  "version": "18.0.5",
   "dependencies": {
     "firedev": "^18",
     "static-columns": "~18.0.5"
